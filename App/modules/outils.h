@@ -10,6 +10,7 @@
 #define G_OUTILS
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "../lib/ESLib.h"
 
 /*!
@@ -95,7 +96,7 @@ typedef struct clic {
 /*!
  * \brief Plateau du jeu
  */
-PLATEAU plateay_jeu;
+PLATEAU *plateau_jeu;
 
 /*!
  * \brief Accesseur pour un plateau de jeu de type PLATEAU
@@ -103,7 +104,7 @@ PLATEAU plateay_jeu;
  * @param case_jeu Case du jeu à lire
  * @return ::SYMBOLE du joueur dans la case demandée
  */
-int getCase(PLATEAU plateau, CASE case_jeu);
+int getCase(PLATEAU * plateau, CASE case_jeu);
 
 /*!
  * \brief Mutateur pour un plateau de jeu de type PLATEAU
@@ -112,6 +113,12 @@ int getCase(PLATEAU plateau, CASE case_jeu);
  * @param valeur Symbole à modifier dans le plateau
  * @return int
  */
-int setCase(PLATEAU plateau, CASE case_jeu, SYMBOLE valeur);
+int setCase(PLATEAU * plateau, CASE case_jeu, int valeur);
+
+/*!
+ * \brief Fonction permettant d'initialiser le plateau de jeu
+ * @return 0
+ */
+int initPlateau(void);
 
 #endif

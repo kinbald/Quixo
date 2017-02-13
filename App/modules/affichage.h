@@ -11,4 +11,10 @@
 #include "outils.h"
 #include "../lib/GfxLib.h"
 
+/*!
+ * \brief Gestion des événements GFXLib
+ * @param evenement
+ */
+void gestionEvenement(EvenementGfx evenement);
+
 #endif

@@ -19,6 +19,16 @@
 #define TAILLE_PLATEAU 6
 
 /*!
+ * \brief Largeur de la fenêtre graphique
+ */
+#define LargeurFenetre 800
+
+/*!
+ * \brief Hauteur de la fenêtre graphique
+ */
+#define HauteurFenetre 800
+
+/*!
  * \brief Plateau de jeu : tableau de TAILLE_PLATEAU*TAILLE_PLATEAU entiers
  */
 typedef int PLATEAU[TAILLE_PLATEAU][TAILLE_PLATEAU];

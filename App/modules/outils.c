@@ -6,7 +6,7 @@
 */
 #include "outils.h"
 
-extern PLATEAU *plateau_jeu;
+extern PLATEAU plateau_jeu;
 
 /*!
  * \brief Accesseur pour un plateau de jeu de type PLATEAU
@@ -55,7 +55,7 @@ int initPlateau(void)
 {
 	int index_ligne;
 	int index_colonne;
-	plateau_jeu = malloc(sizeof *plateau_jeu);	///< Allocation de la mémoire pour le plateau
+
 	CASE initVide;
 	for (index_ligne = 0; index_ligne < TAILLE_PLATEAU;
 	     index_ligne = index_ligne + 1) {
@@ -67,9 +67,9 @@ int initPlateau(void)
 			    || index_colonne == (TAILLE_PLATEAU - 1)
 			    || index_ligne == 0
 			    || index_ligne == (TAILLE_PLATEAU - 1)) {
-				setCase(plateau_jeu, initVide, tampon);	///< Si on est sur le bord du plateau on place le ::SYMBOLE tampon
+				setCase(&plateau_jeu, initVide, tampon);	///< Si on est sur le bord du plateau on place le ::SYMBOLE tampon
 			} else {
-				setCase(plateau_jeu, initVide, vide);	///< Sinon on place le ::SYMBOLE vide
+				setCase(&plateau_jeu, initVide, vide);	///< Sinon on place le ::SYMBOLE vide
 			}
 		}
 	}

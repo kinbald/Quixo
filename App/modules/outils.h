@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "../lib/ESLib.h"
 
 /*!
@@ -104,9 +105,9 @@ typedef struct clic {
 } CLIC;
 
 /*!
- * \brief Plateau du jeu
+ * Plateau de jeu
  */
-PLATEAU *plateau_jeu;
+PLATEAU plateau_jeu;
 
 /*!
  * \brief Accesseur pour un plateau de jeu de type PLATEAU
@@ -120,10 +121,10 @@ int getCase(PLATEAU * plateau, CASE case_jeu);
  * \brief Mutateur pour un plateau de jeu de type PLATEAU
  * @param plateau Plateau de jeu à modifier
  * @param case_jeu Case du jeu à modifier
- * @param valeur Symbole à modifier dans le plateau
+ * @param symbole Symbole à modifier dans le plateau
  * @return int
  */
-int setCase(PLATEAU * plateau, CASE case_jeu, int valeur);
+int setCase(PLATEAU * plateau, CASE case_jeu, int symbole);
 
 /*!
  * \brief Fonction permettant d'initialiser le plateau de jeu

@@ -4,20 +4,10 @@
 * \author desrumaux
 * \date 31/01/17
 */
-
-/*!
- * \include Fontions du moteur du jeu
- */
 #include "modules/moteur.h"
-/*!
- * \include Fonctions d'affichage du jeu
- */
 #include "modules/affichage.h"
 
-/*!
- * \brief Pointeur vers le plateau de jeu
- */
-extern PLATEAU *plateau_jeu;
+extern PLATEAU plateau_jeu;
 
 /*!
  * \brief Fonction principale du jeu
@@ -27,9 +17,9 @@ int main(int argc, char **argv)
 {
 	initPlateau();
 	initialiseGfx(argc, argv);
-
-	prepareFenetreGraphique("OpenGL", LargeurFenetre, HauteurFenetre);
+	prepareFenetreGraphique("Quixo", LargeurFenetre, HauteurFenetre);
 
 	lanceBoucleEvenements();
+
 	return 0;
 }

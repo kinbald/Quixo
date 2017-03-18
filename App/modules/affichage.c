@@ -217,7 +217,7 @@ void afficheCroix(CASE * case_jeu, int pas)
  *
  * @param case_jeu Case du jeu ciblée pour la croix (coordonnées en X et Y)
  * @param pas Pas des cases
- * @param direction Direcion choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
+ * @param direction Direction choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
  */
 void afficheCroixPoint(CASE * case_jeu, int pas, int direction)
 {
@@ -311,7 +311,7 @@ void afficheRond(CASE * case_jouee, float rayon)
  *
  * @param case_jouee Coordonnées de la case pour placer le cercle
  * @param rayon Rayon du cercle
- * @param direction Direcion choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
+ * @param direction Direction choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
  */
 void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 {

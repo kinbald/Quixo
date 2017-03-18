@@ -17,7 +17,7 @@
 /*!
  * \brief Taille du plateau de jeu
  */
-#define TAILLE_PLATEAU 6
+#define TAILLE_PLATEAU 7
 
 /*!
  * \brief Largeur de la fenêtre graphique
@@ -57,7 +57,7 @@ typedef enum {
 typedef enum {
 	menuPrincipal = 0,
 	menuRegles = 1,
-	menuChoixSymboleS = 2,
+	menuChoixSymboles = 2,
 	menuPartie = 3,
 	menuVictoire = 4,
 	menuChoixSymboleM = 5
@@ -75,7 +75,8 @@ typedef enum {
 	redirectMenuChoixSymboleM = 5,
 	redirectContinue = 6,
 	redirectRecommencer = 7,
-	redirectSurbrillance = 8
+	redirectSurbrillance = 8,
+	redirectCentral = 9
 } ETATS;
 
 /*!
@@ -115,7 +116,7 @@ PLATEAU plateau_jeu;
  * @param case_jeu Case du jeu à lire
  * @return ::SYMBOLE du joueur dans la case demandée
  */
-int getCase(PLATEAU * plateau, CASE case_jeu);
+int getCase(PLATEAU * plateau, CASE * case_jeu);
 
 /*!
  * \brief Mutateur pour un plateau de jeu de type PLATEAU
@@ -124,7 +125,7 @@ int getCase(PLATEAU * plateau, CASE case_jeu);
  * @param symbole Symbole à modifier dans le plateau
  * @return int
  */
-int setCase(PLATEAU * plateau, CASE case_jeu, int symbole);
+int setCase(PLATEAU * plateau, CASE * case_jeu, int symbole);
 
 /*!
  * \brief Fonction permettant d'initialiser le plateau de jeu

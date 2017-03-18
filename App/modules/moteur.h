@@ -9,5 +9,19 @@
 #define G_MOTEUR
 
 #include "outils.h"
+/*!
+ * \brief Fonction qui vérifie que le cube voulant être pioché est disponible
+ *
+ * @param clicJoueur Clic du jouer sur l'affichage graphique (coordonnées en X et Y)
+ * @return 0 si coup possible, -1 sinon
+ */
+int verifieSymbole(CLIC * clicJoueur);
+
+/*!
+ * \brief Fonction qui déterminer les cases où le joueur peut déposer le cube qu'il a pioché
+ * @param casePiochee Coordonnées de la case que le joueur a pioché
+ * @return 0
+ */
+int calculeSurbrillance(CASE * casePiochee);
 
 #endif

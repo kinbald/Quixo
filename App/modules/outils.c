@@ -14,13 +14,13 @@ extern PLATEAU plateau_jeu;
  * @param case_jeu Case du jeu à lire
  * @return ::SYMBOLE du joueur dans la case demandée
  */
-int getCase(PLATEAU * plateau, CASE case_jeu)
+int getCase(PLATEAU * plateau, CASE * case_jeu)
 {
-	int valeurRetour;	///< Valeur de retour de la case du plateau demandée
+	int valeurRetour;	// Valeur de retour de la case du plateau demandée
 
-	if ((case_jeu.ligne >= 0) && (case_jeu.ligne < TAILLE_PLATEAU)
-	    && (case_jeu.colonne >= 0) && (case_jeu.colonne < TAILLE_PLATEAU)) {
-		valeurRetour = *(plateau[case_jeu.ligne][case_jeu.colonne]);
+	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU)
+	    && (case_jeu->colonne >= 0) && (case_jeu->colonne < TAILLE_PLATEAU)) {
+		valeurRetour = (*plateau)[case_jeu->ligne][case_jeu->colonne];
 		return (valeurRetour);
 	} else {
 		return (-1);
@@ -34,13 +34,13 @@ int getCase(PLATEAU * plateau, CASE case_jeu)
  * @param symbole Symbole à modifier dans le plateau
  * @return int
  */
-int setCase(PLATEAU * plateau, CASE case_jeu, int symbole)
+int setCase(PLATEAU * plateau, CASE * case_jeu, int symbole)
 {
-	if ((case_jeu.ligne >= 0)
-	    && (case_jeu.ligne < TAILLE_PLATEAU)
-	    && (case_jeu.colonne >= 0)
-	    && (case_jeu.colonne < TAILLE_PLATEAU)) {
-		*plateau[case_jeu.ligne][case_jeu.colonne] = symbole;	/// Lecture dans le plateau envoyé
+	if ((case_jeu->ligne >= 0)
+	    && (case_jeu->ligne < TAILLE_PLATEAU)
+	    && (case_jeu->colonne >= 0)
+	    && (case_jeu->colonne < TAILLE_PLATEAU)) {
+		(*plateau)[case_jeu->ligne][case_jeu->colonne] = symbole;	// Lecture dans le plateau envoyé
 		return (0);
 	} else {
 		return (-1);
@@ -67,9 +67,9 @@ int initPlateau(void)
 			    || index_colonne == (TAILLE_PLATEAU - 1)
 			    || index_ligne == 0
 			    || index_ligne == (TAILLE_PLATEAU - 1)) {
-				setCase(&plateau_jeu, initVide, tampon);	///< Si on est sur le bord du plateau on place le ::SYMBOLE tampon
+				setCase(&plateau_jeu, &initVide, tampon);	// Si on est sur le bord du plateau on place le ::SYMBOLE tampon
 			} else {
-				setCase(&plateau_jeu, initVide, vide);	///< Sinon on place le ::SYMBOLE vide
+				setCase(&plateau_jeu, &initVide, vide);	// Sinon on place le ::SYMBOLE vide
 			}
 		}
 	}

@@ -9,5 +9,39 @@
 #define G_MOTEUR
 
 #include "outils.h"
+/*!
+ * \brief Fonction qui vérifie que le cube voulant être pioché est disponible
+ *
+ * @param clicJoueur Clic du jouer sur l'affichage graphique (coordonnées en X et Y)
+ * @return 0 si coup possible, -1 sinon
+ */
+int verifieSymbole(CLIC * clicJoueur);
+
+/*!
+ * \brief Fonction qui déterminer les cases où le joueur peut déposer le cube qu'il a pioché
+ * @param casePiochee Coordonnées de la case que le joueur a pioché
+ * @return 0
+ */
+int calculeSurbrillance(CASE * casePiochee);
+
+/*!
+ * \brief décalage des pions
+ * @param plateau Plateau du jeu à accéder
+ * @param colonnePiochee et lignePiochee de la case prise et colonneJouee et ligneJouee de la case de surbrillance choisie
+ * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
+ */
+int decalage( int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJouee ) ;
+
+/*!
+ * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
+ * \brief /!\ si on est en mode 1V1 alors  joueurAllier = 0
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant et joueurAllier
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoire(int joueurCourant , int joueurAllier) ;
+
+
 
 #endif
+

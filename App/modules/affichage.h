@@ -12,15 +12,6 @@
 #include "../lib/GfxLib.h"
 
 /*!
- * \brief Fonction de gestion des événements
- *
- * Appelée automatiquement par le système dès qu'un événement survient
- *
- * @param EvenementGfx
- */
-void gestionEvenement(EvenementGfx evenement);
-
-/*!
  * \brief Fonction qui permet d'afficher le plateau suivant les coordonnées envoyées
  *
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
@@ -52,6 +43,67 @@ void afficheGrille(int *coordonneesPlateau);
  * @param case_jeu Case à traiter
  * @param joueur Joueur courant
  */
-void afficheSymbole(float pas, CASE case_jeu, int joueur);
+void afficheSymbole(float pas, CASE * case_jeu, int joueur);
+
+/*!
+ * \brief Fontion qui permet d'afficher une croix de taille pas/3 aux coordonnées de *case_jeu
+ *
+ * @param case_jeu Case du jeu ciblée pour la croix (coordonnées en X et Y)
+ * @param pas Pas des cases
+ */
+void afficheCroix(CASE * case_jeu, int pas);
+
+/*!
+ * \brief Fontion qui permet d'afficher une croix de taille pas/3 aux coordonnées de *case_jeu avec un point
+ *
+ * @param case_jeu Case du jeu ciblée pour la croix (coordonnées en X et Y)
+ * @param pas Pas des cases
+ * @param direction Direcion choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
+ */
+void afficheCroixPoint(CASE * case_jeu, int pas, int direction);
+
+/*!
+ * \brief Fonction qui permet de dessiner un disque sur l'affichage
+ * @param case_jouee Case du plateau (en pixels)
+ * @param rayon Rayon du disque (en pixels)
+ */
+void afficheDisque(CASE * case_jouee, float rayon);
+
+/*!
+ * \brief Fonction qui permet d'afficher un cercle de rayon donné
+ *
+ * @param case_jouee Coordonnées de la case pour placer le cercle
+ * @param rayon Rayon du cercle
+ */
+void afficheRond(CASE * case_jouee, float rayon);
+
+/*!
+ * \brief Fonction qui permet d'afficher un cercle de rayon donné avec un point suivant une direction
+ *
+ * @param case_jouee Coordonnées de la case pour placer le cercle
+ * @param rayon Rayon du cercle
+ * @param direction Direcion choisie pour le point (0: Droit, 1: Bas, 2: Gauche, 3: Haut)
+ */
+void afficheRondPoint(CASE * case_jouee, float rayon, int direction);
+
+/*!
+ * \brief Fonction qui permet de gérer les clics sur l'affichage graphique en fonction du menu
+ *
+ * @param retourClic Case utilisée lors d'un clic sur plateau
+ * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
+ * @param coordonneesPlateau Coordonnées du plateau de jeu lors d'un clic dans la partie
+ * @return Action à effectuer
+ */
+int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
+			  int *coordonneesPlateau);
+
+/*!
+ * \brief Fonction qui permet de gérer un clic sur le menuPartie
+ * @param retourClic Case qui sera modifiée si le joueur clique sur le plateau
+ * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
+ * @param coordonneesPlateau Coordonnées du plateau de jeu lors d'un clic dans la partie
+ * @return Action à effectuer
+ */
+int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
 
 #endif

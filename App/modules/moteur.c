@@ -556,3 +556,43 @@ void nettoieSurbrillance(PLATEAU * plateau)
 		}
 	}
 }
+
+int calculeTour(int *joueurCourant, int etatClic, CASE * clic,
+		CASE * savePioche)
+{
+	switch (etatClic) {
+	case menuPartie:
+		return menuPartie;
+	case redirectPioche:
+		if (verifieSymbole(clic, *joueurCourant)
+		    == 0 || verifieSymbole(clic, vide) == 0) {
+			savePioche->ligne = clic->ligne;
+			savePioche->colonne = clic->colonne;
+			calculeSurbrillance(clic);
+			return redirectSurbrillance;
+		} else {
+			return menuPartie;
+		}
+		break;
+	case redirectContinue:
+		if (verifieSymbole(clic, surbrillance) == 0) {
+			setCase(&plateau_jeu, clic, *joueurCourant);
+			decalage(savePioche->colonne,
+				 savePioche->ligne, clic->colonne, clic->ligne);
+			nettoieSurbrillance(&plateau_jeu);
+			if (*joueurCourant == rond_gauche) {
+				*joueurCourant = croix_gauche;
+			} else {
+				*joueurCourant = rond_gauche;
+			}
+			return menuPartie;
+		} else {
+			return redirectSurbrillance;
+		}
+	case redirectRePioche:
+		return redirectSurbrillance;
+	case redirectCentral:
+		return menuPartie;
+	}
+	return 0;
+}

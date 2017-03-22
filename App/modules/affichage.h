@@ -43,7 +43,7 @@ void afficheGrille(int *coordonneesPlateau);
  * @param case_jeu Case à traiter
  * @param joueur Joueur courant
  */
-void afficheSymbole(float pas, CASE * case_jeu, int joueur);
+void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase);
 
 /*!
  * \brief Fontion qui permet d'afficher une croix de taille pas/3 aux coordonnées de *case_jeu
@@ -105,5 +105,11 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
  * @return Action à effectuer
  */
 int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
+
+int gereEtatsClic(CASE * clic, int etatMenu);
+
+void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase);
+
+void redimensionnementForce(void);
 
 #endif

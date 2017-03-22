@@ -34,9 +34,11 @@ void gestionEvenement(EvenementGfx evenement)
 {
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
 	static int coordonneesGrille[4];
-
-	/*static int i = 0;
-	   int j = 0; */
+	static CLIC clic;
+	//static int etatClic;
+	static CASE retourClic, savePioche;
+	static int joueurCourant;
+	static int menuCourant;
 
 	switch (evenement) {
 	case Initialisation:
@@ -48,14 +50,10 @@ void gestionEvenement(EvenementGfx evenement)
 		coordonneesGrille[1] = 700;
 		coordonneesGrille[2] = 700;
 		coordonneesGrille[3] = 100;
-		/* printf("Tab\n");
-		   for (i = 0; i < TAILLE_PLATEAU; i++) {
-		   for (j = 0; j < TAILLE_PLATEAU; j++) {
-		   printf("%d\t", plateau_jeu[i][j]);
-		   }
-		   sautDeLigne();
-		   }
-		 */
+
+		joueurCourant = rond_gauche;
+
+		menuCourant = menuPartie;
 		break;
 
 	case Affichage:
@@ -99,23 +97,20 @@ void gestionEvenement(EvenementGfx evenement)
 		break;
 
 	case BoutonSouris:
-
 		if (etatBoutonSouris() == GaucheAppuye) {
-			CLIC clic;
-			clic.menu = menuPartie;
-			CASE retourClic;
+			// Préparation du clic à envoyer à la fonction
 			clic.coordX = abscisseSouris();
 			clic.coordY = ordonneeSouris();
-			recupereClicAffichage(&retourClic, &clic,
-					      coordonneesGrille);
-
-			if (clic.menu == redirectSurbrillance) {
-				calculeSurbrillance(&retourClic);
-			}
+			clic.joueurCourant = joueurCourant;
+			clic.menu = menuCourant;
+			menuCourant = recupereClicAffichage(&retourClic, &clic,
+							    coordonneesGrille);
+			menuCourant =
+			    calculeTour(&joueurCourant, menuCourant,
+					&retourClic, &savePioche);
 
 		}
 		break;
-
 	case Souris:		// Si la souris est deplacee
 		break;
 
@@ -126,6 +121,7 @@ void gestionEvenement(EvenementGfx evenement)
 		// Donc le systeme nous en informe
 		printf("Largeur : %d\t", largeurFenetre());
 		printf("Hauteur : %d\n", hauteurFenetre());
+		redimensionnementForce();
 		break;
 	}
 }

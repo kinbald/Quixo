@@ -48,7 +48,8 @@ typedef enum {
 	rond_droit = 8,
 	vide = 9,
 	surbrillance = 10,
-	tampon = 11
+	tampon = 11,
+	pioche = 12
 } SYMBOLE;
 
 /*!
@@ -76,7 +77,9 @@ typedef enum {
 	redirectContinue = 6,
 	redirectRecommencer = 7,
 	redirectSurbrillance = 8,
-	redirectCentral = 9
+	redirectCentral = 9,
+	redirectPioche = 10,
+  redirectRePioche = 11
 } ETATS;
 
 /*!

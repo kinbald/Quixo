@@ -30,7 +30,71 @@ int calculeSurbrillance(CASE * casePiochee);
  * @param colonnePiochee et lignePiochee de la case prise et colonneJouee et ligneJouee de la case de surbrillance choisie
  * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
  */
-int decalage( int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJouee ) ;
+int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
+	     int ligneJouee);
+
+/*!
+ * \brief verification de la victoire d'un joueur par les lignes'
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireLigne1V1(int joueurCourant);
+
+/*!
+ * \brief verification de la victoire d'un joueur par les colonnes
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireColonne1V1(int joueurCourant);
+
+/*!
+ * \brief verification de la victoire d'un joueur par la diagonale de gauche haut vers droite bas
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireDiagonaleG1V1(int joueurCourant);
+
+/*!
+ * \brief verification de la victoire d'un joueur par la diagonale de gauche bas vers droite haut
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireDiagonaleD1V1(int joueurCourant);
+
+/*!
+ * \brief verification de la victoire en 2V2 d'un joueur par les ligne
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant et joueurAllier
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireLigne2V2(int joueurCourant, int joueurAllier);
+/*!
+ * \brief verification de la victoire en 2V2 d'un joueur par les colonnes
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant et joueurAllier
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireColonne2V2(int joueurCourant, int joueurAllier);
+
+/*!
+ * \brief verification de la victoire en 2V2 d'un joueur par la  diagonale de gauche haut vers droite bas
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant et joueurAllier
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier);
+
+/*!
+ * \brief verification de la victoire d'un joueur en 2V2 par la diagonale de gauche bas vers droite haut
+ * @param plateau Plateau du jeu à accéder
+ * @param joueurCuourant et joueurAllier
+ * @return :: joueurCourant si il a gagné sinon -1
+ */
+int testeVictoireDiagonaleD2V2(int joueurCourant, int joueurAllier);
 
 /*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
@@ -39,9 +103,6 @@ int decalage( int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJ
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoire(int joueurCourant , int joueurAllier) ;
-
-
+int testeVictoire(int joueurCourant, int joueurAllier);
 
 #endif
-

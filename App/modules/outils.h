@@ -48,7 +48,8 @@ typedef enum {
 	rond_droit = 8,
 	vide = 9,
 	surbrillance = 10,
-	tampon = 11
+	tampon = 11,
+	pioche = 12
 } SYMBOLE;
 
 /*!

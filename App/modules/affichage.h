@@ -157,6 +157,6 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  * @return 0 (OK), -1 (KO)
  */
- int gestionAffichage(int menu, int * coordonneesPlateau);
+int gestionAffichage(int menu, int *coordonneesPlateau);
 
 #endif

@@ -183,8 +183,8 @@ int testeVictoireLigne1V1(int joueurCourant)
 
 	CASE GET;
 
-	for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
+		for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -212,8 +212,8 @@ int testeVictoireColonne1V1(int joueurCourant)
 	    0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
+		for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -238,7 +238,7 @@ int testeVictoireDiagonaleG1V1(int joueurCourant)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU-1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -262,7 +262,7 @@ int testeVictoireDiagonaleD1V1(int joueurCourant)
 	int ligne = 0, colonne = 1, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 1; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
 		GET.ligne = ligne;
 		GET.colonne = colonne;
 		if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -287,8 +287,8 @@ int testeVictoireLigne2V2(int joueurCourant, int joueurAllier)
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
+		for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			//printf("valeur case = %d\n" , TEST[ligne][colonne]) ;
@@ -317,8 +317,8 @@ int testeVictoireColonne2V2(int joueurCourant, int joueurAllier)
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
+		for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if ((getCase(&plateau_jeu, &GET) == joueurCourant)
@@ -345,7 +345,7 @@ int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier)
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU-1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if ((getCase(&plateau_jeu, &GET) == joueurCourant)
@@ -370,7 +370,7 @@ int testeVictoireDiagonaleD2V2(int joueurCourant, int joueurAllier)
 	int ligne = 0, colonne = 1, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 1; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
 		GET.ligne = ligne;
 		GET.colonne = colonne;
 		if ((getCase(&plateau_jeu, &GET) == joueurCourant)

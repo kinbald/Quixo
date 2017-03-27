@@ -9,8 +9,8 @@ CLIBS =lib/libisentlib.a -lm -lGL -lGLU -lglut -lX11
 
 all: main.o  moteur.o  affichage.o outils.o
 	gcc -o main main.o  moteur.o  affichage.o outils.o $(CLIBS)
-	rm *~
-	rm ./modules/*~
+
+
 
 main.o:	main.c modules/moteur.h modules/affichage.h
 	indent -linux main.c

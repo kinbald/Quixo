@@ -95,7 +95,8 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction);
  * @return Action à effectuer
  */
 int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
-			  int *coordonneesPlateau);
+			  int *coordonneesPlateau, int LARGEURFenetre,
+			  int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui permet de gérer un clic sur le menuPartie
@@ -105,5 +106,57 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
  * @return Action à effectuer
  */
 int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
+
+/*!
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ *
+ * @param menu Les différents menus du jeu
+ * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @return Action a effectuer
+ */
+//int gestionAffichage(int menu, int *coordonneesPlateau);
+
+/*!
+ * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return 0 pour ok, -1 pour ko
+ */
+int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre);
+
+/*!
+ * \brief Fonction qui affiche le menu où le joueur choisit son symbole
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return 0 pour ok, -1 pour ko
+ */
+
+int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre);
+
+/*!
+ * \brief Fonction qui affiche les règles du jeu
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return 0 pour ok, -1 pour ko
+ */
+int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre);
+
+ /*!
+  * \brief Fonction qui gère le clic dans les menus à l'aide des boutons
+  * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
+  * @param LARGEURFenetre largeur de la fenêtre
+  * @param HAUTEURFenetre hauteur de la fenêtre
+  * @return Action à effectuer
+  */
+int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
+
+/*!
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ *
+ * @param menu Menu vers lequel on souhaite être redirigé
+ * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @return 0 (OK), -1 (KO)
+ */
+ int gestionAffichage(int menu, int * coordonneesPlateau);
 
 #endif

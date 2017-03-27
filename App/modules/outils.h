@@ -76,7 +76,8 @@ typedef enum {
 	redirectContinue = 6,
 	redirectRecommencer = 7,
 	redirectSurbrillance = 8,
-	redirectCentral = 9
+	redirectCentral = 9,
+	redirectQuitter = 10
 } ETATS;
 
 /*!

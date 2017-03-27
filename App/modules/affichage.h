@@ -150,4 +150,13 @@ int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre);
   */
 int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
 
+/*!
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ *
+ * @param menu Menu vers lequel on souhaite être redirigé
+ * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @return 0 (OK), -1 (KO)
+ */
+ int gestionAffichage(int menu, int * coordonneesPlateau);
+
 #endif

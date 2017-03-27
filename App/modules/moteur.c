@@ -17,16 +17,17 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 {
 	int differenceColonne = 0;
 	int differenceLigne = 0;
-	int decalage = 0;
+	unsigned int decalage = 0;
 	int i = 0;
-	int verif_increment = 0;
+	unsigned int verif_increment = 0;
 	int memmoire2 = 1;
 	int memmoire3 = 1;
 	int ok = -1;
 	CASE SET;
 	CASE GET;
-	differenceColonne = colonnePiochee - colonneJouee;
 
+	// calcul du nombre de case  a déplacer :
+	differenceColonne = colonnePiochee - colonneJouee;
 	differenceLigne = lignePiochee - ligneJouee;
 
 	//printf("differenceColonne %d \n", differenceColonne);
@@ -44,12 +45,12 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 
 		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
 
+		//si cette condition est vérifier on effectura un déplacement bas vers le haut
 		if (differenceColonne > 0) {
 			i = colonneJouee;
-			//printf("val de i : %d \n" ,  i);
-			//printf("val de verif_increment : %d \n" ,  verif_increment);
-			while ((verif_increment <= decalage) && (i <= decalage)) {
-				//printf("on deplace  1! %d \n" , i);
+
+			while (verif_increment <= decalage) {
+
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
@@ -72,9 +73,10 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				verif_increment = verif_increment + 1;
 			}
 			ok = 0;
+			//si cette condition est vérifier on effectura un déplacement Haut vers le bas
 		} else if (differenceColonne < 0) {
 			i = colonneJouee;
-			while ((verif_increment <= decalage) && (i > 0)) {
+			while (verif_increment <= decalage) {
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
@@ -109,13 +111,12 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 
 		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
 
+		//si cette condition est vérifier on effectura un déplacement droite  vers la gauche
 		if (differenceLigne > 0) {
 			i = ligneJouee;
-			//printf("val de i : %d \n" ,  i);
-			//printf("val de verif_increment : %d \n" ,  verif_increment);
 
-			while ((verif_increment <= decalage) && (i <= decalage)) {
-				//printf("on deplace  3! %d \n" , i);
+			while (verif_increment <= decalage) {
+
 				if (i % 2 == 0) {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
@@ -137,11 +138,11 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				verif_increment = verif_increment + 1;
 			}
 			ok = 0;
+			//si cette condition est vérifier on effectura un déplacement gauche vers la droite
 		} else if (differenceLigne < 0) {
 			i = ligneJouee;
 			//printf("val de i : %d \n" ,  i);
-			while ((verif_increment <= decalage) && (i > 0)
-			    ) {
+			while (verif_increment <= decalage) {
 				//printf("on deplace  4! %d \n" , i);
 				if (i % 2 == 0) {
 					GET.ligne = i;

@@ -7,7 +7,7 @@
 #include "modules/moteur.h"
 #include "modules/affichage.h"
 
-extern PLATEAU plateau_jeu;
+PLATEAU plateau_jeu;
 
 /*!
  * \brief Fonction principale du jeu
@@ -35,7 +35,6 @@ void gestionEvenement(EvenementGfx evenement)
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
 	static int coordonneesGrille[4];
 	static CLIC clic;
-	//static int etatClic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
 	static int menuCourant;
@@ -59,10 +58,13 @@ void gestionEvenement(EvenementGfx evenement)
 	case Affichage:
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
-
-		affichePlateau(coordonneesGrille);
-
-		epaisseurDeTrait(10.0);
+		/* Premier test de l'affichage */
+		if (menuCourant == redirectMenuVictoire) {
+			epaisseurDeTrait(2.0);
+			afficheChaine("Bravo ", 100, 300, 300);
+		} else {
+			affichePlateau(coordonneesGrille);
+		}
 		couleurCourante(255, 0, 0);
 		break;
 
@@ -108,7 +110,6 @@ void gestionEvenement(EvenementGfx evenement)
 			menuCourant =
 			    calculeTour(&joueurCourant, menuCourant,
 					&retourClic, &savePioche);
-
 		}
 		break;
 	case Souris:		// Si la souris est deplacee
@@ -121,6 +122,7 @@ void gestionEvenement(EvenementGfx evenement)
 		// Donc le systeme nous en informe
 		printf("Largeur : %d\t", largeurFenetre());
 		printf("Hauteur : %d\n", hauteurFenetre());
+		// Force une taille de fenêtre minimale
 		redimensionnementForce();
 		break;
 	}

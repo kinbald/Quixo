@@ -79,7 +79,7 @@ typedef enum {
 	redirectSurbrillance = 8,
 	redirectCentral = 9,
 	redirectPioche = 10,
-  redirectRePioche = 11
+	redirectRePioche = 11
 } ETATS;
 
 /*!
@@ -111,7 +111,7 @@ typedef struct clic {
 /*!
  * Plateau de jeu
  */
-PLATEAU plateau_jeu;
+extern PLATEAU plateau_jeu;
 
 /*!
  * \brief Accesseur pour un plateau de jeu de type PLATEAU

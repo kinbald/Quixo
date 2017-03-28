@@ -6,6 +6,8 @@
 */
 #include "moteur.h"
 
+extern PLATEAU plateau_jeu;
+
 /*!
  * \brief décalage des pions
  * @param plateau Plateau du jeu à accéder
@@ -17,9 +19,9 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 {
 	int differenceColonne = 0;
 	int differenceLigne = 0;
-	int decalage = 0;
+	unsigned int decalage = 0;
 	int i = 0;
-	int verif_increment = 0;
+	unsigned int verif_increment = 0;
 	int memmoire2 = 1;
 	int memmoire3 = 1;
 	int ok = -1;
@@ -48,7 +50,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 			i = colonneJouee;
 			//printf("val de i : %d \n" ,  i);
 			//printf("val de verif_increment : %d \n" ,  verif_increment);
-			while ((verif_increment <= decalage) && (i <= decalage)) {
+			while ((verif_increment <= decalage)) {
 				//printf("on deplace  1! %d \n" , i);
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
@@ -74,7 +76,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 			ok = 0;
 		} else if (differenceColonne < 0) {
 			i = colonneJouee;
-			while ((verif_increment <= decalage) && (i > 0)) {
+			while ((verif_increment <= decalage)) {
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
@@ -114,7 +116,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 			//printf("val de i : %d \n" ,  i);
 			//printf("val de verif_increment : %d \n" ,  verif_increment);
 
-			while ((verif_increment <= decalage) && (i <= decalage)) {
+			while ((verif_increment <= decalage)) {
 				//printf("on deplace  3! %d \n" , i);
 				if (i % 2 == 0) {
 					GET.ligne = i;
@@ -140,7 +142,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 		} else if (differenceLigne < 0) {
 			i = ligneJouee;
 			//printf("val de i : %d \n" ,  i);
-			while ((verif_increment <= decalage) && (i > 0)
+			while ((verif_increment <= decalage)
 			    ) {
 				//printf("on deplace  4! %d \n" , i);
 				if (i % 2 == 0) {
@@ -182,8 +184,8 @@ int testeVictoireLigne1V1(int joueurCourant)
 
 	CASE GET;
 
-	for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
+		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -211,8 +213,8 @@ int testeVictoireColonne1V1(int joueurCourant)
 	    0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
+		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -237,7 +239,7 @@ int testeVictoireDiagonaleG1V1(int joueurCourant)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -261,7 +263,7 @@ int testeVictoireDiagonaleD1V1(int joueurCourant)
 	int ligne = 0, colonne = 1, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 1; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
 		GET.ligne = ligne;
 		GET.colonne = colonne;
 		if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -344,7 +346,7 @@ int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier)
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if ((getCase(&plateau_jeu, &GET) == joueurCourant)
@@ -369,7 +371,7 @@ int testeVictoireDiagonaleD2V2(int joueurCourant, int joueurAllier)
 	int ligne = 0, colonne = 1, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 1; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
 		GET.ligne = ligne;
 		GET.colonne = colonne;
 		if ((getCase(&plateau_jeu, &GET) == joueurCourant)
@@ -419,9 +421,7 @@ int testeVictoire(int joueurCourant, int joueurAllier)
 			printf("victoire en diagonale droite !! \n");
 			return (diagonaleD);
 		}
-	}
-
-	if (joueurAllier != 0) {
+	} else {
 		ligne = testeVictoireLigne2V2(joueurCourant, joueurAllier);
 		if (ligne == joueurCourant) {
 			printf("victoire en ligne !! \n");
@@ -557,33 +557,68 @@ void nettoieSurbrillance(PLATEAU * plateau)
 	}
 }
 
-int calculeTour(int *joueurCourant, int etatClic, CASE * clic,
-		CASE * savePioche)
+/*!
+ * \brief Fonction permet de gérer l'avancement du jeu
+ *
+ * @param joueurCourant
+ * @param etatClic Permet de connaîre l'étape dans le jeu
+ * @param caseJouee
+ * @param casePiochee
+ * @return
+ */
+int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
+		CASE * casePiochee)
 {
+	int victoire;
 	switch (etatClic) {
 	case menuPartie:
 		return menuPartie;
 	case redirectPioche:
-		if (verifieSymbole(clic, *joueurCourant)
-		    == 0 || verifieSymbole(clic, vide) == 0) {
-			savePioche->ligne = clic->ligne;
-			savePioche->colonne = clic->colonne;
-			calculeSurbrillance(clic);
+		if (verifieSymbole(caseJouee, *joueurCourant)
+		    == 0 || verifieSymbole(caseJouee, vide) == 0) {
+			casePiochee->ligne = caseJouee->ligne;
+			casePiochee->colonne = caseJouee->colonne;
+			calculeSurbrillance(caseJouee);
 			return redirectSurbrillance;
 		} else {
 			return menuPartie;
 		}
-		break;
 	case redirectContinue:
-		if (verifieSymbole(clic, surbrillance) == 0) {
-			setCase(&plateau_jeu, clic, *joueurCourant);
-			decalage(savePioche->colonne,
-				 savePioche->ligne, clic->colonne, clic->ligne);
+		if (verifieSymbole(caseJouee, surbrillance) == 0) {
+			setCase(&plateau_jeu, caseJouee, *joueurCourant);
+			decalage(casePiochee->colonne,
+				 casePiochee->ligne, caseJouee->colonne,
+				 caseJouee->ligne);
 			nettoieSurbrillance(&plateau_jeu);
 			if (*joueurCourant == rond_gauche) {
-				*joueurCourant = croix_gauche;
+				victoire = testeVictoire(croix_gauche, 0);
 			} else {
-				*joueurCourant = rond_gauche;
+				victoire = testeVictoire(rond_gauche, 0);
+			}
+			if (victoire != -1) {
+				printf("%d\n", victoire);
+				if (*joueurCourant == rond_gauche) {
+					*joueurCourant = croix_gauche;
+				} else {
+					*joueurCourant = rond_gauche;
+				}
+				return redirectMenuVictoire;
+			}
+			victoire = testeVictoire(*joueurCourant, 0);
+			if (victoire != -1) {
+				printf("%d\n", victoire);
+				if (*joueurCourant == rond_gauche) {
+					*joueurCourant = croix_gauche;
+				} else {
+					*joueurCourant = rond_gauche;
+				}
+				return redirectMenuVictoire;
+			} else {
+				if (*joueurCourant == rond_gauche) {
+					*joueurCourant = croix_gauche;
+				} else {
+					*joueurCourant = rond_gauche;
+				}
 			}
 			return menuPartie;
 		} else {

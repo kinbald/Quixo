@@ -9,6 +9,7 @@
 #define G_MOTEUR
 
 #include "outils.h"
+
 /*!
  * \brief Fonction qui vérifie que le cube voulant être pioché est disponible
  *
@@ -111,6 +112,7 @@ int calculeSurbrillance(CASE * casePiochee);
  */
 void nettoieSurbrillance(PLATEAU * plateau);
 
-int calculeTour(int *joueurCourant, int etatClic, CASE * clic, CASE * pioche);
+int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
+		CASE * casePiochee);
 
 #endif

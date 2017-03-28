@@ -106,8 +106,21 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
  */
 int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
 
+/*!
+ * \brief Fonction qui permet de renvoyer l'action à effectuer après un clic dans le plateau de jeu
+ *
+ * @param clic
+ * @param etatMenu
+ * @return
+ */
 int gereEtatsClic(CASE * clic, int etatMenu);
 
+/*!
+ * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer
+ * @param case_jouee Case en pixels où la flèche doit être placée
+ * @param pas Pas de la case
+ * @param lectureCase Case (plateau) où la flèche doit être placée
+ */
 void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase);
 
 void redimensionnementForce(void);

@@ -34,16 +34,13 @@ void gestionEvenement(EvenementGfx evenement)
 {
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
 	static int coordonneesGrille[4];
-	static int LARGEURFenetre;
-	static int HAUTEURFenetre;
+	static int LargeurFenetreCourante = LargeurFenetre;
+	static int HauteurFenetreCourante = HauteurFenetre;
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
-	static int menuCourant;
 
-	static int donnees = 0;
-	/*static int i = 0;
-	   int j = 0; */
+	static int menuCourant;
 
 	switch (evenement) {
 	case Initialisation:
@@ -56,44 +53,36 @@ void gestionEvenement(EvenementGfx evenement)
 		coordonneesGrille[2] = 700;
 		coordonneesGrille[3] = 100;
 
-		joueurCourant = rond_gauche;
-
-		menuCourant = menuPartie;
+		menuCourant = menuPrincipal;
 		break;
 
 	case Affichage:
 
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
-		if (donnees == 0) {
-			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuChoixSymboleS) {
-			afficheMenuSelection(LARGEURFenetre, HAUTEURFenetre);
-
-		}
-
-		if (donnees == redirectMenuRegles) {
-			afficheRegles(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuPrincipal) {
-			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuPartie) {
-
+		switch (menuCourant) {
+		case menuPrincipal:
+			afficheMenuPrincipal(LargeurFenetreCourante,
+					     HauteurFenetreCourante);
+			break;
+		case redirectMenuChoixSymboleS:
+			afficheMenuSelection(LargeurFenetreCourante,
+					     HauteurFenetreCourante);
+			break;
+		case redirectMenuRegles:
+			afficheRegles(LargeurFenetreCourante,
+				      HauteurFenetreCourante);
+			break;
+		case menuPartie:
+		case redirectSurbrillance:
+		case redirectRePioche:
+		case redirectPioche:
 			affichePlateau(coordonneesGrille);
-		}
-
-		if (donnees == redirectQuitter) {
+			break;
+		case redirectQuitter:
 			exit(0);
 		}
 		rafraichisFenetre();
-
-		//affichePlateau(coordonneesGrille);
-		epaisseurDeTrait(10.0);
 		couleurCourante(255, 0, 0);
 		break;
 
@@ -130,33 +119,39 @@ void gestionEvenement(EvenementGfx evenement)
 			clic.coordY = ordonneeSouris();
 			clic.joueurCourant = joueurCourant;
 			clic.menu = menuCourant;
-			menuCourant = recupereClicAffichage(&retourClic, &clic,
-							    coordonneesGrille);
 			menuCourant =
-			    calculeTour(&joueurCourant, menuCourant,
-					&retourClic, &savePioche);
-			donnees = recupereClicAffichage(&retourClic, &clic,
-							coordonneesGrille,
-							LARGEURFenetre,
-							HAUTEURFenetre);
-			printf("donne = %d\n", donnees);
+			    recupereClicAffichage(&retourClic, &clic,
+						  coordonneesGrille,
+						  LargeurFenetreCourante,
+						  HauteurFenetreCourante);
+			printf("donne = %d\n", menuCourant);
 
-			if (donnees == 0) {
-				clic.menu = menuPrincipal;
+			switch (menuCourant) {
+			case redirectMenuPrincipal:
+				menuCourant = menuPrincipal;
+				break;
+			case redirectMenuChoixSymboleS:
+				menuCourant = menuChoixSymboles;
+				break;
+			case redirectMenuRegles:
+				menuCourant = menuRegles;
+				break;
+			case redirectMenuPartie:
+				joueurCourant = clic.joueurCourant;
+				menuCourant = menuPartie;
+				break;
+			case menuPartie:
+			case redirectSurbrillance:
+			case redirectPioche:
+			case redirectRePioche:
+			case redirectContinue:
+
+				menuCourant =
+				    calculeTour(&joueurCourant, menuCourant,
+						&retourClic, &savePioche);
+				break;
 			}
-
-			if (donnees == redirectMenuChoixSymboleS) {
-				clic.menu = menuChoixSymboles;
-
-			}
-
-			if (donnees == redirectMenuRegles) {
-				clic.menu = menuRegles;
-			}
-
-			/*      if (clic.menu == redirectSurbrillance) {
-			   calculeSurbrillance(&retourClic);
-			   } */
+			printf("Redonne = %d\n", menuCourant);
 		}
 		break;
 	case Souris:		// Si la souris est deplacee
@@ -169,8 +164,8 @@ void gestionEvenement(EvenementGfx evenement)
 		printf("Hauteur : %d\n", hauteurFenetre());
 		// Force une taille de fenêtre minimale
 		redimensionnementForce();
-		LARGEURFenetre = largeurFenetre();
-		HAUTEURFenetre = hauteurFenetre();
+		LargeurFenetreCourante = largeurFenetre();
+		HauteurFenetreCourante = hauteurFenetre();
 		break;
 	}
 }

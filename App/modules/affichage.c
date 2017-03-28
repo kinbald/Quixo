@@ -385,20 +385,14 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 			}
 			return redirectRePioche;
 		}
-		break;
+	case menuPrincipal:
+		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+	case menuChoixSymboles:
+		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+
 	default:
-		return redirectCentral;
+		return redirectMenuPrincipal;
 	}
-	if (clicSouris->menu == menuPrincipal) {
-
-		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-	}
-
-	if (clicSouris->menu == menuChoixSymboles) {
-		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-	}
-
-	return (0);
 }
 
 /*!
@@ -541,9 +535,9 @@ void redimensionnementForce()
  * @return Action a effectuer
  */
 
- /*int gestionAffichage(int menu, int *coordonneesPlateau)
-    {
-    } */
+/*int gestionAffichage(int menu, int *coordonneesPlateau)
+   {
+   } */
 
 /*!
  * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
@@ -698,9 +692,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 			clicSouris->menu = redirectQuitter;
 		}
 		return (clicSouris->menu);
-	}
-
-	else if (clicSouris->menu == menuRegles) {
+	} else if (clicSouris->menu == menuRegles) {
 		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
 		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
@@ -721,6 +713,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->joueurCourant = croix_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 
@@ -728,11 +721,11 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->joueurCourant = rond_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 		return (clicSouris->menu);
 	} else {
-		return 0;
+		return redirectMenuPrincipal;
 	}
-
 }

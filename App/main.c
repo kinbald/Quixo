@@ -34,10 +34,16 @@ void gestionEvenement(EvenementGfx evenement)
 {
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
 	static int coordonneesGrille[4];
+	static int LARGEURFenetre;
+	static int HAUTEURFenetre;
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
 	static int menuCourant;
+
+	static int donnees = 0;
+	/*static int i = 0;
+	   int j = 0; */
 
 	switch (evenement) {
 	case Initialisation:
@@ -56,27 +62,48 @@ void gestionEvenement(EvenementGfx evenement)
 		break;
 
 	case Affichage:
+
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
-		/* Premier test de l'affichage */
-		if (menuCourant == redirectMenuVictoire) {
-			epaisseurDeTrait(2.0);
-			afficheChaine("Bravo ", 100, 300, 300);
-		} else {
+		if (donnees == 0) {
+			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
+		}
+
+		if (donnees == redirectMenuChoixSymboleS) {
+			afficheMenuSelection(LARGEURFenetre, HAUTEURFenetre);
+
+		}
+
+		if (donnees == redirectMenuRegles) {
+			afficheRegles(LARGEURFenetre, HAUTEURFenetre);
+		}
+
+		if (donnees == redirectMenuPrincipal) {
+			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
+		}
+
+		if (donnees == redirectMenuPartie) {
+
 			affichePlateau(coordonneesGrille);
 		}
+
+		if (donnees == redirectQuitter) {
+			exit(0);
+		}
+		rafraichisFenetre();
+
+		//affichePlateau(coordonneesGrille);
+		epaisseurDeTrait(10.0);
 		couleurCourante(255, 0, 0);
 		break;
 
 	case Clavier:
 		printf("%c : ASCII %d\n", caractereClavier(),
 		       caractereClavier());
-
 		switch (caractereClavier()) {
 		case 'Q':	// Quitter le programme
 		case 'q':
 			exit(0);
-
 		case 'F':
 		case 'f':
 			pleinEcran = !pleinEcran;	// Changement de mode plein ecran
@@ -86,7 +113,6 @@ void gestionEvenement(EvenementGfx evenement)
 				redimensionneFenetre(LargeurFenetre,
 						     HauteurFenetre);
 			break;
-
 		case 'R':
 		case 'r':
 			rafraichisFenetre();	// Force un rafraîchissment
@@ -97,7 +123,6 @@ void gestionEvenement(EvenementGfx evenement)
 	case ClavierSpecial:
 		printf("ASCII %d\n", toucheClavier());
 		break;
-
 	case BoutonSouris:
 		if (etatBoutonSouris() == GaucheAppuye) {
 			// Préparation du clic à envoyer à la fonction
@@ -110,20 +135,42 @@ void gestionEvenement(EvenementGfx evenement)
 			menuCourant =
 			    calculeTour(&joueurCourant, menuCourant,
 					&retourClic, &savePioche);
+			donnees = recupereClicAffichage(&retourClic, &clic,
+							coordonneesGrille,
+							LARGEURFenetre,
+							HAUTEURFenetre);
+			printf("donne = %d\n", donnees);
+
+			if (donnees == 0) {
+				clic.menu = menuPrincipal;
+			}
+
+			if (donnees == redirectMenuChoixSymboleS) {
+				clic.menu = menuChoixSymboles;
+
+			}
+
+			if (donnees == redirectMenuRegles) {
+				clic.menu = menuRegles;
+			}
+
+			/*      if (clic.menu == redirectSurbrillance) {
+			   calculeSurbrillance(&retourClic);
+			   } */
 		}
 		break;
 	case Souris:		// Si la souris est deplacee
 		break;
-
 	case Inactivite:	// Quand aucun message n'est disponible
 		break;
-
 	case Redimensionnement:	// La taille de la fenetre a ete modifie ou on est passe en plein ecran
 		// Donc le systeme nous en informe
 		printf("Largeur : %d\t", largeurFenetre());
 		printf("Hauteur : %d\n", hauteurFenetre());
 		// Force une taille de fenêtre minimale
 		redimensionnementForce();
+		LARGEURFenetre = largeurFenetre();
+		HAUTEURFenetre = hauteurFenetre();
 		break;
 	}
 }

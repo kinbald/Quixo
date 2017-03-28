@@ -80,6 +80,7 @@ typedef enum {
 	redirectCentral = 9,
 	redirectPioche = 10,
 	redirectRePioche = 11
+	redirectQuitter = 10
 } ETATS;
 
 /*!

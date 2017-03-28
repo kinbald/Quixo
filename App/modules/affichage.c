@@ -11,7 +11,7 @@ extern PLATEAU plateau_jeu;
 /*!
  * \brief Fonction qui permet d'afficher le plateau suivant les coordonnées envoyées
  *
- * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @param coordonneesPlateau Pointeur vers un tableau contenant les coordonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  */
 void affichePlateau(int *coordonneesPlateau)
 {
@@ -111,7 +111,7 @@ float calculePas(int *coordonneesPlateau)
 }
 
 /*!
- * \brief Fonction qui permet d'afficher la grile de jeu.
+ * \brief Fonction qui permet d'afficher la grilLe de jeu.
  *
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  */
@@ -365,7 +365,8 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
  * @return Action à effectuer
  */
 int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
-			  int *coordonneesPlateau)
+			  int *coordonneesPlateau, int LARGEURFenetre,
+			  int HAUTEURFenetre)
 {
 	switch (clicSouris->menu) {
 	case menuPartie:
@@ -388,7 +389,16 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 	default:
 		return redirectCentral;
 	}
-	return redirectCentral;
+	if (clicSouris->menu == menuPrincipal) {
+
+		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+	}
+
+	if (clicSouris->menu == menuChoixSymboles) {
+		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+	}
+
+	return (0);
 }
 
 /*!
@@ -521,4 +531,208 @@ void redimensionnementForce()
 	if ((largeurFenetre() < largeur) || (hauteurFenetre() < hauteur)) {
 		redimensionneFenetre(largeur, hauteur);
 	}
+}
+
+/*!
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ *
+ * @param menu Menu vers lequel on souhaite être rediriger
+ * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @return Action a effectuer
+ */
+
+ /*int gestionAffichage(int menu, int *coordonneesPlateau)
+    {
+    } */
+
+/*!
+ * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return 0 pour ok, -1 pour ko
+ */
+int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
+{
+	//bleu
+	couleurCourante(65, 95, 157);
+	epaisseurDeTrait(3.5);
+	afficheChaine("Quixo", 0.1 * HAUTEURFenetre, 0.4 * LARGEURFenetre,
+		      0.85 * HAUTEURFenetre);
+
+	epaisseurDeTrait(3);
+	//1VS1
+	rectangle(0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
+		  0.45 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
+	//Gris
+	couleurCourante(239, 240, 255);
+	int taille = 0.0002 * HAUTEURFenetre * (LARGEURFenetre / 3);
+	//printf("taille = %d\n", taille);
+	afficheChaine("1 VS 1", taille,
+		      0.20 * LARGEURFenetre, 0.60 * HAUTEURFenetre);
+
+	//1 VS IA
+	couleurCourante(65, 95, 157);
+	rectangle(0.55 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
+		  0.85 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("1 VS IA", 0.060 * HAUTEURFenetre, 0.60 * LARGEURFenetre,
+		      0.60 * HAUTEURFenetre);
+
+	//Règles
+	couleurCourante(65, 95, 157);
+	rectangle(0.15 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
+		  0.45 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Regles", 0.075 * HAUTEURFenetre, 0.20 * LARGEURFenetre,
+		      0.35 * HAUTEURFenetre);
+
+	//Quitter
+	couleurCourante(65, 95, 157);
+	rectangle(0.55 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
+		  0.85 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Quitter", 0.075 * HAUTEURFenetre, 0.60 * LARGEURFenetre,
+		      0.35 * HAUTEURFenetre);
+
+	return 0;
+}
+
+/*!
+ * \brief Fonction qui affiche le menu où les joueurs choisissent leurs symboles
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return Action à effectuer
+ */
+
+int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
+{
+	//bleu
+	couleurCourante(65, 95, 157);
+	epaisseurDeTrait(3.5);
+	afficheChaine("Quixo", 0.1 * HAUTEURFenetre, 0.4 * LARGEURFenetre,
+		      0.85 * HAUTEURFenetre);
+	afficheChaine("Choisissez un symbole", 0.09 * HAUTEURFenetre,
+		      0.1 * LARGEURFenetre, 0.70 * HAUTEURFenetre);
+
+	//gauche
+	rectangle(0.15 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
+		  0.45 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Croix", 0.075 * HAUTEURFenetre, 0.2 * LARGEURFenetre,
+		      0.5 * HAUTEURFenetre);
+	//droite
+	couleurCourante(65, 95, 157);
+	rectangle(0.55 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
+		  0.85 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Cercle", 0.075 * HAUTEURFenetre, 0.6 * LARGEURFenetre,
+		      0.5 * HAUTEURFenetre);
+
+	couleurCourante(65, 95, 157);
+	rectangle(0.35 * LARGEURFenetre, 0.3 * HAUTEURFenetre,
+		  0.65 * LARGEURFenetre, 0.15 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Retour", 0.075 * HAUTEURFenetre, 0.40 * LARGEURFenetre,
+		      0.20 * HAUTEURFenetre);
+
+	return 0;
+
+}
+
+/*!
+ * \brief Fonction qui affiche les règles du jeu
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return 0 pour ok, -1 pour ko
+ */
+int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre)
+{
+	couleurCourante(65, 95, 157);
+	epaisseurDeTrait(3.5);
+	afficheChaine("Quixo", 0.1 * HAUTEURFenetre, 0.4 * LARGEURFenetre,
+		      0.85 * HAUTEURFenetre);
+
+	rectangle(0.35 * LARGEURFenetre, 0.3 * HAUTEURFenetre,
+		  0.65 * LARGEURFenetre, 0.15 * HAUTEURFenetre);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Retour", 0.075 * HAUTEURFenetre, 0.40 * LARGEURFenetre,
+		      0.20 * HAUTEURFenetre);
+	return 0;
+}
+
+/*!
+ * \brief Fonction qui gère le clic dans les menus à l'aide des boutons
+ * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
+ * @param LARGEURFenetre largeur de la fenêtre
+ * @param HAUTEURFenetre hauteur de la fenêtre
+ * @return Action à effectuer
+ */
+int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
+{
+	if (clicSouris->menu == menuPrincipal) {
+		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuChoixSymboleS;
+		}
+
+		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuChoixSymboleS;
+		}
+
+		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.3 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuRegles;
+		}
+
+		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.3 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectQuitter;
+		}
+		return (clicSouris->menu);
+	}
+
+	else if (clicSouris->menu == menuRegles) {
+		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.15 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuPrincipal;
+		}
+		return (clicSouris->menu);
+
+	} else if (clicSouris->menu == menuChoixSymboles) {
+		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.15 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuPrincipal;
+		}
+
+		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuPartie;
+		}
+
+		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectMenuPartie;
+		}
+		return (clicSouris->menu);
+	} else {
+		return 0;
+	}
+
 }

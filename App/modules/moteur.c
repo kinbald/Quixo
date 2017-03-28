@@ -27,8 +27,9 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 	int ok = -1;
 	CASE SET;
 	CASE GET;
-	differenceColonne = colonnePiochee - colonneJouee;
 
+	// calcul du nombre de case  a déplacer :
+	differenceColonne = colonnePiochee - colonneJouee;
 	differenceLigne = lignePiochee - ligneJouee;
 
 	//printf("differenceColonne %d \n", differenceColonne);
@@ -46,12 +47,12 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 
 		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
 
+		//si cette condition est vérifier on effectura un déplacement bas vers le haut
 		if (differenceColonne > 0) {
 			i = colonneJouee;
-			//printf("val de i : %d \n" ,  i);
-			//printf("val de verif_increment : %d \n" ,  verif_increment);
-			while ((verif_increment <= decalage)) {
-				//printf("on deplace  1! %d \n" , i);
+
+			while (verif_increment <= decalage) {
+
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
@@ -74,9 +75,10 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				verif_increment = verif_increment + 1;
 			}
 			ok = 0;
+			//si cette condition est vérifier on effectura un déplacement Haut vers le bas
 		} else if (differenceColonne < 0) {
 			i = colonneJouee;
-			while ((verif_increment <= decalage)) {
+			while (verif_increment <= decalage) {
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
@@ -111,13 +113,12 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 
 		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
 
+		//si cette condition est vérifier on effectura un déplacement droite  vers la gauche
 		if (differenceLigne > 0) {
 			i = ligneJouee;
-			//printf("val de i : %d \n" ,  i);
-			//printf("val de verif_increment : %d \n" ,  verif_increment);
 
-			while ((verif_increment <= decalage)) {
-				//printf("on deplace  3! %d \n" , i);
+			while (verif_increment <= decalage) {
+
 				if (i % 2 == 0) {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
@@ -139,11 +140,11 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				verif_increment = verif_increment + 1;
 			}
 			ok = 0;
+			//si cette condition est vérifier on effectura un déplacement gauche vers la droite
 		} else if (differenceLigne < 0) {
 			i = ligneJouee;
 			//printf("val de i : %d \n" ,  i);
-			while ((verif_increment <= decalage)
-			    ) {
+			while (verif_increment <= decalage) {
 				//printf("on deplace  4! %d \n" , i);
 				if (i % 2 == 0) {
 					GET.ligne = i;
@@ -184,8 +185,8 @@ int testeVictoireLigne1V1(int joueurCourant)
 
 	CASE GET;
 
-	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
+		for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -213,8 +214,8 @@ int testeVictoireColonne1V1(int joueurCourant)
 	    0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
+		for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -239,7 +240,7 @@ int testeVictoireDiagonaleG1V1(int joueurCourant)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU-1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if (getCase(&plateau_jeu, &GET) == joueurCourant) {
@@ -288,8 +289,8 @@ int testeVictoireLigne2V2(int joueurCourant, int joueurAllier)
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
+		for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			//printf("valeur case = %d\n" , TEST[ligne][colonne]) ;
@@ -318,8 +319,8 @@ int testeVictoireColonne2V2(int joueurCourant, int joueurAllier)
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
 	CASE GET;
-	for (colonne = 1; colonne < TAILLE_PLATEAU; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU-1; colonne++) {
+		for (ligne = 1; ligne < TAILLE_PLATEAU-1; ligne++) {
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			if ((getCase(&plateau_jeu, &GET) == joueurCourant)
@@ -346,7 +347,7 @@ int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier)
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU-1; diagonale++) {
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
 		if ((getCase(&plateau_jeu, &GET) == joueurCourant)

@@ -71,7 +71,7 @@ typedef enum {
 	redirectMenuPrincipal = 0,
 	redirectMenuRegles = 1,
 	redirectMenuChoixSymboleS = 2,
-	redirectMenuPartie = 3,
+	redirectMenuPartie = 31,
 	redirectMenuVictoire = 4,
 	redirectMenuChoixSymboleM = 5,
 	redirectContinue = 6,
@@ -79,8 +79,8 @@ typedef enum {
 	redirectSurbrillance = 8,
 	redirectCentral = 9,
 	redirectPioche = 10,
-	redirectRePioche = 11
-	redirectQuitter = 10
+	redirectRePioche = 11,
+	redirectQuitter = 12
 } ETATS;
 
 /*!

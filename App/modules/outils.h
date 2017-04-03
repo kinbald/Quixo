@@ -110,6 +110,14 @@ typedef struct clic {
 } CLIC;
 
 /*!
+ * \brief Structure permettant de gérer un coup avec la case piochée et la case jouée
+ */
+typedef struct coup {
+	CASE caseJouee;
+	CASE casePiochee;
+} COUP;
+
+/*!
  * Plateau de jeu
  */
 extern PLATEAU plateau_jeu;

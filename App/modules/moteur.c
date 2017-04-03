@@ -7,6 +7,7 @@
 #include "moteur.h"
 
 extern PLATEAU plateau_jeu;
+extern int nombreCoups;
 
 /*!
  * \brief décalage des pions
@@ -14,8 +15,8 @@ extern PLATEAU plateau_jeu;
  * @param colonnePiochee et lignePiochee de la case prise et colonneJouee et ligneJouee de la case de surbrillance choisie
  * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
 */
-int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
-	     int ligneJouee)
+int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
+	     int colonneJouee, int ligneJouee)
 {
 	int differenceColonne = 0;
 	int differenceLigne = 0;
@@ -45,7 +46,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 		SET.ligne = lignePiochee;
 		SET.colonne = colonnePiochee;
 
-		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
+		setCase(plateau, &SET, getCase(plateau, &GET));	// valeur de la case jouee
 
 		//si cette condition est vérifier on effectura un déplacement bas vers le haut
 		if (differenceColonne > 0) {
@@ -56,19 +57,19 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
-					memmoire2 = getCase(&plateau_jeu, &GET);
+					memmoire2 = getCase(plateau, &GET);
 
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
-					setCase(&plateau_jeu, &SET, memmoire3);
+					setCase(plateau, &SET, memmoire3);
 				} else {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
-					memmoire3 = getCase(&plateau_jeu, &GET);
+					memmoire3 = getCase(plateau, &GET);
 
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
-					setCase(&plateau_jeu, &SET, memmoire2);
+					setCase(plateau, &SET, memmoire2);
 
 				}
 				i = i + 1;
@@ -82,19 +83,19 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				if (i % 2 == 0) {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
-					memmoire2 = getCase(&plateau_jeu, &GET);
+					memmoire2 = getCase(plateau, &GET);
 
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
-					setCase(&plateau_jeu, &SET, memmoire3);
+					setCase(plateau, &SET, memmoire3);
 				} else {
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
-					memmoire3 = getCase(&plateau_jeu, &GET);
+					memmoire3 = getCase(plateau, &GET);
 
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
-					setCase(&plateau_jeu, &SET, memmoire2);
+					setCase(plateau, &SET, memmoire2);
 				}
 				i = i - 1;
 				verif_increment = verif_increment + 1;
@@ -111,7 +112,7 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 		SET.ligne = lignePiochee;
 		SET.colonne = colonnePiochee;
 
-		setCase(&plateau_jeu, &SET, getCase(&plateau_jeu, &GET));	// valeur de la case jouee
+		setCase(plateau, &SET, getCase(plateau, &GET));	// valeur de la case jouee
 
 		//si cette condition est vérifier on effectura un déplacement droite  vers la gauche
 		if (differenceLigne > 0) {
@@ -122,19 +123,19 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				if (i % 2 == 0) {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
-					memmoire2 = getCase(&plateau_jeu, &GET);
+					memmoire2 = getCase(plateau, &GET);
 
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
-					setCase(&plateau_jeu, &SET, memmoire3);
+					setCase(plateau, &SET, memmoire3);
 				} else {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
-					memmoire3 = getCase(&plateau_jeu, &GET);
+					memmoire3 = getCase(plateau, &GET);
 
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
-					setCase(&plateau_jeu, &SET, memmoire2);
+					setCase(plateau, &SET, memmoire2);
 				}
 				i = i + 1;
 				verif_increment = verif_increment + 1;
@@ -149,19 +150,19 @@ int decalage(int colonnePiochee, int lignePiochee, int colonneJouee,
 				if (i % 2 == 0) {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
-					memmoire2 = getCase(&plateau_jeu, &GET);
+					memmoire2 = getCase(plateau, &GET);
 
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
-					setCase(&plateau_jeu, &SET, memmoire3);
+					setCase(plateau, &SET, memmoire3);
 				} else {
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
-					memmoire3 = getCase(&plateau_jeu, &GET);
+					memmoire3 = getCase(plateau, &GET);
 
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
-					setCase(&plateau_jeu, &SET, memmoire2);
+					setCase(plateau, &SET, memmoire2);
 				}
 				i = i - 1;
 				verif_increment = verif_increment + 1;
@@ -587,7 +588,7 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 	case redirectContinue:
 		if (verifieSymbole(caseJouee, surbrillance) == 0) {
 			setCase(&plateau_jeu, caseJouee, *joueurCourant);
-			decalage(casePiochee->colonne,
+			decalage(&plateau_jeu, casePiochee->colonne,
 				 casePiochee->ligne, caseJouee->colonne,
 				 caseJouee->ligne);
 			nettoieSurbrillance(&plateau_jeu);
@@ -631,4 +632,331 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 		return menuPartie;
 	}
 	return 0;
+}
+
+/*!
+ * \brief Fontion qui permet d'appliquer un coup sur un plateau
+ * 
+ * @param plateau Plateau de jeu
+ * @param casePioche Case de pioche
+ * @param jouee Case de dépôt
+ * @param joueur Joueur
+ */
+void joueCoup(PLATEAU * plateau, CASE casePioche, CASE jouee, int joueur)
+{
+	setCase(plateau, &jouee, joueur);
+	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne,
+		 jouee.ligne);
+	setCase(plateau, &jouee, tampon);
+}
+
+/*!
+ * \brief Fonction qui permet de déjouer un coup sur le plateau
+ * @param plateau Plateau de jeu
+ * @param casePioche Case où le joueur avait pioché
+ * @param jouee Case où le joueur avait joué
+ * @param ancienEtat Dernier état de la case 
+ */
+void dejoueCoup(PLATEAU * plateau, CASE casePioche, CASE jouee, int ancienEtat)
+{
+	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne,
+		 jouee.ligne);
+	setCase(plateau, &jouee, ancienEtat);
+	setCase(plateau, &casePioche, tampon);
+}
+
+/*!
+ * \brief Fonction qui permet de changer de joueur
+ * @param joueur Joueur courant
+ * @return 
+ */
+int changeJoueur(int joueur)
+{
+	return joueur == rond_gauche ? croix_gauche : rond_gauche;
+}
+
+/*!
+ * \brief Fonction qui implémente l'algorithme min max de recherche de mouvement favorable
+ * @param plateau Plateau de jeu
+ * @param joueur Joueur courant
+ * @param depth Profondeur de l'évaluation
+ * @return 
+ */
+int MinMax(PLATEAU * plateau, int joueur, int depth)
+{
+	// Index des boucles
+	int index_ligne, index_colonne, index_move;
+	// Cases permettant d'accéder au plateau
+	CASE caseCourante, caseCouranteJouee;
+	int retour = 0;
+	int score = -2;
+	int hasMove = -1;
+	// Tableau des mouvements autorisés
+	int possibleMove[3][2];
+	// Nombre de mouvements autorisés
+	int number_movement;
+	int newDepth;
+
+	nombreCoups++;
+
+	if (depth > 5) {
+		return -1;
+	} else if (testeVictoire(joueur, 0) != -1) {
+		return joueur;
+	} else {
+		for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1;
+		     index_ligne++) {
+			for (index_colonne = 1;
+			     index_colonne < TAILLE_PLATEAU - 1;
+			     index_colonne++) {
+				caseCourante.colonne = index_colonne;
+				caseCourante.ligne = index_ligne;
+				// Si la case est sur l'extrémité du plateau
+				if (index_colonne == 1
+				    || index_colonne == 5
+				    || index_ligne == 1 || index_ligne == 5) {
+					int valCase =
+					    getCase(plateau, &caseCourante);
+					// La case est jouable (vide ou le joueur peut repiocher son pion)
+					if (valCase == vide
+					    || valCase == joueur) {
+						if ((index_colonne == 1
+						     || index_colonne == 5)
+						    && (index_ligne == 1
+							|| index_ligne == 5)) {
+							// Seulement deux mouvements possibles
+							number_movement = 2;
+							// Premier mouvement possible
+							possibleMove[0][0] =
+							    ((index_colonne +
+							      5) % 10);
+							possibleMove[0][1] =
+							    index_ligne;
+							// Deuxieme mouvement possible
+							possibleMove[1][0] =
+							    index_colonne;
+							possibleMove[1][1] =
+							    ((index_ligne +
+							      5) % 10);
+						} else {
+							// Trois mouvements possibles
+							number_movement = 3;
+							if (index_colonne == 1
+							    || index_colonne ==
+							    5) {
+								// Premier mouvement possible
+								possibleMove[0]
+								    [0] =
+								    ((index_colonne + 5) % 10);
+								possibleMove[0]
+								    [1] =
+								    index_ligne;
+								// Deuxième mouvement possible
+								possibleMove[1]
+								    [0] =
+								    index_colonne;
+								possibleMove[1]
+								    [1] = 0;
+								// Troisième mouvement possible
+								possibleMove[2]
+								    [0] =
+								    index_colonne;
+								possibleMove[2]
+								    [1] = 6;
+							} else {
+								// Premier mouvement possible
+								possibleMove[0]
+								    [0] =
+								    index_colonne;
+								possibleMove[0]
+								    [1] =
+								    ((index_ligne + 5) % 10);
+								// Deuxième mouvement possible
+								possibleMove[1]
+								    [0] = 0;
+								possibleMove[1]
+								    [1] =
+								    index_ligne;
+								// Troisième mouvement possible
+								possibleMove[2]
+								    [0] = 6;
+								possibleMove[2]
+								    [1] =
+								    index_ligne;
+							}
+						}
+						// Pour toutes les cases jouables, on calcule la profondeur suivante
+						for (index_move = 0;
+						     index_move <
+						     number_movement;
+						     index_move++) {
+							caseCouranteJouee.
+							    colonne =
+							    possibleMove
+							    [index_move][0];
+							caseCouranteJouee.
+							    ligne =
+							    possibleMove
+							    [index_move][1];
+							joueCoup(plateau,
+								 caseCourante,
+								 caseCouranteJouee,
+								 joueur);
+							// Afin d'éviter un overflow possible
+							if (depth < INT_MAX - 3) {
+								newDepth =
+								    depth;
+							}
+							retour =
+							    -MinMax(plateau,
+								    changeJoueur
+								    (joueur),
+								    newDepth +
+								    2);
+							dejoueCoup(plateau,
+								   caseCouranteJouee,
+								   caseCourante,
+								   valCase);
+							// Si c'est un parcours favorable
+							if (retour > score) {
+								score = retour;
+								hasMove = 1;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	// Si le parcours n'a pas trouvé de mouvement favorable
+	if (hasMove == -1)
+		return 0;
+	// Valeur du mouvement
+	return score;
+}
+
+/*!
+ * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
+ * @param plateau
+ */
+void mouvementIA(PLATEAU * plateau)
+{
+	// Coup qui sera joué par l'IA
+	COUP move;
+	// Tableau qui contiendra les mouvements possibles
+	int possibleMove[3][2];
+
+	int score = -2;
+	// Index des boucles
+	int index_ligne, index_colonne, index_move;
+	int number_movement = 0;
+	CASE caseCourante, caseCouranteJouee;
+	caseCourante.colonne = 0;
+	caseCourante.ligne = 0;
+	caseCouranteJouee.ligne = 0;
+	caseCouranteJouee.colonne = 0;
+	move.caseJouee = caseCouranteJouee;
+	move.casePiochee = caseCourante;
+
+	// Pour toutes les cases du plateau
+	for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++) {
+		for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1;
+		     index_colonne++) {
+			caseCourante.colonne = index_colonne;
+			caseCourante.ligne = index_ligne;
+			// Si la case est sur l'extrémité du plateau
+			if (index_colonne == 1
+			    || index_colonne == 5
+			    || index_ligne == 1 || index_ligne == 5) {
+				int valCase = getCase(plateau, &caseCourante);
+				// La case est jouable (vide ou le joueur peut repiocher son pion)
+				if (valCase == vide || valCase == croix_gauche) {
+					caseCourante.colonne = index_colonne;
+					caseCourante.ligne = index_ligne;
+
+					if ((index_colonne == 1
+					     || index_colonne == 5)
+					    && (index_ligne == 1
+						|| index_ligne == 5)) {
+						// Seulement deux mouvements possibles
+						number_movement = 2;
+						// Premier mouvement possible
+						possibleMove[0][0] =
+						    ((index_colonne + 5) % 10);
+						possibleMove[0][1] =
+						    index_ligne;
+						// Deuxieme mouvement possible
+						possibleMove[1][0] =
+						    index_colonne;
+						possibleMove[1][1] =
+						    ((index_ligne + 5) % 10);
+					} else {
+						// Trois mouvements possibles
+						number_movement = 3;
+						if (index_colonne == 1
+						    || index_colonne == 5) {
+							// Premier mouvement possible
+							possibleMove[0][0] =
+							    ((index_colonne +
+							      5) % 10);
+							possibleMove[0][1] =
+							    index_ligne;
+							// Deuxième mouvement possible
+							possibleMove[1][0] =
+							    index_colonne;
+							possibleMove[1][1] = 0;
+							// Troisième mouvement possible
+							possibleMove[2][0] =
+							    index_colonne;
+							possibleMove[2][1] = 6;
+						} else {
+							// Premier mouvement possible
+							possibleMove[0][0] =
+							    index_colonne;
+							possibleMove[0][1] =
+							    ((index_ligne +
+							      5) % 10);
+							// Deuxième mouvement possible
+							possibleMove[1][0] = 0;
+							possibleMove[1][1] =
+							    index_ligne;
+							// Troisième mouvement possible
+							possibleMove[2][0] = 6;
+							possibleMove[2][1] =
+							    index_ligne;
+						}
+					}
+					// Modification des cases du plateau à partir du tableau des surbrillances
+					for (index_move = 0;
+					     index_move < number_movement;
+					     index_move++) {
+						caseCouranteJouee.colonne =
+						    possibleMove[index_move][0];
+						caseCouranteJouee.ligne =
+						    possibleMove[index_move][1];
+						joueCoup(plateau, caseCourante,
+							 caseCouranteJouee,
+							 croix_gauche);
+						int tempScore =
+						    -MinMax(plateau,
+							    changeJoueur
+							    (croix_gauche), 0);
+						dejoueCoup(plateau,
+							   caseCouranteJouee,
+							   caseCourante,
+							   valCase);
+						if (tempScore > score) {
+							score = tempScore;
+							move.caseJouee =
+							    caseCouranteJouee;
+							move.casePiochee =
+							    caseCourante;
+						}
+					}
+				}
+			}
+		}
+	}
+	// On joue le coup généré
+	joueCoup(plateau, move.casePiochee, move.caseJouee, croix_gauche);
 }

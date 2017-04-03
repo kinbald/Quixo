@@ -8,6 +8,7 @@
 #include "modules/affichage.h"
 
 PLATEAU plateau_jeu;
+int nombreCoups;
 
 /*!
  * \brief Fonction principale du jeu
@@ -39,12 +40,15 @@ void gestionEvenement(EvenementGfx evenement)
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
+	char nombre[6];
 
 	static int menuCourant;
 
 	switch (evenement) {
 	case Initialisation:
 		initPlateau();
+		// Variable affichage nombre appels IA
+		nombreCoups = 0;
 
 		demandeAnimation_ips(24);	// Configure le système pour un mode 50 images par seconde
 
@@ -78,6 +82,12 @@ void gestionEvenement(EvenementGfx evenement)
 		case redirectRePioche:
 		case redirectPioche:
 			affichePlateau(coordonneesGrille);
+			// <-> Affichage du nombre d'appels à l'IA
+			sprintf(nombre, "%d", nombreCoups);
+			couleurCourante(255, 0, 0);
+			epaisseurDeTrait(1.5);
+			afficheChaine(nombre, 10, 40, 600);
+			// <->
 			break;
 		case redirectQuitter:
 			exit(0);
@@ -149,6 +159,13 @@ void gestionEvenement(EvenementGfx evenement)
 				menuCourant =
 				    calculeTour(&joueurCourant, menuCourant,
 						&retourClic, &savePioche);
+				// On fait jouer l'IA lors du changement de joueur
+				if (joueurCourant == croix_gauche) {
+					nombreCoups = 0;
+					mouvementIA(&plateau_jeu);
+					joueurCourant =
+					    changeJoueur(joueurCourant);
+				}
 				break;
 			}
 			printf("Redonne = %d\n", menuCourant);

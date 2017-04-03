@@ -26,7 +26,7 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
  * @param joueurCuourant
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireLigne1V1(int joueurCourant);
+int testeVictoireLigne1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
  * \brief verification de la victoire d'un joueur par les colonnes
@@ -34,7 +34,7 @@ int testeVictoireLigne1V1(int joueurCourant);
  * @param joueurCuourant
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireColonne1V1(int joueurCourant);
+int testeVictoireColonne1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
  * \brief verification de la victoire d'un joueur par la diagonale de gauche haut vers droite bas
@@ -42,7 +42,7 @@ int testeVictoireColonne1V1(int joueurCourant);
  * @param joueurCuourant
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleG1V1(int joueurCourant);
+int testeVictoireDiagonaleG1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
  * \brief verification de la victoire d'un joueur par la diagonale de gauche bas vers droite haut
@@ -50,7 +50,7 @@ int testeVictoireDiagonaleG1V1(int joueurCourant);
  * @param joueurCuourant
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleD1V1(int joueurCourant);
+int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
  * \brief verification de la victoire en 2V2 d'un joueur par les ligne
@@ -58,7 +58,8 @@ int testeVictoireDiagonaleD1V1(int joueurCourant);
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireLigne2V2(int joueurCourant, int joueurAllier);
+int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
+			  int joueurAllier);
 
 /*!
  * \brief verification de la victoire en 2V2 d'un joueur par les colonnes
@@ -66,7 +67,8 @@ int testeVictoireLigne2V2(int joueurCourant, int joueurAllier);
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireColonne2V2(int joueurCourant, int joueurAllier);
+int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
+			    int joueurAllier);
 
 /*!
  * \brief verification de la victoire en 2V2 d'un joueur par la  diagonale de gauche haut vers droite bas
@@ -74,7 +76,8 @@ int testeVictoireColonne2V2(int joueurCourant, int joueurAllier);
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier);
+int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
+			       int joueurAllier);
 
 /*!
  * \brief verification de la victoire d'un joueur en 2V2 par la diagonale de gauche bas vers droite haut
@@ -82,7 +85,8 @@ int testeVictoireDiagonaleG2V2(int joueurCourant, int joueurAllier);
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleD2V2(int joueurCourant, int joueurAllier);
+int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
+			       int joueurAllier);
 
 /*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
@@ -91,7 +95,7 @@ int testeVictoireDiagonaleD2V2(int joueurCourant, int joueurAllier);
  * @param joueurCuourant et joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoire(int joueurCourant, int joueurAllier);
+int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
  * \brief Fonction qui vérifie que le cube voulant être pioché est disponible
@@ -99,7 +103,7 @@ int testeVictoire(int joueurCourant, int joueurAllier);
  * @param clicJoueur Clic du jouer sur l'affichage graphique (coordonnées en X et Y)
  * @return 0 si coup possible, -1 sinon
  */
-int verifieSymbole(CASE * clicJoueur, int joueurCourant);
+int verifieSymbole(PLATEAU * plateau, CASE * clicJoueur, int joueurCourant);
 
 /*!
  * \brief Fonction qui déterminer les cases où le joueur peut déposer le cube qu'il a pioché

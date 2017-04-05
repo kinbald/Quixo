@@ -7,7 +7,15 @@
 #include "modules/moteur.h"
 #include "modules/affichage.h"
 
-extern PLATEAU plateau_jeu;
+/*!
+ * Plateau de jeu
+ */
+PLATEAU plateau_jeu;
+
+/*!
+ * Nombre de coups évalués
+ */
+int nombreCoups;
 
 /*!
  * \brief Fonction principale du jeu
@@ -15,6 +23,8 @@ extern PLATEAU plateau_jeu;
  */
 int main(int argc, char **argv)
 {
+
+	srand((unsigned int)time(NULL));
 	initialiseGfx(argc, argv);
 	prepareFenetreGraphique("Quixo", LargeurFenetre, HauteurFenetre);
 
@@ -28,24 +38,26 @@ int main(int argc, char **argv)
  *
  * Appelée automatiquement par le système dès qu'un événement survient
  *
- * @param EvenementGfx
+ * @param evenement EvenementGfx
  */
 void gestionEvenement(EvenementGfx evenement)
 {
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
 	static int coordonneesGrille[4];
-	static int LARGEURFenetre;
-	static int HAUTEURFenetre;
+	static int LargeurFenetreCourante = LargeurFenetre;
+	static int HauteurFenetreCourante = HauteurFenetre;
 	static CLIC clic;
-	static CASE retourClic;
+	static CASE retourClic, savePioche;
+	static int joueurCourant;
+	char nombre[6];
 
-	static int donnees = 0;
-	/*static int i = 0;
-	   int j = 0; */
+	static int menuCourant;
 
 	switch (evenement) {
 	case Initialisation:
 		initPlateau();
+		// Variable affichage nombre appels IA
+		nombreCoups = 0;
 
 		demandeAnimation_ips(24);	// Configure le système pour un mode 50 images par seconde
 
@@ -54,49 +66,42 @@ void gestionEvenement(EvenementGfx evenement)
 		coordonneesGrille[2] = 700;
 		coordonneesGrille[3] = 100;
 
-		/* printf("Tab\n");
-		   for (i = 0; i < TAILLE_PLATEAU; i++) {
-		   for (j = 0; j < TAILLE_PLATEAU; j++) {
-		   printf("%d\t", plateau_jeu[i][j]);
-		   }
-		   sautDeLigne();
-		   }
-		 */
+		menuCourant = menuPrincipal;
 		break;
 
 	case Affichage:
 
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
-		if (donnees == 0) {
-			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuChoixSymboleS) {
-			afficheMenuSelection(LARGEURFenetre, HAUTEURFenetre);
-
-		}
-
-		if (donnees == redirectMenuRegles) {
-			afficheRegles(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuPrincipal) {
-			afficheMenuPrincipal(LARGEURFenetre, HAUTEURFenetre);
-		}
-
-		if (donnees == redirectMenuPartie) {
-
+		switch (menuCourant) {
+		case menuPrincipal:
+			afficheMenuPrincipal(LargeurFenetreCourante,
+					     HauteurFenetreCourante);
+			break;
+		case redirectMenuChoixSymboleS:
+			afficheMenuSelection(LargeurFenetreCourante,
+					     HauteurFenetreCourante);
+			break;
+		case redirectMenuRegles:
+			afficheRegles(LargeurFenetreCourante,
+				      HauteurFenetreCourante);
+			break;
+		case menuPartie:
+		case redirectSurbrillance:
+		case redirectRePioche:
+		case redirectPioche:
 			affichePlateau(coordonneesGrille);
-		}
-
-		if (donnees == redirectQuitter) {
+			// <-> Affichage du nombre d'appels à l'IA
+			sprintf(nombre, "%d", nombreCoups);
+			couleurCourante(255, 0, 0);
+			epaisseurDeTrait(1.5);
+			afficheChaine(nombre, 10, 40, 600);
+			// <->
+			break;
+		case redirectQuitter:
 			exit(0);
 		}
 		rafraichisFenetre();
-
-		//affichePlateau(coordonneesGrille);
-		epaisseurDeTrait(10.0);
 		couleurCourante(255, 0, 0);
 		break;
 
@@ -127,36 +132,55 @@ void gestionEvenement(EvenementGfx evenement)
 		printf("ASCII %d\n", toucheClavier());
 		break;
 	case BoutonSouris:
-
 		if (etatBoutonSouris() == GaucheAppuye) {
-			//CLIC clic;
-			//CASE retourClic;
-			//clic.menu = menuPartie;
-
+			// Préparation du clic à envoyer à la fonction
 			clic.coordX = abscisseSouris();
 			clic.coordY = ordonneeSouris();
-			donnees = recupereClicAffichage(&retourClic, &clic,
-							coordonneesGrille,
-							LARGEURFenetre,
-							HAUTEURFenetre);
-			printf("donne = %d\n", donnees);
+			clic.joueurCourant = joueurCourant;
+			clic.menu = menuCourant;
+			menuCourant =
+			    recupereClicAffichage(&retourClic, &clic,
+						  coordonneesGrille,
+						  LargeurFenetreCourante,
+						  HauteurFenetreCourante);
+			printf("donne = %d\n", menuCourant);
 
-			if (donnees == 0) {
-				clic.menu = menuPrincipal;
+			switch (menuCourant) {
+			case redirectMenuPrincipal:
+				menuCourant = menuPrincipal;
+				break;
+			case redirectMenuChoixSymboleS:
+				menuCourant = menuChoixSymboles;
+				break;
+			case redirectMenuRegles:
+				menuCourant = menuRegles;
+				break;
+			case redirectMenuPartie:
+				joueurCourant = clic.joueurCourant;
+				menuCourant = menuPartie;
+				break;
+			case menuPartie:
+			case redirectSurbrillance:
+			case redirectPioche:
+			case redirectRePioche:
+			case redirectContinue:
+
+				menuCourant =
+				    calculeTour(&joueurCourant, menuCourant,
+						&retourClic, &savePioche);
+
+				// On fait jouer l'IA lors du changement de joueur
+				if (joueurCourant == croix_gauche) {
+					nombreCoups = 0;
+					mouvementIA(&plateau_jeu);
+					joueurCourant =
+					    changeJoueur(joueurCourant);
+
+					//printf("Eval : %d , joueur : %d\n",evaluePlateau(&plateau_jeu, changeJoueur(joueurCourant)), joueurCourant);
+				}
+				break;
 			}
-
-			if (donnees == redirectMenuChoixSymboleS) {
-				clic.menu = menuChoixSymboles;
-
-			}
-
-			if (donnees == redirectMenuRegles) {
-				clic.menu = menuRegles;
-			}
-
-			/*      if (clic.menu == redirectSurbrillance) {
-			   calculeSurbrillance(&retourClic);
-			   } */
+			printf("Redonne = %d\n", menuCourant);
 		}
 		break;
 	case Souris:		// Si la souris est deplacee
@@ -167,8 +191,10 @@ void gestionEvenement(EvenementGfx evenement)
 		// Donc le systeme nous en informe
 		printf("Largeur : %d\t", largeurFenetre());
 		printf("Hauteur : %d\n", hauteurFenetre());
-		LARGEURFenetre = largeurFenetre();
-		HAUTEURFenetre = hauteurFenetre();
+		// Force une taille de fenêtre minimale
+		//redimensionnementForce();
+		LargeurFenetreCourante = largeurFenetre();
+		HauteurFenetreCourante = hauteurFenetre();
 		break;
 	}
 }

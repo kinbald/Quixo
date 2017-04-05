@@ -13,11 +13,18 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../lib/ESLib.h"
+#include <limits.h>
+#include <time.h>
 
 /*!
  * \brief Taille du plateau de jeu
  */
 #define TAILLE_PLATEAU 7
+
+/*!
+ * \brief Profondeur maximale de recherche IA
+ */
+#define PROFONDEUR_LIMITE 7
 
 /*!
  * \brief Largeur de la fenêtre graphique
@@ -71,14 +78,16 @@ typedef enum {
 	redirectMenuPrincipal = 0,
 	redirectMenuRegles = 1,
 	redirectMenuChoixSymboleS = 2,
-	redirectMenuPartie = 3,
+	redirectMenuPartie = 31,
 	redirectMenuVictoire = 4,
 	redirectMenuChoixSymboleM = 5,
 	redirectContinue = 6,
 	redirectRecommencer = 7,
 	redirectSurbrillance = 8,
 	redirectCentral = 9,
-	redirectQuitter = 10
+	redirectPioche = 10,
+	redirectRePioche = 11,
+	redirectQuitter = 12
 } ETATS;
 
 /*!
@@ -108,9 +117,17 @@ typedef struct clic {
 } CLIC;
 
 /*!
+ * \brief Structure permettant de gérer un coup avec la case piochée et la case jouée
+ */
+typedef struct coup {
+	CASE caseJouee;		///< Case de surbrillance choisie
+	CASE casePiochee;	///< Case de jeu choisie pour jouer
+} COUP;
+
+/*!
  * Plateau de jeu
  */
-PLATEAU plateau_jeu;
+extern PLATEAU plateau_jeu;
 
 /*!
  * \brief Accesseur pour un plateau de jeu de type PLATEAU

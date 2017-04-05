@@ -13,11 +13,18 @@
 #include <stdlib.h>
 #include <math.h>
 #include "../lib/ESLib.h"
+#include <limits.h>
+#include <time.h>
 
 /*!
  * \brief Taille du plateau de jeu
  */
 #define TAILLE_PLATEAU 7
+
+/*!
+ * \brief Profondeur maximale de recherche IA
+ */
+#define PROFONDEUR_LIMITE 7
 
 /*!
  * \brief Largeur de la fenêtre graphique
@@ -113,8 +120,8 @@ typedef struct clic {
  * \brief Structure permettant de gérer un coup avec la case piochée et la case jouée
  */
 typedef struct coup {
-	CASE caseJouee;
-	CASE casePiochee;
+	CASE caseJouee;		///< Case de surbrillance choisie
+	CASE casePiochee;	///< Case de jeu choisie pour jouer
 } COUP;
 
 /*!

@@ -6,6 +6,9 @@
 */
 #include "affichage.h"
 
+/*!
+ * Plateau de jeu
+ */
 extern PLATEAU plateau_jeu;
 
 /*!
@@ -157,6 +160,7 @@ void afficheGrille(int *coordonneesPlateau)
  * @param pas Pas de la grille
  * @param case_jeu Case à traiter
  * @param joueur Joueur courant
+ * @param lectureCase Case (plateau) où la flèche doit être placée
  */
 void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
 {
@@ -362,6 +366,8 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
  * @param retourClic Case utilisée lors d'un clic sur plateau
  * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
  * @param coordonneesPlateau Coordonnées du plateau de jeu lors d'un clic dans la partie
+ * @param LARGEURFenetre
+ * @param HAUTEURFenetre
  * @return Action à effectuer
  */
 int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
@@ -516,6 +522,9 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 		 yTriangle3);
 }
 
+/*!
+ * \brief Fonction qui redimensionne automatiquement pour garder un ratio minimal
+ */
 void redimensionnementForce()
 {
 	int largeur;
@@ -527,7 +536,7 @@ void redimensionnementForce()
 	}
 }
 
-/*!
+/*/*!
  * \brief Fonction qui redirige vers la bonne fonction d'affichage
  *
  * @param menu Menu vers lequel on souhaite être rediriger
@@ -597,7 +606,6 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return Action à effectuer
  */
-
 int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 {
 	//bleu

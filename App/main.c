@@ -7,7 +7,14 @@
 #include "modules/moteur.h"
 #include "modules/affichage.h"
 
+/*!
+ * Plateau de jeu
+ */
 PLATEAU plateau_jeu;
+
+/*!
+ * Nombre de coups évalués
+ */
 int nombreCoups;
 
 /*!
@@ -16,6 +23,8 @@ int nombreCoups;
  */
 int main(int argc, char **argv)
 {
+
+	srand((unsigned int)time(NULL));
 	initialiseGfx(argc, argv);
 	prepareFenetreGraphique("Quixo", LargeurFenetre, HauteurFenetre);
 
@@ -29,7 +38,7 @@ int main(int argc, char **argv)
  *
  * Appelée automatiquement par le système dès qu'un événement survient
  *
- * @param EvenementGfx
+ * @param evenement EvenementGfx
  */
 void gestionEvenement(EvenementGfx evenement)
 {
@@ -159,12 +168,15 @@ void gestionEvenement(EvenementGfx evenement)
 				menuCourant =
 				    calculeTour(&joueurCourant, menuCourant,
 						&retourClic, &savePioche);
+
 				// On fait jouer l'IA lors du changement de joueur
 				if (joueurCourant == croix_gauche) {
 					nombreCoups = 0;
 					mouvementIA(&plateau_jeu);
 					joueurCourant =
 					    changeJoueur(joueurCourant);
+
+					//printf("Eval : %d , joueur : %d\n",evaluePlateau(&plateau_jeu, changeJoueur(joueurCourant)), joueurCourant);
 				}
 				break;
 			}
@@ -180,7 +192,7 @@ void gestionEvenement(EvenementGfx evenement)
 		printf("Largeur : %d\t", largeurFenetre());
 		printf("Hauteur : %d\n", hauteurFenetre());
 		// Force une taille de fenêtre minimale
-		redimensionnementForce();
+		//redimensionnementForce();
 		LargeurFenetreCourante = largeurFenetre();
 		HauteurFenetreCourante = hauteurFenetre();
 		break;

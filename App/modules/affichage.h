@@ -42,8 +42,9 @@ void afficheGrille(int *coordonneesPlateau);
  * @param pas Pas de la grille
  * @param case_jeu Case à traiter
  * @param joueur Joueur courant
+ * @param lectureCase Case (plateau) où la flèche doit être placée
  */
-void afficheSymbole(float pas, CASE * case_jeu, int joueur);
+void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase);
 
 /*!
  * \brief Fontion qui permet d'afficher une croix de taille pas/3 aux coordonnées de *case_jeu
@@ -92,6 +93,8 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction);
  * @param retourClic Case utilisée lors d'un clic sur plateau
  * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
  * @param coordonneesPlateau Coordonnées du plateau de jeu lors d'un clic dans la partie
+ * @param LARGEURFenetre
+ * @param HAUTEURFenetre
  * @return Action à effectuer
  */
 int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
@@ -108,6 +111,28 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
 
 /*!
+ * \brief Fonction qui permet de renvoyer l'action à effectuer après un clic dans le plateau de jeu
+ *
+ * @param clic
+ * @param etatMenu
+ * @return
+ */
+int gereEtatsClic(CASE * clic, int etatMenu);
+
+/*!
+ * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer
+ * @param case_jouee Case en pixels où la flèche doit être placée
+ * @param pas Pas de la case
+ * @param lectureCase Case (plateau) où la flèche doit être placée
+ */
+void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase);
+
+/*!
+ * \brief Fonction qui redimensionne automatiquement pour garder un ratio minimal
+ */
+void redimensionnementForce(void);
+
+/*/*!
  * \brief Fonction qui redirige vers la bonne fonction d'affichage
  *
  * @param menu Les différents menus du jeu

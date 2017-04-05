@@ -6,6 +6,9 @@
 */
 #include "affichage.h"
 
+/*!
+ * Plateau de jeu
+ */
 extern PLATEAU plateau_jeu;
 
 /*!
@@ -40,7 +43,8 @@ void affichePlateau(int *coordonneesPlateau)
 			caseLecture.colonne = index_colonne;
 			// Traitement de l'affichage de la case (coordonées du milieu : (coordX, coordY)
 			afficheSymbole(pas, &casePion,
-				       getCase(&plateau_jeu, &caseLecture));
+				       getCase(&plateau_jeu, &caseLecture),
+				       &caseLecture);
 			// On incrémente la position en pixels ( colonne + 1)
 			casePion.colonne = (int)(casePion.colonne + pas);
 			index_colonne += 1;
@@ -156,8 +160,9 @@ void afficheGrille(int *coordonneesPlateau)
  * @param pas Pas de la grille
  * @param case_jeu Case à traiter
  * @param joueur Joueur courant
+ * @param lectureCase Case (plateau) où la flèche doit être placée
  */
-void afficheSymbole(float pas, CASE * case_jeu, int joueur)
+void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
 {
 	couleurCourante(239, 240, 244);
 	switch (joueur) {
@@ -186,9 +191,14 @@ void afficheSymbole(float pas, CASE * case_jeu, int joueur)
 		afficheRondPoint(case_jeu, pas / 3, 3);
 		break;
 	case surbrillance:
+		afficheSurbrillance(case_jeu, pas, lectureCase);
+		break;
+	case pioche:
+		couleurCourante(210, 210, 210);
+		rectangle(case_jeu->colonne - 10, case_jeu->ligne + 10,
+			  case_jeu->colonne + 10, case_jeu->ligne - 10);
 		break;
 	case vide:
-		afficheCroix(case_jeu, pas);
 		break;
 	}
 }
@@ -356,31 +366,39 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
  * @param retourClic Case utilisée lors d'un clic sur plateau
  * @param clicSouris Clic du joueur sur l'affichage graphique (coordonnées en X et Y) et menu courant
  * @param coordonneesPlateau Coordonnées du plateau de jeu lors d'un clic dans la partie
+ * @param LARGEURFenetre
+ * @param HAUTEURFenetre
  * @return Action à effectuer
  */
 int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 			  int *coordonneesPlateau, int LARGEURFenetre,
 			  int HAUTEURFenetre)
 {
-	if (clicSouris->menu == menuPartie) {
+	switch (clicSouris->menu) {
+	case menuPartie:
+	case redirectPioche:
+	case redirectSurbrillance:
 		if (clicSouris->coordX >= coordonneesPlateau[0]
 		    && clicSouris->coordY <= coordonneesPlateau[1]
 		    && clicSouris->coordX <= coordonneesPlateau[2]
 		    && clicSouris->coordY >= coordonneesPlateau[3]) {
-			return clicPlateau(retourClic, clicSouris,
-					   coordonneesPlateau);
+			clicPlateau(retourClic, clicSouris, coordonneesPlateau);
+
+			return gereEtatsClic(retourClic, clicSouris->menu);
+		} else {
+			if (clicSouris->menu == redirectPioche) {
+				return redirectCentral;
+			}
+			return redirectRePioche;
 		}
-	}
-	if (clicSouris->menu == menuPrincipal) {
-
+	case menuPrincipal:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-	}
-
-	if (clicSouris->menu == menuChoixSymboles) {
+	case menuChoixSymboles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-	}
 
-	return (0);
+	default:
+		return redirectMenuPrincipal;
+	}
 }
 
 /*!
@@ -401,20 +419,124 @@ int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau)
 	retourClic->colonne =
 	    ((clicSouris->coordX -
 	      coordonneesPlateau[0]) * TAILLE_PLATEAU) / (taille);
-	if (retourClic->ligne > 1 && retourClic->ligne < TAILLE_PLATEAU - 2
-	    && retourClic->colonne > 1
-	    && retourClic->colonne < TAILLE_PLATEAU - 2) {
-		clicSouris->menu = redirectCentral;
-	} else if (retourClic->ligne > 0
-		   && retourClic->ligne < TAILLE_PLATEAU - 1
-		   && retourClic->colonne > 0
-		   && retourClic->colonne < TAILLE_PLATEAU - 1) {
-		clicSouris->menu = redirectSurbrillance;
-	}
 	return 0;
 }
 
 /*!
+ * \brief Fonction qui permet de renvoyer l'action à effectuer après un clic dans le plateau de jeu
+ *
+ * @param clic
+ * @param etatMenu
+ * @return
+ */
+int gereEtatsClic(CASE * clic, int etatMenu)
+{
+	int cLigne = clic->ligne;
+	int cCol = clic->colonne;
+	switch (etatMenu) {
+	case menuPartie:
+		if ((cCol == 1)
+		    || (cCol == TAILLE_PLATEAU - 2)
+		    || (cLigne == TAILLE_PLATEAU - 2)
+		    || (cLigne == 1)) {
+			return redirectPioche;
+		}
+		break;
+	case redirectSurbrillance:
+		if (cLigne == 0
+		    || cLigne == TAILLE_PLATEAU - 1
+		    || cCol == 0 || cCol == TAILLE_PLATEAU - 1) {
+			return redirectContinue;
+		} else {
+			return redirectRePioche;
+		}
+	default:
+		break;
+	}
+	return redirectCentral;
+}
+
+/*!
+ * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer
+ * @param case_jouee Case en pixels où la flèche doit être placée
+ * @param pas Pas de la case
+ * @param lectureCase Case (plateau) où la flèche doit être placée
+ */
+void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
+{
+	couleurCourante(255, 0, 0);
+	float xRectangle, yRectangle;
+	float xRectangle2, yRectangle2;
+	float xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3,
+	    yTriangle3;
+
+	if (lectureCase->ligne == 0) {
+		xRectangle = case_jouee->colonne - 10;
+		yRectangle = case_jouee->ligne + (pas / 2 - 5);
+		xRectangle2 = case_jouee->colonne + 10;
+		yRectangle2 = case_jouee->ligne;
+		xTriangle1 = case_jouee->colonne - 30;
+		yTriangle1 = yRectangle2;
+		xTriangle2 = case_jouee->colonne + 30;
+		yTriangle2 = yRectangle2;
+		xTriangle3 = case_jouee->colonne;
+		yTriangle3 = case_jouee->ligne - (pas / 4);
+	} else if (lectureCase->ligne == 6) {
+		xRectangle = case_jouee->colonne - 10;
+		yRectangle = case_jouee->ligne - (pas / 2 - 5);
+		xRectangle2 = case_jouee->colonne + 10;
+		yRectangle2 = case_jouee->ligne;
+		xTriangle1 = case_jouee->colonne - 30;
+		yTriangle1 = yRectangle2;
+		xTriangle2 = case_jouee->colonne + 30;
+		yTriangle2 = yRectangle2;
+		xTriangle3 = case_jouee->colonne;
+		yTriangle3 = case_jouee->ligne + (pas / 4);
+	} else if (lectureCase->colonne == 0) {
+		xRectangle = case_jouee->colonne - (pas / 2 - 5);
+		yRectangle = case_jouee->ligne + 10;
+		xRectangle2 = case_jouee->colonne;
+		yRectangle2 = case_jouee->ligne - 10;
+		xTriangle1 = xRectangle2;
+		yTriangle1 = case_jouee->ligne - 30;
+		xTriangle2 = xRectangle2;
+		yTriangle2 = case_jouee->ligne + 30;
+		xTriangle3 = case_jouee->colonne + (pas / 4);
+		yTriangle3 = case_jouee->ligne;
+	} else if (lectureCase->colonne == 6) {
+		xRectangle = case_jouee->colonne + (pas / 2 - 5);
+		yRectangle = case_jouee->ligne + 10;
+		xRectangle2 = case_jouee->colonne;
+		yRectangle2 = case_jouee->ligne - 10;
+		xTriangle1 = xRectangle2;
+		yTriangle1 = case_jouee->ligne - 30;
+		xTriangle2 = xRectangle2;
+		yTriangle2 = case_jouee->ligne + 30;
+		xTriangle3 = case_jouee->colonne - (pas / 4);
+		yTriangle3 = case_jouee->ligne;
+	} else {
+		return;
+	}
+	rectangle(xRectangle, yRectangle, xRectangle2, yRectangle2);
+	triangle(xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3,
+		 yTriangle3);
+}
+
+/*!
+ * \brief Fonction qui redimensionne automatiquement pour garder un ratio minimal
+ */
+void redimensionnementForce()
+{
+	int largeur;
+	int hauteur;
+	largeur = 20 + TAILLE_PLATEAU * 100 + 20;
+	hauteur = 20 + TAILLE_PLATEAU * 100 + 20;
+	if ((largeurFenetre() < largeur) || (hauteurFenetre() < hauteur)) {
+		redimensionneFenetre(largeur, hauteur);
+	}
+}
+
+/*/*!
  * \brief Fonction qui redirige vers la bonne fonction d'affichage
  *
  * @param menu Menu vers lequel on souhaite être rediriger
@@ -422,9 +544,9 @@ int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau)
  * @return Action a effectuer
  */
 
- /*int gestionAffichage(int menu, int *coordonneesPlateau)
-    {
-    } */
+/*int gestionAffichage(int menu, int *coordonneesPlateau)
+   {
+   } */
 
 /*!
  * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
@@ -484,7 +606,6 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return Action à effectuer
  */
-
 int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 {
 	//bleu
@@ -579,9 +700,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 			clicSouris->menu = redirectQuitter;
 		}
 		return (clicSouris->menu);
-	}
-
-	else if (clicSouris->menu == menuRegles) {
+	} else if (clicSouris->menu == menuRegles) {
 		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
 		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
@@ -602,6 +721,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->joueurCourant = croix_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 
@@ -609,11 +729,11 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+			clicSouris->joueurCourant = rond_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 		return (clicSouris->menu);
 	} else {
-		return 0;
+		return redirectMenuPrincipal;
 	}
-
 }

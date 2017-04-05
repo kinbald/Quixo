@@ -1,0 +1,4 @@
+*.[ch] linguist-language=C
+Documents/* linguist-documentation
+html/* linguist-vendored
+App/lib/* linguist-vendored

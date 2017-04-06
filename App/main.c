@@ -49,7 +49,7 @@ void gestionEvenement(EvenementGfx evenement)
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
-	char nombre[6];
+	char nombre[20];
 
 	static int menuCourant;
 
@@ -60,15 +60,12 @@ void gestionEvenement(EvenementGfx evenement)
 		nombreCoups = 0;
 
 		demandeAnimation_ips(24);	// Configure le système pour un mode 50 images par seconde
-
 		coordonneesGrille[0] = 100;
 		coordonneesGrille[1] = 700;
 		coordonneesGrille[2] = 700;
 		coordonneesGrille[3] = 100;
-
 		menuCourant = menuPrincipal;
 		break;
-
 	case Affichage:
 
 		// On part d'un fond d'ecran blanc
@@ -104,7 +101,6 @@ void gestionEvenement(EvenementGfx evenement)
 		rafraichisFenetre();
 		couleurCourante(255, 0, 0);
 		break;
-
 	case Clavier:
 		printf("%c : ASCII %d\n", caractereClavier(),
 		       caractereClavier());
@@ -127,7 +123,6 @@ void gestionEvenement(EvenementGfx evenement)
 			break;
 		}
 		break;
-
 	case ClavierSpecial:
 		printf("ASCII %d\n", toucheClavier());
 		break;
@@ -144,7 +139,6 @@ void gestionEvenement(EvenementGfx evenement)
 						  LargeurFenetreCourante,
 						  HauteurFenetreCourante);
 			printf("donne = %d\n", menuCourant);
-
 			switch (menuCourant) {
 			case redirectMenuPrincipal:
 				menuCourant = menuPrincipal;
@@ -168,14 +162,12 @@ void gestionEvenement(EvenementGfx evenement)
 				menuCourant =
 				    calculeTour(&joueurCourant, menuCourant,
 						&retourClic, &savePioche);
-
 				// On fait jouer l'IA lors du changement de joueur
 				if (joueurCourant == croix_gauche) {
 					nombreCoups = 0;
 					mouvementIA(&plateau_jeu);
 					joueurCourant =
 					    changeJoueur(joueurCourant);
-
 					//printf("Eval : %d , joueur : %d\n",evaluePlateau(&plateau_jeu, changeJoueur(joueurCourant)), joueurCourant);
 				}
 				break;

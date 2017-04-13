@@ -241,6 +241,7 @@ void afficheCroixPoint(CASE * case_jeu, int pas, int direction)
 	      (float)(case_jeu->colonne + (pas / 3)),
 	      (float)(case_jeu->ligne - pas / 3));
 
+	epaisseurDeTrait(5.0);
 	if (direction == 0) {
 		point(case_jeu->colonne + (pas / 4), case_jeu->ligne);
 	} else if (direction == 1) {
@@ -349,6 +350,7 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 		}
 		x += 1;
 	}
+	epaisseurDeTrait(5.0);
 	if (direction == 0) {
 		point(case_jouee->colonne + (rayon / 2), case_jouee->ligne);
 	} else if (direction == 1) {
@@ -435,17 +437,14 @@ int gereEtatsClic(CASE * clic, int etatMenu)
 	int cCol = clic->colonne;
 	switch (etatMenu) {
 	case menuPartie:
-		if ((cCol == 1)
-		    || (cCol == TAILLE_PLATEAU - 2)
-		    || (cLigne == TAILLE_PLATEAU - 2)
-		    || (cLigne == 1)) {
+		if ((cCol == 1) || (cCol == TAILLE_PLATEAU - 2)
+		    || (cLigne == TAILLE_PLATEAU - 2) || (cLigne == 1)) {
 			return redirectPioche;
 		}
 		break;
 	case redirectSurbrillance:
-		if (cLigne == 0
-		    || cLigne == TAILLE_PLATEAU - 1
-		    || cCol == 0 || cCol == TAILLE_PLATEAU - 1) {
+		if (cLigne == 0 || cLigne == TAILLE_PLATEAU - 1 || cCol == 0
+		    || cCol == TAILLE_PLATEAU - 1) {
 			return redirectContinue;
 		} else {
 			return redirectRePioche;
@@ -570,8 +569,8 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	couleurCourante(239, 240, 255);
 	int taille = 0.0002 * HAUTEURFenetre * (LARGEURFenetre / 3);
 	//printf("taille = %d\n", taille);
-	afficheChaine("1 VS 1", taille,
-		      0.20 * LARGEURFenetre, 0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS 1", taille, 0.20 * LARGEURFenetre,
+		      0.60 * HAUTEURFenetre);
 
 	//1 VS IA
 	couleurCourante(65, 95, 157);

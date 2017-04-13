@@ -44,6 +44,7 @@ void gestionEvenement(EvenementGfx evenement)
 	static int coordonneesGrille[4];
 	static int LargeurFenetreCourante = LargeurFenetre;
 	static int HauteurFenetreCourante = HauteurFenetre;
+	static DonneesImageRGB *imageRegles = NULL;
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
@@ -58,6 +59,9 @@ void gestionEvenement(EvenementGfx evenement)
 		// Variable affichage nombre appels IA
 		nombreCoups = 0;
 
+		if (imageRegles == NULL) {
+			imageRegles = lisBMPRGB("deuxjoueurs.bmp");
+		}
 		demandeAnimation_ips(24);	// Configure le système pour un mode 50 images par seconde
 		coordonneesGrille[0] = 100;
 		coordonneesGrille[1] = 700;
@@ -80,7 +84,7 @@ void gestionEvenement(EvenementGfx evenement)
 					     HauteurFenetreCourante);
 			break;
 		case redirectMenuRegles:
-			afficheRegles(LargeurFenetreCourante,
+			afficheRegles(imageRegles, LargeurFenetreCourante,
 				      HauteurFenetreCourante);
 			break;
 		case menuPartie:
@@ -105,6 +109,7 @@ void gestionEvenement(EvenementGfx evenement)
 			break;
 
 		case redirectQuitter:
+			libereDonneesImageRGB(&imageRegles);
 			exit(0);
 		}
 		rafraichisFenetre();
@@ -116,6 +121,7 @@ void gestionEvenement(EvenementGfx evenement)
 		switch (caractereClavier()) {
 		case 'Q':	// Quitter le programme
 		case 'q':
+			libereDonneesImageRGB(&imageRegles);
 			exit(0);
 		case 'F':
 		case 'f':

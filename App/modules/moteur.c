@@ -858,12 +858,12 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 						     index_move <
 						     nombre_mouvements;
 						     index_move++) {
-							caseCouranteJouee.colonne
-							    =
+							caseCouranteJouee.
+							    colonne =
 							    mouvementsPossibles
 							    [index_move][0];
-							caseCouranteJouee.ligne
-							    =
+							caseCouranteJouee.
+							    ligne =
 							    mouvementsPossibles
 							    [index_move][1];
 							joueCoup(plateau,

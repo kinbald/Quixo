@@ -643,11 +643,13 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 
 /*!
  * \brief Fonction qui affiche les règles du jeu
+ * @param image Image bmp à afficher
  * @param LARGEURFenetre largeur de la fenêtre
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0 pour ok, -1 pour ko
  */
-int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre)
+int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
+		  int HAUTEURFenetre)
 {
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
@@ -659,6 +661,12 @@ int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre)
 	couleurCourante(239, 240, 255);
 	afficheChaine("Retour", 0.075 * HAUTEURFenetre, 0.40 * LARGEURFenetre,
 		      0.20 * HAUTEURFenetre);
+	if (image != NULL) {
+		ecrisImage((largeurFenetre() - image->largeurImage) / 2,
+			   (hauteurFenetre() - image->hauteurImage) / 1.5,
+			   image->largeurImage, image->hauteurImage,
+			   image->donneesRGB);
+	}
 	return 0;
 }
 

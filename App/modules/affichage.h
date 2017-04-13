@@ -10,6 +10,7 @@
 
 #include "outils.h"
 #include "../lib/GfxLib.h"
+#include "../lib/BmpLib.h"
 
 /*!
  * \brief Fonction qui permet d'afficher le plateau suivant les coordonnées envoyées
@@ -160,11 +161,13 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui affiche les règles du jeu
+ * @param image Image bmp à afficher
  * @param LARGEURFenetre largeur de la fenêtre
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0 pour ok, -1 pour ko
  */
-int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre);
+int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
+		  int HAUTEURFenetre);
 
  /*!
   * \brief Fonction qui gère le clic dans les menus à l'aide des boutons

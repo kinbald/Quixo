@@ -19,7 +19,8 @@ int getCase(PLATEAU * plateau, CASE * case_jeu)
 	int valeurRetour;	// Valeur de retour de la case du plateau demandée
 
 	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU)
-	    && (case_jeu->colonne >= 0) && (case_jeu->colonne < TAILLE_PLATEAU)) {
+	    && (case_jeu->colonne >= 0)
+	    && (case_jeu->colonne < TAILLE_PLATEAU)) {
 		valeurRetour = (*plateau)[case_jeu->ligne][case_jeu->colonne];
 		return (valeurRetour);
 	} else {
@@ -36,8 +37,7 @@ int getCase(PLATEAU * plateau, CASE * case_jeu)
  */
 int setCase(PLATEAU * plateau, CASE * case_jeu, int symbole)
 {
-	if ((case_jeu->ligne >= 0)
-	    && (case_jeu->ligne < TAILLE_PLATEAU)
+	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU)
 	    && (case_jeu->colonne >= 0)
 	    && (case_jeu->colonne < TAILLE_PLATEAU)) {
 		(*plateau)[case_jeu->ligne][case_jeu->colonne] = symbole;	// Lecture dans le plateau envoyé

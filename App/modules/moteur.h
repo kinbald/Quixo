@@ -91,9 +91,8 @@ int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int
-testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
-			   int joueurAllier);
+int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
+			       int joueurAllier);
 /*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
  * \brief /!\ si on est en mode 1V1 alors  joueurAllier = 0
@@ -184,9 +183,8 @@ int changeJoueur(int joueur);
  * @param beta Elagage beta
  * @return
  */
-int
-MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
-       int isMax, int alpha, int beta);
+int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
+	   int isMax, int alpha, int beta);
 
 /*!
  * \brief Fonction qui effectue un mouvement de l'IA sur le plateau

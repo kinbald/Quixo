@@ -22,6 +22,16 @@
 #define TAILLE_PLATEAU 7
 
 /*!
+ * \brief Mode de jeu 1 personne contre l'ordinateur
+ */
+#define VIA 1
+
+/*!
+ * \brief Mode de jeu 1 personne contre une autre
+ */
+#define V1 2
+
+/*!
  * \brief Profondeur maximale de recherche IA
  */
 #define PROFONDEUR_LIMITE 6
@@ -87,7 +97,9 @@ typedef enum {
 	redirectCentral = 9,
 	redirectPioche = 10,
 	redirectRePioche = 11,
-	redirectQuitter = 12
+	redirectQuitter = 12,
+	redirectAdversaire = 13,
+	jeuIA = 14
 } ETATS;
 
 /*!
@@ -114,6 +126,7 @@ typedef struct clic {
 	int coordY;		///< Coordonnée suivant Y du clic
 	int joueurCourant;	///< SYMBOLE du joueur courant
 	int menu;		///< MENUS en cours
+	int mode;		///< S'il est défini, mode de jeu en cours
 } CLIC;
 
 /*!

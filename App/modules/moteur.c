@@ -472,6 +472,32 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 }
 
 /*!
+ * \brief Fonction qui vérifie la victoire en mode 1v1 ou 1vIA et qui prend en compte la cas particulier de la victoire adverse
+ * @param plateau Plateau de jeu
+ * @param joueurCourant Joueur courant
+ * @param joueurAllier Joueur allier (facultatif : 0)
+ * @return
+ */
+int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
+				int joueurAllier)
+{
+	int victoire;
+	victoire = testeVictoire(plateau, changeJoueur(*joueurCourant),
+				 joueurAllier);
+	if (victoire != -1) {
+		*joueurCourant = changeJoueur(*joueurCourant);
+		return 1;
+	}
+	victoire = testeVictoire(plateau, *joueurCourant, joueurAllier);
+	if (victoire != -1) {
+		return 1;
+	} else {
+		*joueurCourant = changeJoueur(*joueurCourant);
+	}
+	return 0;
+}
+
+/*!
  * \brief Fonction qui vérifie que le cube voulant être pioché est disponible
  *
  * @param plateau Plateau de jeu
@@ -611,41 +637,14 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 				 casePiochee->ligne, caseJouee->colonne,
 				 caseJouee->ligne);
 			nettoieSurbrillance(&plateau_jeu);
-			if (*joueurCourant == rond_gauche) {
-				victoire =
-				    testeVictoire(&plateau_jeu, croix_gauche,
-						  0);
-			} else {
-				victoire =
-				    testeVictoire(&plateau_jeu, rond_gauche, 0);
-			}
-			if (victoire != -1) {
-				printf("%d\n", victoire);
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
-				return redirectMenuVictoire;
-			}
+
 			victoire =
-			    testeVictoire(&plateau_jeu, *joueurCourant, 0);
-			if (victoire != -1) {
-				printf("%d\n", victoire);
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
+			    testeVictoireCasParticulier(&plateau_jeu,
+							joueurCourant, 0);
+			if (victoire == 1) {
 				return redirectMenuVictoire;
-			} else {
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
 			}
-			return menuPartie;
+			return redirectAdversaire;
 		} else {
 			return redirectSurbrillance;
 		}
@@ -653,6 +652,17 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 		return redirectSurbrillance;
 	case redirectCentral:
 		return menuPartie;
+	case jeuIA:
+		nombreCoups = 0;
+		mouvementIA(&plateau_jeu, *joueurCourant);
+		*joueurCourant = changeJoueur(*joueurCourant);
+		victoire =
+		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
+		if (victoire == 1) {
+			return redirectMenuVictoire;
+		}
+		return menuPartie;
+		break;
 	}
 	return 0;
 }
@@ -848,12 +858,12 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 						     index_move <
 						     nombre_mouvements;
 						     index_move++) {
-							caseCouranteJouee.
-							    colonne =
+							caseCouranteJouee.colonne
+							    =
 							    mouvementsPossibles
 							    [index_move][0];
-							caseCouranteJouee.
-							    ligne =
+							caseCouranteJouee.ligne
+							    =
 							    mouvementsPossibles
 							    [index_move][1];
 							joueCoup(plateau,
@@ -925,7 +935,7 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
  * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
  * @param plateau
  */
-void mouvementIA(PLATEAU * plateau)
+void mouvementIA(PLATEAU * plateau, int symbole)
 {
 	// Coup qui sera joué par l'IA
 	COUP move;
@@ -958,7 +968,7 @@ void mouvementIA(PLATEAU * plateau)
 				// On récupère la case
 				int valCase = getCase(plateau, &caseCourante);
 				// La case est jouable (vide ou pion qui appartient au joueur)
-				if (valCase == vide || valCase == croix_gauche) {
+				if (valCase == vide || valCase == symbole) {
 					caseCourante.colonne = index_colonne;
 					caseCourante.ligne = index_ligne;
 					// Calcul des mouvements possibles
@@ -1033,12 +1043,12 @@ void mouvementIA(PLATEAU * plateau)
 						// On joue le premier coup
 						joueCoup(plateau, caseCourante,
 							 caseCouranteJouee,
-							 croix_gauche);
+							 symbole);
 						// On demande les évaluations des cas possibles à partir de ce coup en envoyant l'adversaire, la profondeur de 1 et le coup minimal
 						int tempScore = MinMax(plateau,
 								       changeJoueur
-								       (croix_gauche),
-								       croix_gauche,
+								       (symbole),
+								       symbole,
 								       1, 0,
 								       INT_MIN,
 								       INT_MAX);
@@ -1063,7 +1073,7 @@ void mouvementIA(PLATEAU * plateau)
 		}
 	}
 	// On joue le coup généré
-	joueCoup(plateau, move.casePiochee, move.caseJouee, croix_gauche);
+	joueCoup(plateau, move.casePiochee, move.caseJouee, symbole);
 }
 
 /*!

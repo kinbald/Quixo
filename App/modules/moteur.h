@@ -104,6 +104,16 @@ int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
 int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
+ * \brief Fonction qui vérifie la victoire en mode 1v1 ou 1vIA et qui prend en compte la cas particulier de la victoire adverse
+ * @param plateau Plateau de jeu
+ * @param joueurCourant Joueur courant
+ * @param joueurAllier Joueur allier (facultatif : 0)
+ * @return
+ */
+int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
+				int joueurAllier);
+
+/*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
  * \brief /!\ si on est en mode 1V1 alors  joueurAllier = 0
  * @param plateau Plateau du jeu à accéder
@@ -190,7 +200,7 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
  * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
  * @param plateau
  */
-void mouvementIA(PLATEAU * plateau);
+void mouvementIA(PLATEAU * plateau, int symbole);
 
 /*!
  * \brief Fonction qui permet d'évaluer un plateau donné pour un joueur suivant les lignes, les colonnes et les diagonales

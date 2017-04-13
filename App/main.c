@@ -23,13 +23,11 @@ int nombreCoups;
  */
 int main(int argc, char **argv)
 {
-
+	// Initialisation seed
 	srand((unsigned int)time(NULL));
 	initialiseGfx(argc, argv);
 	prepareFenetreGraphique("Quixo", LargeurFenetre, HauteurFenetre);
-
 	lanceBoucleEvenements();
-
 	return 0;
 }
 
@@ -49,6 +47,7 @@ void gestionEvenement(EvenementGfx evenement)
 	static CLIC clic;
 	static CASE retourClic, savePioche;
 	static int joueurCourant;
+	static int MODE;
 	char nombre[20];
 
 	static int menuCourant;
@@ -65,6 +64,7 @@ void gestionEvenement(EvenementGfx evenement)
 		coordonneesGrille[2] = 700;
 		coordonneesGrille[3] = 100;
 		menuCourant = menuPrincipal;
+		MODE = -1;
 		break;
 	case Affichage:
 
@@ -95,6 +95,15 @@ void gestionEvenement(EvenementGfx evenement)
 			afficheChaine(nombre, 10, 40, 600);
 			// <->
 			break;
+
+		case menuVictoire:
+			afficheChaine("Victoire de ", 40, 100, 100);
+			sprintf(nombre, "%d", joueurCourant);
+			couleurCourante(255, 0, 0);
+			epaisseurDeTrait(1.5);
+			afficheChaine(nombre, 40, 380, 100);
+			break;
+
 		case redirectQuitter:
 			exit(0);
 		}
@@ -119,7 +128,7 @@ void gestionEvenement(EvenementGfx evenement)
 			break;
 		case 'R':
 		case 'r':
-			rafraichisFenetre();	// Force un rafraîchissment
+			rafraichisFenetre();	// Force un rafraîchissement
 			break;
 		}
 		break;
@@ -138,13 +147,15 @@ void gestionEvenement(EvenementGfx evenement)
 						  coordonneesGrille,
 						  LargeurFenetreCourante,
 						  HauteurFenetreCourante);
-			printf("donne = %d\n", menuCourant);
+			printf("Clic affichage : %d\nJoueur : %d\n",
+			       menuCourant, joueurCourant);
 			switch (menuCourant) {
 			case redirectMenuPrincipal:
 				menuCourant = menuPrincipal;
 				break;
 			case redirectMenuChoixSymboleS:
 				menuCourant = menuChoixSymboles;
+				MODE = clic.mode;
 				break;
 			case redirectMenuRegles:
 				menuCourant = menuRegles;
@@ -153,26 +164,44 @@ void gestionEvenement(EvenementGfx evenement)
 				joueurCourant = clic.joueurCourant;
 				menuCourant = menuPartie;
 				break;
+			case redirectRePioche:
 			case menuPartie:
 			case redirectSurbrillance:
 			case redirectPioche:
-			case redirectRePioche:
 			case redirectContinue:
-
+				if (clic.menu == menuPartie
+				    && menuCourant == redirectRePioche) {
+					menuCourant = menuPartie;
+					break;
+				}
 				menuCourant =
 				    calculeTour(&joueurCourant, menuCourant,
 						&retourClic, &savePioche);
 				// On fait jouer l'IA lors du changement de joueur
-				if (joueurCourant == croix_gauche) {
-					nombreCoups = 0;
-					mouvementIA(&plateau_jeu);
-					joueurCourant =
-					    changeJoueur(joueurCourant);
-					//printf("Eval : %d , joueur : %d\n",evaluePlateau(&plateau_jeu, changeJoueur(joueurCourant)), joueurCourant);
+				if (menuCourant == redirectAdversaire) {
+					if (MODE == VIA) {
+						menuCourant =
+						    calculeTour(&joueurCourant,
+								jeuIA,
+								&retourClic,
+								&savePioche);
+					} else {
+						menuCourant = menuPartie;
+					}
 				}
 				break;
+			case redirectCentral:
+				menuCourant = menuPartie;
+				break;
+			case redirectRecommencer:
+				menuCourant = menuPartie;
+				initPlateau();
+				joueurCourant = changeJoueur(joueurCourant);
+				//TODO score
+				break;
+
 			}
-			printf("Redonne = %d\n", menuCourant);
+			printf("Menu %d\n", menuCourant);
 		}
 		break;
 	case Souris:		// Si la souris est deplacee

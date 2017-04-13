@@ -397,7 +397,8 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
 	case menuChoixSymboles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-
+	case menuVictoire:
+		return redirectRecommencer;
 	default:
 		return redirectMenuPrincipal;
 	}
@@ -676,6 +677,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuChoixSymboleS;
+			clicSouris->mode = V1;
 		}
 
 		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
@@ -683,6 +685,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuChoixSymboleS;
+			clicSouris->mode = VIA;
 		}
 
 		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)

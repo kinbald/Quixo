@@ -26,8 +26,7 @@ void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
 	afficheGrille(coordonneesPlateau);
 	// Affichage des boutons
 	afficheBouton(LARGEURFenetre, HAUTEURFenetre);
-	//Affichage du joueur courant
-	afficheJoueurCourant(4, LARGEURFenetre, HAUTEURFenetre);
+
 	// Index pour le parcours du tableau (départ du coin gauche supérieur)
 	int index_ligne = 0;
 	// Index pour le parcours du tableau (départ du coté gauche de l'affichage)
@@ -422,7 +421,8 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 	case menuChoixSymboles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
 	case menuVictoire:
-		return redirectRecommencer;
+		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+		//return redirectRecommencer;
 	default:
 		return redirectMenuPrincipal;
 	}
@@ -573,7 +573,9 @@ void redimensionnementForce()
  */
 
 int gestionAffichage(int menu, int *coordonneesGrille,
-		     int LargeurFenetreCourante, int HauteurFenetreCourante)
+		     int LargeurFenetreCourante, int HauteurFenetreCourante,
+		     DonneesImageRGB * imageRegles, int nombreCoups,
+		     char nombre[20], int joueurCourant)
 {
 	switch (menu) {
 	case menuPrincipal:
@@ -585,7 +587,8 @@ int gestionAffichage(int menu, int *coordonneesGrille,
 				     HauteurFenetreCourante);
 		break;
 	case redirectMenuRegles:
-		afficheRegles(LargeurFenetreCourante, HauteurFenetreCourante);
+		afficheRegles(imageRegles, LargeurFenetreCourante,
+			      HauteurFenetreCourante);
 		break;
 	case menuPartie:
 	case redirectSurbrillance:
@@ -593,13 +596,36 @@ int gestionAffichage(int menu, int *coordonneesGrille,
 	case redirectPioche:
 		affichePlateau(coordonneesGrille,
 			       LargeurFenetreCourante, HauteurFenetreCourante);
+		//Affichage du joueur courant
+		afficheJoueurCourant(joueurCourant, LargeurFenetreCourante,
+				     HauteurFenetreCourante);
+		// <-> Affichage du nombre d'appels à l'IA
+		sprintf(nombre, "%d", nombreCoups);
+		couleurCourante(255, 0, 0);
+		epaisseurDeTrait(1.5);
+		afficheChaine(nombre, 10, 40, 600);
+		// <->
 
 		break;
+
+		/*case menuVictoire:
+		   afficheChaine("Victoire de ", 40, 100, 100);
+		   sprintf(nombre, "%d", joueurCourant);
+		   couleurCourante(255, 0, 0);
+		   epaisseurDeTrait(1.5);
+		   afficheChaine(nombre, 40, 380, 100);
+		   break;
+		 */
 	case redirectMenuVictoire:
-		afficheVictoire(LargeurFenetreCourante, HauteurFenetreCourante);
+		afficheVictoire(LargeurFenetreCourante, HauteurFenetreCourante,
+				joueurCourant);
+
 		break;
+
 	case redirectQuitter:
-		exit(0);
+		libereDonneesImageRGB(&imageRegles);
+		exit(EXIT_SUCCESS);
+
 	}
 
 	return 0;
@@ -732,8 +758,8 @@ int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
 		  0.65 * LARGEURFenetre, 0.15 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("Retour", 0.075 * HAUTEURFenetre, 0.40 * LARGEURFenetre,
-		      0.20 * HAUTEURFenetre);
+	afficheChaine("Retour", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
+		      0.40 * LARGEURFenetre, 0.20 * HAUTEURFenetre);
 	if (image != NULL) {
 		ecrisImage((largeurFenetre() - image->largeurImage) / 2,
 			   (hauteurFenetre() - image->hauteurImage) / 1.5,
@@ -849,7 +875,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.13 * HAUTEURFenetre)) {
-			clicSouris->menu = redirectMenuPrincipal;
+			clicSouris->menu = redirectRecommencer;
 		}
 		//Quitter
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
@@ -906,13 +932,13 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	epaisseurDeTrait(3.5);
 	if (joueurCourant == 3) {
 		//Coin haut gauche
-		afficheChaine("Joueur 1 ",
+		afficheChaine("Joueur X ",
 			      0.00005 * HAUTEURFenetre * LARGEURFenetre,
 			      0.05 * LARGEURFenetre, 0.9 * HAUTEURFenetre);
 	}
 	if (joueurCourant == 4) {
 
-		afficheChaine("Joueur 2 ",
+		afficheChaine("Joueur O ",
 			      0.00005 * HAUTEURFenetre * LARGEURFenetre,
 			      0.05 * LARGEURFenetre, 0.9 * HAUTEURFenetre);
 	}
@@ -926,18 +952,22 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0
  */
-int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre)
+int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 {
 	//bleu
 	couleurCourante(65, 95, 157);
 	afficheChaine("Quixo", 0.00013 * HAUTEURFenetre * LARGEURFenetre,
 		      0.4 * LARGEURFenetre, 0.85 * HAUTEURFenetre);
-	afficheChaine("Le gagnant est le joueur 1 ",
-		      0.00006 * HAUTEURFenetre * LARGEURFenetre,
-		      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
-	afficheChaine("Le score est : ",
-		      0.00005 * HAUTEURFenetre * LARGEURFenetre,
-		      0.15 * LARGEURFenetre, 0.6 * HAUTEURFenetre);
+	if (joueurCourant == 3) {
+		afficheChaine("Le gagnant est le joueur avec les X ",
+			      0.00006 * HAUTEURFenetre * LARGEURFenetre,
+			      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
+	}
+	if (joueurCourant == 4) {
+		afficheChaine("Le gagnant est le joueur avec les O ",
+			      0.00006 * HAUTEURFenetre * LARGEURFenetre,
+			      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
+	}
 
 	//Rectangle gauche
 	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,

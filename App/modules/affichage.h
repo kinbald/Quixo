@@ -137,15 +137,6 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase);
  */
 void redimensionnementForce(void);
 
-/*/*!
- * \brief Fonction qui redirige vers la bonne fonction d'affichage
- *
- * @param menu Les différents menus du jeu
- * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
- * @return Action a effectuer
- */
-//int gestionAffichage(int menu, int *coordonneesPlateau);
-
 /*!
  * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
  * @param LARGEURFenetre largeur de la fenêtre
@@ -192,7 +183,8 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
  * @return 0 (OK), -1 (KO)
  */
 int gestionAffichage(int menu, int *coordonneesPlateau, int LARGEURFenetre,
-		     int HAUTEURFenetre);
+		     int HAUTEURFenetre, DonneesImageRGB * imageRegles,
+		     int nombreCoups, char nombre[20], int joueurCourant);
 
 /*!
  * \brief Fonction qui affiche les boutons dans le menu partie
@@ -218,7 +210,7 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0
  */
-int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre);
+int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant);
 
 /*!
  * \brief Fonction qui permet de gérer la taille d'affichage du plateau de jeu

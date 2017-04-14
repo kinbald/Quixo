@@ -71,44 +71,11 @@ void gestionEvenement(EvenementGfx evenement)
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
 		//afficheTitre(150, 600);
-		switch (menuCourant) {
-		case menuPrincipal:
-			afficheMenuPrincipal(LargeurFenetreCourante,
-					     HauteurFenetreCourante);
-			break;
-		case redirectMenuChoixSymboleS:
-			afficheMenuSelection(LargeurFenetreCourante,
-					     HauteurFenetreCourante);
-			break;
-		case redirectMenuRegles:
-			afficheRegles(imageRegles, LargeurFenetreCourante,
-				      HauteurFenetreCourante);
-			break;
-		case menuPartie:
-		case redirectSurbrillance:
-		case redirectRePioche:
-		case redirectPioche:
-			affichePlateau(coordonneesGrille);
-			// <-> Affichage du nombre d'appels à l'IA
-			sprintf(nombre, "%d", nombreCoups);
-			couleurCourante(255, 0, 0);
-			epaisseurDeTrait(1.5);
-			afficheChaine(nombre, 10, 40, 600);
-			// <->
-			break;
+		gestionAffichage(menuCourant, coordonneesGrille,
+				 LargeurFenetreCourante,
+				 HauteurFenetreCourante, imageRegles,
+				 nombreCoups, nombre, joueurCourant);
 
-		case menuVictoire:
-			afficheChaine("Victoire de ", 40, 100, 100);
-			sprintf(nombre, "%d", joueurCourant);
-			couleurCourante(255, 0, 0);
-			epaisseurDeTrait(1.5);
-			afficheChaine(nombre, 40, 380, 100);
-			break;
-
-		case redirectQuitter:
-			libereDonneesImageRGB(&imageRegles);
-			exit(EXIT_SUCCESS);
-		}
 		rafraichisFenetre();
 		couleurCourante(255, 0, 0);
 		break;
@@ -144,6 +111,7 @@ void gestionEvenement(EvenementGfx evenement)
 			clic.coordX = abscisseSouris();
 			clic.coordY = ordonneeSouris();
 			clic.joueurCourant = joueurCourant;
+			printf("joueur courant : %d\n", joueurCourant);
 			clic.menu = menuCourant;
 			menuCourant =
 			    recupereClicAffichage(&retourClic, &clic,

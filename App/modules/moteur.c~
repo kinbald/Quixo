@@ -24,17 +24,16 @@ extern int nombreCoups;
  * @param ligneJouee Ligne de la case de surbrillance choisie
  * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
 */
-int
-decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
-	 int colonneJouee, int ligneJouee)
+int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
+	     int colonneJouee, int ligneJouee)
 {
 	int differenceColonne = 0;
 	int differenceLigne = 0;
 	unsigned int decalage = 0;
 	int i = 0;
 	unsigned int verif_increment = 0;
-	int memmoire2 = 1;
-	int memmoire3 = 1;
+	int memmoire2 = tampon;
+	int memmoire3 = tampon;
 	int ok = -1;
 	CASE SET;
 	CASE GET;
@@ -290,8 +289,8 @@ int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant)
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int
-testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
+int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
+			  int joueurAllier)
 {
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
@@ -322,8 +321,8 @@ testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int
-testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
+int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
+			    int joueurAllier)
 {
 	int colonne = 0, ligne = 0, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
@@ -352,9 +351,8 @@ testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int
-testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
-			   int joueurAllier)
+int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
+			       int joueurAllier)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
@@ -380,9 +378,8 @@ testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int
-testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
-			   int joueurAllier)
+int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
+			       int joueurAllier)
 {
 	int ligne = 0, colonne = 1, gagnant = -1, increment =
 	    0, nbrcasetableau = 5;
@@ -472,6 +469,32 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 
 	}
 	return (aucun);
+}
+
+/*!
+ * \brief Fonction qui vérifie la victoire en mode 1v1 ou 1vIA et qui prend en compte la cas particulier de la victoire adverse
+ * @param plateau Plateau de jeu
+ * @param joueurCourant Joueur courant
+ * @param joueurAllier Joueur allier (facultatif : 0)
+ * @return
+ */
+int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
+				int joueurAllier)
+{
+	int victoire;
+	victoire = testeVictoire(plateau, changeJoueur(*joueurCourant),
+				 joueurAllier);
+	if (victoire != -1) {
+		*joueurCourant = changeJoueur(*joueurCourant);
+		return 1;
+	}
+	victoire = testeVictoire(plateau, *joueurCourant, joueurAllier);
+	if (victoire != -1) {
+		return 1;
+	} else {
+		*joueurCourant = changeJoueur(*joueurCourant);
+	}
+	return 0;
 }
 
 /*!
@@ -590,17 +613,16 @@ void nettoieSurbrillance(PLATEAU * plateau)
  * @param casePiochee
  * @return
  */
-int
-calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
-	    CASE * casePiochee)
+int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
+		CASE * casePiochee)
 {
 	int victoire;
 	switch (etatClic) {
 	case menuPartie:
 		return menuPartie;
 	case redirectPioche:
-		if (verifieSymbole(&plateau_jeu, caseJouee, *joueurCourant)
-		    == 0 || verifieSymbole(&plateau_jeu, caseJouee, vide) == 0) {
+		if (verifieSymbole(&plateau_jeu, caseJouee, *joueurCourant) == 0
+		    || verifieSymbole(&plateau_jeu, caseJouee, vide) == 0) {
 			casePiochee->ligne = caseJouee->ligne;
 			casePiochee->colonne = caseJouee->colonne;
 			calculeSurbrillance(caseJouee);
@@ -615,41 +637,14 @@ calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 				 casePiochee->ligne, caseJouee->colonne,
 				 caseJouee->ligne);
 			nettoieSurbrillance(&plateau_jeu);
-			if (*joueurCourant == rond_gauche) {
-				victoire =
-				    testeVictoire(&plateau_jeu, croix_gauche,
-						  0);
-			} else {
-				victoire =
-				    testeVictoire(&plateau_jeu, rond_gauche, 0);
-			}
-			if (victoire != -1) {
-				printf("%d\n", victoire);
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
-				return redirectMenuVictoire;
-			}
+
 			victoire =
-			    testeVictoire(&plateau_jeu, *joueurCourant, 0);
-			if (victoire != -1) {
-				printf("%d\n", victoire);
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
+			    testeVictoireCasParticulier(&plateau_jeu,
+							joueurCourant, 0);
+			if (victoire == 1) {
 				return redirectMenuVictoire;
-			} else {
-				if (*joueurCourant == rond_gauche) {
-					*joueurCourant = croix_gauche;
-				} else {
-					*joueurCourant = rond_gauche;
-				}
 			}
-			return menuPartie;
+			return redirectAdversaire;
 		} else {
 			return redirectSurbrillance;
 		}
@@ -657,6 +652,17 @@ calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 		return redirectSurbrillance;
 	case redirectCentral:
 		return menuPartie;
+	case jeuIA:
+		nombreCoups = 0;
+		mouvementIA(&plateau_jeu, *joueurCourant);
+		*joueurCourant = changeJoueur(*joueurCourant);
+		victoire =
+		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
+		if (victoire == 1) {
+			return redirectMenuVictoire;
+		}
+		return menuPartie;
+		break;
 	}
 	return 0;
 }
@@ -713,12 +719,12 @@ int changeJoueur(int joueur)
  * @param beta Elagage beta
  * @return
  */
-int
-MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
-       int isMax, int alpha, int beta)
+int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
+	   int isMax, int alpha, int beta)
 {
 	// Index des boucles
 	int index_ligne, index_colonne, index_move;
+	int index_colonneRandA = 0, index_ligneRandA = 0;
 	// Cases permettant d'accéder au plateau
 	CASE caseCourante, caseCouranteJouee;
 	// Tableau des mouvements autorisés
@@ -728,6 +734,9 @@ MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 	// Future profondeur
 	int nouvelleProfondeur;
 
+	// Valeur aléatoire de parcours du plateau généré à chaque appel de la fonction
+	int valeurAleaCol = rand() % (TAILLE_PLATEAU - 2);
+	int valeurAleaLi = rand() % (TAILLE_PLATEAU - 2);
 	// Evaluation du coup
 	int evaluation = 0;
 
@@ -752,94 +761,96 @@ MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 			for (index_colonne = 1;
 			     index_colonne < TAILLE_PLATEAU - 1;
 			     index_colonne++) {
-				caseCourante.colonne = index_colonne;
-				caseCourante.ligne = index_ligne;
+				// On parcourt la plateau de façon aléatoire
+				index_colonneRandA =
+				    ((index_colonne +
+				      valeurAleaCol) % (TAILLE_PLATEAU - 2)) +
+				    1;
+				index_ligneRandA =
+				    ((index_ligne +
+				      valeurAleaLi) % (TAILLE_PLATEAU - 2)) + 1;
+				caseCourante.colonne = index_colonneRandA;
+				caseCourante.ligne = index_ligneRandA;
 				// Si la case est sur l'extrémité du plateau
-				if (index_colonne == 1
-				    || index_colonne == 5
-				    || index_ligne == 1 || index_ligne == 5) {
+				if (index_colonneRandA == 5
+				    || index_colonneRandA == 1
+				    || index_ligneRandA == 5
+				    || index_ligneRandA == 1) {
 					int valCase =
 					    getCase(plateau, &caseCourante);
 					// La case est jouable (vide ou le joueur peut repiocher son pion)
 					if (valCase == vide
 					    || valCase == joueur) {
-						if ((index_colonne == 1
-						     || index_colonne == 5)
-						    && (index_ligne == 1
-							|| index_ligne == 5)) {
+						if ((index_colonneRandA == 1
+						     || index_colonneRandA == 5)
+						    && (index_ligneRandA == 1
+							|| index_ligneRandA ==
+							5)) {
 							// Seulement deux mouvements possibles
 							nombre_mouvements = 2;
 							// Premier mouvement possible
 							mouvementsPossibles[0]
 							    [0] =
-							    ((index_colonne +
-							      5) % 10);
+							    ((index_colonneRandA
+							      + 5) % 10);
 							mouvementsPossibles[0]
-							    [1] = index_ligne;
+							    [1] =
+							    index_ligneRandA;
 							// Deuxieme mouvement possible
 							mouvementsPossibles[1]
-							    [0] = index_colonne;
+							    [0] =
+							    index_colonneRandA;
 							mouvementsPossibles[1]
 							    [1] =
-							    ((index_ligne +
+							    ((index_ligneRandA +
 							      5) % 10);
 						} else {
 							// Trois mouvements possibles
 							nombre_mouvements = 3;
-							if (index_colonne == 1
-							    || index_colonne ==
-							    5) {
+							if (index_colonneRandA
+							    == 1
+							    ||
+							    index_colonneRandA
+							    == 5) {
 								// Premier mouvement possible
 								mouvementsPossibles
-								    [0]
-								    [0] =
-								    ((index_colonne + 5) % 10);
+								    [0][0] =
+								    ((index_colonneRandA + 5) % 10);
 								mouvementsPossibles
-								    [0]
-								    [1] =
-								    index_ligne;
+								    [0][1] =
+								    index_ligneRandA;
 								// Deuxième mouvement possible
 								mouvementsPossibles
-								    [1]
-								    [0] =
-								    index_colonne;
+								    [1][0] =
+								    index_colonneRandA;
 								mouvementsPossibles
-								    [1]
-								    [1] = 0;
+								    [1][1] = 0;
 								// Troisième mouvement possible
 								mouvementsPossibles
-								    [2]
-								    [0] =
-								    index_colonne;
+								    [2][0] =
+								    index_colonneRandA;
 								mouvementsPossibles
-								    [2]
-								    [1] = 6;
+								    [2][1] = 6;
 							} else {
 								// Premier mouvement possible
 								mouvementsPossibles
-								    [0]
-								    [0] =
-								    index_colonne;
+								    [0][0] =
+								    index_colonneRandA;
 								mouvementsPossibles
-								    [0]
-								    [1] =
-								    ((index_ligne + 5) % 10);
+								    [0][1] =
+								    ((index_ligneRandA + 5) % 10);
 								// Deuxième mouvement possible
 								mouvementsPossibles
-								    [1]
-								    [0] = 0;
+								    [1][0] = 0;
 								mouvementsPossibles
-								    [1]
-								    [1] =
-								    index_ligne;
+								    [1][1] =
+								    index_ligneRandA;
 								// Troisième mouvement possible
 								mouvementsPossibles
-								    [2]
-								    [0] = 6;
+								    [2][0] = 6;
 								mouvementsPossibles
-								    [2]
-								    [1] =
-								    index_ligne;
+								    [2][1] =
+								    index_ligneRandA;
 							}
 						}
 						// Pour toutes les cases jouables, on calcule la profondeur suivante
@@ -847,12 +858,12 @@ MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 						     index_move <
 						     nombre_mouvements;
 						     index_move++) {
-							caseCouranteJouee.
-							    colonne =
+							caseCouranteJouee.colonne
+							    =
 							    mouvementsPossibles
 							    [index_move][0];
-							caseCouranteJouee.
-							    ligne =
+							caseCouranteJouee.ligne
+							    =
 							    mouvementsPossibles
 							    [index_move][1];
 							joueCoup(plateau,
@@ -888,13 +899,17 @@ MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 								break;
 							} else if (isMax == 0
 								   &&
-								   ((prochaineEvaluation < beta) || ((prochaineEvaluation == beta) && (rand() % 2 == 0)))) {
+								   ((prochaineEvaluation < beta)
+								    /*|| ((prochaineEvaluation == beta) && (rand() % 2 == 0)) */
+								   )) {
 								// Réduction écart recherche coup minimal
 								beta =
 								    prochaineEvaluation;
 							} else if (isMax == 1
 								   &&
-								   ((prochaineEvaluation > alpha) || ((prochaineEvaluation == alpha) && (rand() % 2 == 0)))) {
+								   ((prochaineEvaluation > alpha)
+								    /*|| ((prochaineEvaluation == alpha) && (rand() % 2 == 0)) */
+								   )) {
 								// Réduction écart recherche coup maximal
 								alpha =
 								    prochaineEvaluation;
@@ -920,7 +935,7 @@ MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
  * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
  * @param plateau
  */
-void mouvementIA(PLATEAU * plateau)
+void mouvementIA(PLATEAU * plateau, int symbole)
 {
 	// Coup qui sera joué par l'IA
 	COUP move;
@@ -948,13 +963,12 @@ void mouvementIA(PLATEAU * plateau)
 			caseCourante.colonne = index_colonne;
 			caseCourante.ligne = index_ligne;
 			// Si la case est sur l'extrémité du plateau
-			if (index_colonne == 1
-			    || index_colonne == 5 || index_ligne == 1
-			    || index_ligne == 5) {
+			if (index_colonne == 1 || index_colonne == 5
+			    || index_ligne == 1 || index_ligne == 5) {
 				// On récupère la case
 				int valCase = getCase(plateau, &caseCourante);
 				// La case est jouable (vide ou pion qui appartient au joueur)
-				if (valCase == vide || valCase == croix_gauche) {
+				if (valCase == vide || valCase == symbole) {
 					caseCourante.colonne = index_colonne;
 					caseCourante.ligne = index_ligne;
 					// Calcul des mouvements possibles
@@ -1029,12 +1043,12 @@ void mouvementIA(PLATEAU * plateau)
 						// On joue le premier coup
 						joueCoup(plateau, caseCourante,
 							 caseCouranteJouee,
-							 croix_gauche);
+							 symbole);
 						// On demande les évaluations des cas possibles à partir de ce coup en envoyant l'adversaire, la profondeur de 1 et le coup minimal
 						int tempScore = MinMax(plateau,
 								       changeJoueur
-								       (croix_gauche),
-								       croix_gauche,
+								       (symbole),
+								       symbole,
 								       1, 0,
 								       INT_MIN,
 								       INT_MAX);
@@ -1059,7 +1073,7 @@ void mouvementIA(PLATEAU * plateau)
 		}
 	}
 	// On joue le coup généré
-	joueCoup(plateau, move.casePiochee, move.caseJouee, croix_gauche);
+	joueCoup(plateau, move.casePiochee, move.caseJouee, symbole);
 }
 
 /*!
@@ -1392,4 +1406,18 @@ int evalueDiagonales(PLATEAU * plateau, int evaluation, int joueurCourant)
 		}
 	}
 	return evaluationDiagonale;
+}
+
+/*!
+ * \brief Fonction qui affiche la variable plateau_jeu en console
+ */
+void affichePlateauConsole(void)
+{
+	int i, j;
+	for (i = 0; i < TAILLE_PLATEAU; i++) {
+		for (j = 0; j < TAILLE_PLATEAU; j++) {
+			printf("%d \t", plateau_jeu[i][j]);
+		}
+		sautDeLigne();
+	}
 }

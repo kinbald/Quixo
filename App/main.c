@@ -62,18 +62,15 @@ void gestionEvenement(EvenementGfx evenement)
 		if (imageRegles == NULL) {
 			imageRegles = lisBMPRGB("deuxjoueurs.bmp");
 		}
-		demandeAnimation_ips(24);	// Configure le système pour un mode 50 images par seconde
-		coordonneesGrille[0] = 100;
-		coordonneesGrille[1] = 700;
-		coordonneesGrille[2] = 700;
-		coordonneesGrille[3] = 100;
+		demandeAnimation_ips(25);	// Configure le système pour un mode 24 images par seconde
+		assigneTaillePlateau(coordonneesGrille);
 		menuCourant = menuPrincipal;
 		MODE = -1;
 		break;
 	case Affichage:
-
 		// On part d'un fond d'ecran blanc
 		effaceFenetre(239, 240, 244);
+		//afficheTitre(150, 600);
 		switch (menuCourant) {
 		case menuPrincipal:
 			afficheMenuPrincipal(LargeurFenetreCourante,
@@ -110,7 +107,7 @@ void gestionEvenement(EvenementGfx evenement)
 
 		case redirectQuitter:
 			libereDonneesImageRGB(&imageRegles);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 		rafraichisFenetre();
 		couleurCourante(255, 0, 0);
@@ -122,7 +119,7 @@ void gestionEvenement(EvenementGfx evenement)
 		case 'Q':	// Quitter le programme
 		case 'q':
 			libereDonneesImageRGB(&imageRegles);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		case 'F':
 		case 'f':
 			pleinEcran = !pleinEcran;	// Changement de mode plein ecran
@@ -207,6 +204,7 @@ void gestionEvenement(EvenementGfx evenement)
 				break;
 
 			}
+
 			printf("Menu %d\n", menuCourant);
 		}
 		break;
@@ -222,6 +220,7 @@ void gestionEvenement(EvenementGfx evenement)
 		//redimensionnementForce();
 		LargeurFenetreCourante = largeurFenetre();
 		HauteurFenetreCourante = hauteurFenetre();
+		assigneTaillePlateau(coordonneesGrille);
 		break;
 	}
 }

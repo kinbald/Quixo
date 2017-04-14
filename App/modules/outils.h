@@ -16,6 +16,13 @@
 #include <limits.h>
 #include <time.h>
 
+#ifndef M_PI
+/*!
+ * \brief Définition de la valeur de pi
+ */
+#define M_PI 3.14159265358979323846264338327
+#endif
+
 /*!
  * \brief Taille du plateau de jeu
  */

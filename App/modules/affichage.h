@@ -187,4 +187,11 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
  */
 int gestionAffichage(int menu, int *coordonneesPlateau);
 
+/*!
+ * \brief Fonction qui permet de gérer la taille d'affichage du plateau de jeu
+ * @param coordonneesPlateau Tableau de gestion des coordonnées du plateau
+ * @return
+ */
+void assigneTaillePlateau(int *coordonneesPlateau);
+
 #endif

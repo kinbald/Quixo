@@ -247,4 +247,9 @@ int evalueColonnes(PLATEAU * plateau, int evaluation, int joueurCourant);
  */
 int evalueDiagonales(PLATEAU * plateau, int evaluation, int joueurCourant);
 
+/*!
+ * \brief Fonction qui affiche la variable plateau_jeu en console
+ */
+void affichePlateauConsole(void);
+
 #endif

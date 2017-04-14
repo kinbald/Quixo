@@ -32,8 +32,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 	unsigned int decalage = 0;
 	int i = 0;
 	unsigned int verif_increment = 0;
-	int memmoire2 = 1;
-	int memmoire3 = 1;
+	int memmoire2 = tampon;
+	int memmoire3 = tampon;
 	int ok = -1;
 	CASE SET;
 	CASE GET;
@@ -1406,4 +1406,18 @@ int evalueDiagonales(PLATEAU * plateau, int evaluation, int joueurCourant)
 		}
 	}
 	return evaluationDiagonale;
+}
+
+/*!
+ * \brief Fonction qui affiche la variable plateau_jeu en console
+ */
+void affichePlateauConsole(void)
+{
+	int i, j;
+	for (i = 0; i < TAILLE_PLATEAU; i++) {
+		for (j = 0; j < TAILLE_PLATEAU; j++) {
+			printf("%d \t", plateau_jeu[i][j]);
+		}
+		sautDeLigne();
+	}
 }

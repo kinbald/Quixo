@@ -33,15 +33,15 @@ void affichePlateau(int *coordonneesPlateau)
 	CASE caseLecture;
 	caseLecture.ligne = index_ligne;
 
-	// Coordonnée en pixels (ligne) du milieu de la première case
+	// Coordonnée en pixels (ligne) du assigneTaillePlateau de la première case
 	casePion.ligne = (int)(coordonneesPlateau[1] - (pas / 2));
-	// Coordonnée en pixels (colonne) du milieu de la première case
+	// Coordonnée en pixels (colonne) du assigneTaillePlateau de la première case
 	casePion.colonne = (int)(coordonneesPlateau[0] + (pas / 2));
 
 	while (index_ligne < TAILLE_PLATEAU) {
 		while (index_colonne < TAILLE_PLATEAU) {
 			caseLecture.colonne = index_colonne;
-			// Traitement de l'affichage de la case (coordonées du milieu : (coordX, coordY)
+			// Traitement de l'affichage de la case (coordonées du assigneTaillePlateau : (coordX, coordY)
 			afficheSymbole(pas, &casePion,
 				       getCase(&plateau_jeu, &caseLecture),
 				       &caseLecture);
@@ -124,12 +124,15 @@ void afficheGrille(int *coordonneesPlateau)
 	float pas = calculePas(coordonneesPlateau);
 
 	// Fond
-	/*couleurCourante(35, 59, 110);
-	   rectangle(coordonneesPlateau[0], coordonneesPlateau[1],
-	   coordonneesPlateau[2], coordonneesPlateau[3]); */
 	couleurCourante(35, 59, 110);
 	rectangle(coordonneesPlateau[0] + pas, coordonneesPlateau[1] - pas,
 		  coordonneesPlateau[2] - pas, coordonneesPlateau[3] + pas);
+	// Cases centrales
+	couleurCourante(80, 80, 80);
+	rectangle(coordonneesPlateau[0] + (2 * pas),
+		  coordonneesPlateau[1] - (2 * pas),
+		  coordonneesPlateau[2] - (2 * pas),
+		  coordonneesPlateau[3] + (2 * pas));
 	// Couleur et trait colonnes et lignes
 	couleurCourante(239, 240, 244);
 	epaisseurDeTrait(4.5);
@@ -211,7 +214,7 @@ void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
  */
 void afficheCroix(CASE * case_jeu, int pas)
 {
-	epaisseurDeTrait(3);
+	epaisseurDeTrait(4.0);
 	ligne((float)(case_jeu->colonne - (pas / 3)),
 	      (float)(case_jeu->ligne - (pas / 3)),
 	      (float)(case_jeu->colonne + (pas / 3)),
@@ -231,7 +234,7 @@ void afficheCroix(CASE * case_jeu, int pas)
  */
 void afficheCroixPoint(CASE * case_jeu, int pas, int direction)
 {
-	epaisseurDeTrait(3);
+	epaisseurDeTrait(4.0);
 	ligne((float)(case_jeu->colonne - (pas / 3)),
 	      (float)(case_jeu->ligne - (pas / 3)),
 	      (float)(case_jeu->colonne + (pas / 3)),
@@ -241,6 +244,7 @@ void afficheCroixPoint(CASE * case_jeu, int pas, int direction)
 	      (float)(case_jeu->colonne + (pas / 3)),
 	      (float)(case_jeu->ligne - pas / 3));
 
+	epaisseurDeTrait(5.0);
 	if (direction == 0) {
 		point(case_jeu->colonne + (pas / 4), case_jeu->ligne);
 	} else if (direction == 1) {
@@ -262,7 +266,7 @@ void afficheDisque(CASE * case_jouee, float rayon)
 	float xCoin1, yCoin1, xCoin2, yCoin2, xCoin3, yCoin3;
 	float teta, pas;
 	float precision = 5.0;
-	pas = (float)((2 * 3.14) / 360.0 * precision);
+	pas = (float)((2 * M_PI) / 360.0 * precision);
 
 	xCoin1 = case_jouee->colonne;
 	yCoin1 = case_jouee->ligne;
@@ -273,7 +277,7 @@ void afficheDisque(CASE * case_jouee, float rayon)
 	xCoin3 = case_jouee->colonne + (float)(rayon * cos(teta));
 	yCoin3 = case_jouee->ligne + (float)(rayon * sin(teta));
 	triangle(xCoin1, yCoin1, xCoin2, yCoin2, xCoin3, yCoin3);
-	for (teta = pas; teta <= 2 * 3.14; teta = teta + pas) {
+	for (teta = pas; teta <= 2 * M_PI; teta = teta + pas) {
 		xCoin2 = xCoin3;
 		yCoin2 = yCoin3;
 		xCoin3 = case_jouee->colonne + (float)(rayon * cos(teta));
@@ -297,7 +301,7 @@ void afficheRond(CASE * case_jouee, float rayon)
 	x = 0;
 	float y = rayon;
 	while (y >= x) {
-		epaisseurDeTrait(2);
+		epaisseurDeTrait(4.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
 		point(centreX - x, centreY + y);
@@ -332,7 +336,7 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 	x = 0;
 	float y = rayon;
 	while (y >= x) {
-		epaisseurDeTrait(2);
+		epaisseurDeTrait(4.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
 		point(centreX - x, centreY + y);
@@ -349,6 +353,7 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 		}
 		x += 1;
 	}
+	epaisseurDeTrait(5.0);
 	if (direction == 0) {
 		point(case_jouee->colonne + (rayon / 2), case_jouee->ligne);
 	} else if (direction == 1) {
@@ -395,7 +400,8 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
 	case menuChoixSymboles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-
+	case menuVictoire:
+		return redirectRecommencer;
 	default:
 		return redirectMenuPrincipal;
 	}
@@ -435,17 +441,14 @@ int gereEtatsClic(CASE * clic, int etatMenu)
 	int cCol = clic->colonne;
 	switch (etatMenu) {
 	case menuPartie:
-		if ((cCol == 1)
-		    || (cCol == TAILLE_PLATEAU - 2)
-		    || (cLigne == TAILLE_PLATEAU - 2)
-		    || (cLigne == 1)) {
+		if ((cCol == 1) || (cCol == TAILLE_PLATEAU - 2)
+		    || (cLigne == TAILLE_PLATEAU - 2) || (cLigne == 1)) {
 			return redirectPioche;
 		}
 		break;
 	case redirectSurbrillance:
-		if (cLigne == 0
-		    || cLigne == TAILLE_PLATEAU - 1
-		    || cCol == 0 || cCol == TAILLE_PLATEAU - 1) {
+		if (cLigne == 0 || cLigne == TAILLE_PLATEAU - 1 || cCol == 0
+		    || cCol == TAILLE_PLATEAU - 1) {
 			return redirectContinue;
 		} else {
 			return redirectRePioche;
@@ -464,7 +467,7 @@ int gereEtatsClic(CASE * clic, int etatMenu)
  */
 void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 {
-	couleurCourante(255, 0, 0);
+	couleurCourante(240, 0, 0);
 	float xRectangle, yRectangle;
 	float xRectangle2, yRectangle2;
 	float xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3,
@@ -556,13 +559,26 @@ void redimensionnementForce()
  */
 int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 {
+	static int time = 0;
 	//bleu
-	couleurCourante(65, 95, 157);
+	static float rouge = 239;
+	static float vert = 240;
+	static float bleu = 244;
+	int anim = 125;
+	if (time <= anim) {
+		rouge = rouge - (239 - 65) / (float)anim;
+		vert = vert - (240 - 95) / (float)anim;
+		bleu = bleu - (244 - 157) / (float)anim;
+		couleurCourante((int)rouge, (int)vert, (int)bleu);
+		time += 1;
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	epaisseurDeTrait(3.5);
 	afficheChaine("Quixo", 0.1 * HAUTEURFenetre, 0.4 * LARGEURFenetre,
 		      0.85 * HAUTEURFenetre);
-
 	epaisseurDeTrait(3);
+	couleurCourante(65, 95, 157);
 	//1VS1
 	rectangle(0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
 		  0.45 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
@@ -570,8 +586,8 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	couleurCourante(239, 240, 255);
 	int taille = 0.0002 * HAUTEURFenetre * (LARGEURFenetre / 3);
 	//printf("taille = %d\n", taille);
-	afficheChaine("1 VS 1", taille,
-		      0.20 * LARGEURFenetre, 0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS 1", taille, 0.20 * LARGEURFenetre,
+		      0.60 * HAUTEURFenetre);
 
 	//1 VS IA
 	couleurCourante(65, 95, 157);
@@ -643,11 +659,13 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 
 /*!
  * \brief Fonction qui affiche les règles du jeu
+ * @param image Image bmp à afficher
  * @param LARGEURFenetre largeur de la fenêtre
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0 pour ok, -1 pour ko
  */
-int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre)
+int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
+		  int HAUTEURFenetre)
 {
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
@@ -659,6 +677,12 @@ int afficheRegles(int LARGEURFenetre, int HAUTEURFenetre)
 	couleurCourante(239, 240, 255);
 	afficheChaine("Retour", 0.075 * HAUTEURFenetre, 0.40 * LARGEURFenetre,
 		      0.20 * HAUTEURFenetre);
+	if (image != NULL) {
+		ecrisImage((largeurFenetre() - image->largeurImage) / 2,
+			   (hauteurFenetre() - image->hauteurImage) / 1.5,
+			   image->largeurImage, image->hauteurImage,
+			   image->donneesRGB);
+	}
 	return 0;
 }
 
@@ -677,6 +701,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuChoixSymboleS;
+			clicSouris->mode = V1;
 		}
 
 		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
@@ -684,6 +709,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuChoixSymboleS;
+			clicSouris->mode = VIA;
 		}
 
 		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
@@ -735,5 +761,29 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		return (clicSouris->menu);
 	} else {
 		return redirectMenuPrincipal;
+	}
+}
+
+/*!
+ * \brief Fonction qui permet de gérer la taille d'affichage du plateau de jeu
+ * @param coordonneesPlateau Tableau de gestion des coordonnées du plateau
+ * @return
+ */
+void assigneTaillePlateau(int *coordonneesPlateau)
+{
+	int hauteurMilieu = hauteurFenetre() / 2;
+	int largeurMilieu = largeurFenetre() / 2;
+	int tailleX = TAILLE_PLATEAU * (0.13 * largeurMilieu);
+	int tailleY = TAILLE_PLATEAU * (0.13 * hauteurMilieu);
+	if (hauteurMilieu >= largeurMilieu) {
+		coordonneesPlateau[0] = largeurMilieu - tailleX;
+		coordonneesPlateau[1] = hauteurMilieu + tailleX;
+		coordonneesPlateau[2] = largeurMilieu + tailleX;
+		coordonneesPlateau[3] = hauteurMilieu - tailleX;
+	} else {
+		coordonneesPlateau[0] = largeurMilieu - tailleY;
+		coordonneesPlateau[1] = hauteurMilieu + tailleY;
+		coordonneesPlateau[2] = largeurMilieu + tailleY;
+		coordonneesPlateau[3] = hauteurMilieu - tailleY;
 	}
 }

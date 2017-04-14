@@ -1,5 +1,5 @@
 WARNING_FLAGS = -Wall -Wextra -Werror -Wformat\
-				-fstrict-overflow -Wstrict-overflow=5\
+				-fstrict-overflow -Wstrict-overflow=2\
 				-Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes\
 				-Wmissing-prototypes -Wcast-align
 

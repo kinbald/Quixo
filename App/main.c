@@ -51,7 +51,7 @@ void gestionEvenement(EvenementGfx evenement)
 	static int MODE;
 	char nombre[20];
 
-	static int menuCourant;
+	static int menuCourant, ancienMenu;
 
 	switch (evenement) {
 	case Initialisation:
@@ -65,6 +65,7 @@ void gestionEvenement(EvenementGfx evenement)
 		demandeAnimation_ips(25);	// Configure le système pour un mode 24 images par seconde
 		assigneTaillePlateau(coordonneesGrille);
 		menuCourant = menuPrincipal;
+		ancienMenu = menuPrincipal;
 		MODE = -1;
 		break;
 	case Affichage:
@@ -75,7 +76,6 @@ void gestionEvenement(EvenementGfx evenement)
 				 LargeurFenetreCourante,
 				 HauteurFenetreCourante, imageRegles,
 				 nombreCoups, nombre, joueurCourant);
-
 		rafraichisFenetre();
 		couleurCourante(255, 0, 0);
 		break;
@@ -111,18 +111,35 @@ void gestionEvenement(EvenementGfx evenement)
 			clic.coordX = abscisseSouris();
 			clic.coordY = ordonneeSouris();
 			clic.joueurCourant = joueurCourant;
-			printf("joueur courant : %d\n", joueurCourant);
 			clic.menu = menuCourant;
+			if (menuCourant == redirectSurbrillance
+			    || menuCourant == menuPartie
+			    || menuCourant == menuPrincipal) {
+				ancienMenu = menuCourant;
+			}
 			menuCourant =
 			    recupereClicAffichage(&retourClic, &clic,
 						  coordonneesGrille,
 						  LargeurFenetreCourante,
 						  HauteurFenetreCourante);
-			printf("Clic affichage : %d\nJoueur : %d\n",
-			       menuCourant, joueurCourant);
+
+			printf
+			    ("Clic affichage : %d \t ancien : %d\nJoueur : %d\n",
+			     menuCourant, ancienMenu, joueurCourant);
 			switch (menuCourant) {
 			case redirectMenuPrincipal:
-				menuCourant = menuPrincipal;
+				if ((ancienMenu == menuPartie
+				     || ancienMenu == redirectSurbrillance)
+				    && clic.menu == menuRegles) {
+					menuCourant = ancienMenu;
+				} else {
+					menuCourant = menuPrincipal;
+					if (ancienMenu == menuPartie
+					    || ancienMenu ==
+					    redirectSurbrillance) {
+						initPlateau();
+					}
+				}
 				break;
 			case redirectMenuChoixSymboleS:
 				menuCourant = menuChoixSymboles;
@@ -141,6 +158,7 @@ void gestionEvenement(EvenementGfx evenement)
 			case menuPartie:
 			case redirectSurbrillance:
 			case redirectPioche:
+			case redirectRePioche:
 			case redirectContinue:
 				if (clic.menu == menuPartie
 				    && menuCourant == redirectRePioche) {
@@ -152,6 +170,8 @@ void gestionEvenement(EvenementGfx evenement)
 						&retourClic, &savePioche);
 				// On fait jouer l'IA lors du changement de joueur
 				if (menuCourant == redirectAdversaire) {
+					joueurCourant =
+					    changeJoueur(joueurCourant);
 					if (MODE == VIA) {
 						menuCourant =
 						    calculeTour(&joueurCourant,
@@ -172,10 +192,16 @@ void gestionEvenement(EvenementGfx evenement)
 				joueurCourant = changeJoueur(joueurCourant);
 				//TODO score
 				break;
+			case redirectExterieur:
+				if (ancienMenu == redirectSurbrillance) {
+					menuCourant = redirectSurbrillance;
+				} else {
+					menuCourant = menuPartie;
+				}
+				break;
 
 			}
-
-			printf("Menu %d\n", menuCourant);
+			printf("Menu qui va suivre %d\n", menuCourant);
 		}
 		break;
 

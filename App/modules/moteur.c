@@ -491,8 +491,6 @@ int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
 	victoire = testeVictoire(plateau, *joueurCourant, joueurAllier);
 	if (victoire != -1) {
 		return 1;
-	} else {
-		*joueurCourant = changeJoueur(*joueurCourant);
 	}
 	return 0;
 }
@@ -655,12 +653,12 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 	case jeuIA:
 		nombreCoups = 0;
 		mouvementIA(&plateau_jeu, *joueurCourant);
-		*joueurCourant = changeJoueur(*joueurCourant);
 		victoire =
 		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
 		if (victoire == 1) {
 			return redirectMenuVictoire;
 		}
+		*joueurCourant = changeJoueur(*joueurCourant);
 		return menuPartie;
 		break;
 	}

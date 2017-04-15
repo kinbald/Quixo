@@ -106,7 +106,8 @@ typedef enum {
 	redirectRePioche = 11,
 	redirectQuitter = 12,
 	redirectAdversaire = 13,
-	jeuIA = 14
+	jeuIA = 14,
+	redirectExterieur = 15
 } ETATS;
 
 /*!

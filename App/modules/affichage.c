@@ -308,7 +308,7 @@ void afficheRond(CASE * case_jouee, float rayon)
 	x = 0;
 	float y = rayon;
 	while (y >= x) {
-		epaisseurDeTrait(4.0);
+		epaisseurDeTrait(3.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
 		point(centreX - x, centreY + y);
@@ -343,7 +343,7 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 	x = 0;
 	float y = rayon;
 	while (y >= x) {
-		epaisseurDeTrait(4.0);
+		epaisseurDeTrait(3.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
 		point(centreX - x, centreY + y);
@@ -389,19 +389,8 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 
 	switch (clicSouris->menu) {
 	case menuPartie:
-		//Bouton en bas du menu partie
-		if (((clicSouris->coordX >= 0.1 * LARGEURFenetre)
-		     && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
-		     && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
-		     && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))
-		    || ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-			&& (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
-			&& (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-			&& (clicSouris->coordY >= 0.05 * HAUTEURFenetre))) {
-			return clicMenu(clicSouris, LARGEURFenetre,
-					HAUTEURFenetre);
-		}
 	case redirectPioche:
+	case redirectRePioche:
 	case redirectSurbrillance:
 		if (clicSouris->coordX >= coordonneesPlateau[0]
 		    && clicSouris->coordY <= coordonneesPlateau[1]
@@ -410,11 +399,22 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 			clicPlateau(retourClic, clicSouris, coordonneesPlateau);
 
 			return gereEtatsClic(retourClic, clicSouris->menu);
+		}		//Bouton en bas du menu partie
+		else if (((clicSouris->coordX >= 0.1 * LARGEURFenetre)
+			  && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
+			  && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
+			  && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))
+			 || ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
+			     && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
+			     && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
+			     && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))) {
+			return clicMenu(clicSouris, LARGEURFenetre,
+					HAUTEURFenetre);
 		} else {
 			if (clicSouris->menu == redirectPioche) {
 				return redirectCentral;
 			}
-			return redirectRePioche;
+			return redirectExterieur;
 		}
 	case menuPrincipal:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
@@ -594,6 +594,7 @@ int gestionAffichage(int menu, int *coordonneesGrille,
 	case redirectSurbrillance:
 	case redirectRePioche:
 	case redirectPioche:
+	case redirectExterieur:
 		affichePlateau(coordonneesGrille,
 			       LargeurFenetreCourante, HauteurFenetreCourante);
 		//Affichage du joueur courant
@@ -621,13 +622,10 @@ int gestionAffichage(int menu, int *coordonneesGrille,
 				joueurCourant);
 
 		break;
-
 	case redirectQuitter:
 		libereDonneesImageRGB(&imageRegles);
 		exit(EXIT_SUCCESS);
-
 	}
-
 	return 0;
 }
 
@@ -851,7 +849,8 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		}
 		return (clicSouris->menu);
 		// Le menu courant est le menu partie
-	} else if (clicSouris->menu == menuPartie) {
+	} else if (clicSouris->menu == menuPartie
+		   || clicSouris->menu == redirectSurbrillance) {
 		//Règles
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
 		    && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
@@ -968,7 +967,6 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 			      0.00006 * HAUTEURFenetre * LARGEURFenetre,
 			      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
 	}
-
 	//Rectangle gauche
 	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
 		  0.40 * LARGEURFenetre, 0.13 * HAUTEURFenetre);
@@ -995,17 +993,17 @@ void assigneTaillePlateau(int *coordonneesPlateau)
 {
 	int hauteurMilieu = hauteurFenetre() / 2;
 	int largeurMilieu = largeurFenetre() / 2;
-	int tailleX = TAILLE_PLATEAU * (0.13 * largeurMilieu);
-	int tailleY = TAILLE_PLATEAU * (0.13 * hauteurMilieu);
+	int tailleX = TAILLE_PLATEAU * (0.1 * largeurMilieu);
+	int tailleY = TAILLE_PLATEAU * (0.1 * hauteurMilieu);
 	if (hauteurMilieu >= largeurMilieu) {
 		coordonneesPlateau[0] = largeurMilieu - tailleX;
-		coordonneesPlateau[1] = hauteurMilieu + tailleX;
+		coordonneesPlateau[1] = hauteurMilieu + tailleX + 40;
 		coordonneesPlateau[2] = largeurMilieu + tailleX;
-		coordonneesPlateau[3] = hauteurMilieu - tailleX;
+		coordonneesPlateau[3] = hauteurMilieu - tailleX + 40;
 	} else {
 		coordonneesPlateau[0] = largeurMilieu - tailleY;
-		coordonneesPlateau[1] = hauteurMilieu + tailleY;
+		coordonneesPlateau[1] = hauteurMilieu + tailleY + 40;
 		coordonneesPlateau[2] = largeurMilieu + tailleY;
-		coordonneesPlateau[3] = hauteurMilieu - tailleY;
+		coordonneesPlateau[3] = hauteurMilieu - tailleY + 40;
 	}
 }

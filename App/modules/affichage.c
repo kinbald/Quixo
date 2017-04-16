@@ -642,10 +642,11 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	float largeurTexteTitre = 0.1 * LARGEURFenetre;
 	float largeurBoutons = 0.05 * LARGEURFenetre;
 	float largeurTexteBoutonsMode = tailleChaine("1 VS 1", largeurBoutons);
+	float largeurTexteBoutonsModeIA = tailleChaine("1 VS IA", largeurBoutons);
 	float largeurTexteBoutonsQ = tailleChaine("Quitter", largeurBoutons);
 	float largeurTexteBoutonsR = tailleChaine("Regles", largeurBoutons);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.5 * LARGEURFenetre - (tailleChaine("Quixo", largeurTexteTitre) / 2), 0.8 * HAUTEURFenetre);
 
 	epaisseurDeTrait(3);
 	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.7 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.55 * HAUTEURFenetre))
@@ -671,7 +672,7 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	}
 	rectangle(0.55 * LARGEURFenetre, 0.7 * HAUTEURFenetre, 0.85 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("1 VS IA", largeurBoutons, 0.7 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS IA", largeurBoutons, 0.7 * LARGEURFenetre - (largeurTexteBoutonsModeIA / 2), 0.60 * HAUTEURFenetre);
 
 	//Règles
 	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.45 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.3 * HAUTEURFenetre))
@@ -723,7 +724,7 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.5 * LARGEURFenetre - (tailleChaine("Quixo", largeurTexteTitre) / 2), 0.8 * HAUTEURFenetre);
 	afficheChaine("Choisissez un symbole :", largeurBoutons, (LARGEURFenetre / 2) - (largeurTexteSymbole / 2), 0.70 * HAUTEURFenetre);
 
 	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.6 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.45 * HAUTEURFenetre))
@@ -781,7 +782,7 @@ int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre, int HAUTEURFenetr
 	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.5 * LARGEURFenetre - (tailleChaine("Quixo", largeurTexteTitre) / 2), 0.8 * HAUTEURFenetre);
 	if ((abscisseSouris() >= 0.35 * LARGEURFenetre) && (ordonneeSouris() <= 0.3 * HAUTEURFenetre) && (abscisseSouris() <= 0.65 * LARGEURFenetre) && (ordonneeSouris() >= 0.15 * HAUTEURFenetre))
 	{
 		couleurCourante(90, 105, 180);
@@ -1045,7 +1046,7 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 180);
 	epaisseurDeTrait(3.5);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.5 * LARGEURFenetre - (tailleChaine("Quixo", largeurTexteTitre) / 2), 0.8 * HAUTEURFenetre);
 	couleurCourante(65, 95, 157);
 	afficheChaine("Bravo", largeurTexte, 0.5 * LARGEURFenetre - (tailleChaine("Bravo", largeurTexte) / 2) - (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
 	CASE dessin;

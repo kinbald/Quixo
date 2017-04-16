@@ -486,7 +486,7 @@ int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
 				 joueurAllier);
 	if (victoire != -1) {
 		*joueurCourant = changeJoueur(*joueurCourant);
-		return 1;
+		return 2;
 	}
 	victoire = testeVictoire(plateau, *joueurCourant, joueurAllier);
 	if (victoire != -1) {
@@ -609,10 +609,11 @@ void nettoieSurbrillance(PLATEAU * plateau)
  * @param etatClic Permet de connaîre l'étape dans le jeu
  * @param caseJouee
  * @param casePiochee
+ * @param modeJeu Mode de jeu courant
  * @return
  */
 int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
-		CASE * casePiochee)
+		CASE * casePiochee, int modeJeu)
 {
 	int victoire;
 	switch (etatClic) {
@@ -639,6 +640,9 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 			victoire =
 			    testeVictoireCasParticulier(&plateau_jeu,
 							joueurCourant, 0);
+			if (modeJeu == VIA && victoire == 2) {
+				return redirectMenuDefaite;
+			}
 			if (victoire == 1) {
 				return redirectMenuVictoire;
 			}
@@ -656,6 +660,8 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
 		if (victoire == 1) {
 			return redirectMenuDefaite;
+		} else if (victoire == 2) {
+			return redirectMenuVictoire;
 		}
 		*joueurCourant = changeJoueur(*joueurCourant);
 		return menuPartie;
@@ -1070,6 +1076,7 @@ void mouvementIA(PLATEAU * plateau, int symbole)
 	}
 	// On joue le coup généré
 	joueCoup(plateau, move.casePiochee, move.caseJouee, symbole);
+  //DEBUG : printf("Coup joue : LP: %d CP: %d ; LJ: %d CJ: %d \n", move.casePiochee.ligne, move.casePiochee.colonne,move.caseJouee.ligne,move.caseJouee.colonne);
 }
 
 /*!

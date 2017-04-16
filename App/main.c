@@ -41,15 +41,16 @@ int main(int argc, char **argv)
 void gestionEvenement(EvenementGfx evenement)
 {
 	static bool pleinEcran = false;	// Pour savoir si on est en mode plein écran ou pas
-	static int coordonneesGrille[4]; // Coordonnées de la grille de jeu dans menuPartie
+	static int coordonneesGrille[4];	// Coordonnées de la grille de jeu dans menuPartie
 	static int LargeurFenetreCourante = LargeurFenetre;
 	static int HauteurFenetreCourante = HauteurFenetre;
-	static DonneesImageRGB *imageRegles = NULL; // Image pour règles de jeu
-	static CLIC clic; // Clic lorsqu'un évènement de boutonSouris est detecté
-	static CASE retourClic, savePioche; // Cases permettant la gestion des clics
+	static DonneesImageRGB *imageRegles = NULL;	// Image pour règles de jeu
+	static CLIC clic;	// Clic lorsqu'un évènement de boutonSouris est detecté
+	static CASE retourClic, savePioche;	// Cases permettant la gestion des clics
 	static int joueurCourant;
 	static int MODE;
 	static int menuCourant, ancienMenu;
+	static int joueurs[2];
 
 	switch (evenement) {
 	case Initialisation:
@@ -58,9 +59,9 @@ void gestionEvenement(EvenementGfx evenement)
 			imageRegles = lisBMPRGB("deuxjoueurs.bmp");
 		}
 		demandeAnimation_ips(25);	// Configure le système pour un mode 25 images par seconde
-		assigneTaillePlateau(coordonneesGrille); // Préparation position grille
-		activeGestionDeplacementPassifSouris(); // Activation du mode souris passif
-		menuCourant = menuPrincipal; // Menu de démarrage
+		assigneTaillePlateau(coordonneesGrille);	// Préparation position grille
+		activeGestionDeplacementPassifSouris();	// Activation du mode souris passif
+		menuCourant = menuPrincipal;	// Menu de démarrage
 		ancienMenu = menuPrincipal;
 		MODE = -1;
 		break;
@@ -107,23 +108,23 @@ void gestionEvenement(EvenementGfx evenement)
 			clic.coordY = ordonneeSouris();
 			clic.joueurCourant = joueurCourant;
 			clic.menu = menuCourant;
-          // Cas particulier des boutons de retour (menuRegles), on garde l'ancien état
+			// Cas particulier des boutons de retour (menuRegles), on garde l'ancien état
 			if (menuCourant == redirectSurbrillance
 			    || menuCourant == menuPartie
 			    || menuCourant == menuPrincipal) {
 				ancienMenu = menuCourant;
 			}
-          // Récupération de l'action correspondant au clic envoyé
+			// Récupération de l'action correspondant au clic envoyé
 			menuCourant =
 			    recupereClicAffichage(&retourClic, &clic,
 						  coordonneesGrille,
 						  LargeurFenetreCourante,
 						  HauteurFenetreCourante);
-          // Gestion de l'action à effectuer
+			// Gestion de l'action à effectuer
 			switch (menuCourant) {
-              // Redirection menu principal
+				// Redirection menu principal
 			case redirectMenuPrincipal:
-              // Cas particulier accès menuRegles depuis partie en cours, on souhaite revenir au jeu et non au menu
+				// Cas particulier accès menuRegles depuis partie en cours, on souhaite revenir au jeu et non au menu
 				if ((ancienMenu == menuPartie
 				     || ancienMenu == redirectSurbrillance)
 				    && clic.menu == menuRegles) {
@@ -137,10 +138,10 @@ void gestionEvenement(EvenementGfx evenement)
 					}
 				}
 				break;
-                // Redirection vers menu de choix des symboles pour le jeu
+				// Redirection vers menu de choix des symboles pour le jeu
 			case redirectMenuChoixSymboleS:
 				menuCourant = menuChoixSymboles;
-                // Ajout du mode de jeu choisi pour les symboles
+				// Ajout du mode de jeu choisi pour les symboles
 				MODE = clic.mode;
 				break;
 			case redirectMenuRegles:
@@ -148,6 +149,9 @@ void gestionEvenement(EvenementGfx evenement)
 				break;
 			case redirectMenuPartie:
 				joueurCourant = clic.joueurCourant;
+				joueurs[0] = joueurCourant;
+				joueurs[1] = changeJoueur(joueurCourant);
+				initScore(scores, 2, joueurs);
 				menuCourant = menuPartie;
 				break;
 			case redirectMenuVictoire:
@@ -158,30 +162,37 @@ void gestionEvenement(EvenementGfx evenement)
 			case redirectPioche:
 			case redirectRePioche:
 			case redirectContinue:
-              // Cas particulier clicExterieur au plateau
+				// Cas particulier clicExterieur au plateau
 				if (clic.menu == menuPartie
 				    && menuCourant == redirectRePioche) {
 					menuCourant = menuPartie;
 					break;
 				}
-                // Action à effectuer sur le plateau quand un clic dans le plateau est détecté
+				// Action à effectuer sur le plateau quand un clic dans le plateau est détecté
 				menuCourant =
 				    calculeTour(&joueurCourant, menuCourant,
-						&retourClic, &savePioche);
+						&retourClic, &savePioche, MODE);
 				// S'il n'y a pas de gagnant on change de joueur
 				if (menuCourant == redirectAdversaire) {
 					joueurCourant =
 					    changeJoueur(joueurCourant);
-                  // Si c'est le mode contre l'ordinateur alors on fait le fait jouer
+					// Si c'est le mode contre l'ordinateur alors on fait le fait jouer
 					if (MODE == VIA) {
 						menuCourant =
 						    calculeTour(&joueurCourant,
 								jeuIA,
 								&retourClic,
-								&savePioche);
+								&savePioche,
+								MODE);
 					} else {
 						menuCourant = menuPartie;
 					}
+				}
+				if (menuCourant == redirectMenuVictoire
+				    || menuCourant == redirectMenuDefaite) {
+					setScore(scores, 2, joueurCourant,
+						 getScore(scores, 2,
+							  joueurCourant) + 1);
 				}
 				break;
 			case redirectCentral:
@@ -189,21 +200,20 @@ void gestionEvenement(EvenementGfx evenement)
 				break;
 			case redirectRecommencer:
 				menuCourant = menuPartie;
-                // Réinitialisation du plateau
+				// Réinitialisation du plateau
 				initPlateau();
 				if (MODE != VIA) {
 					joueurCourant =
 					    changeJoueur(joueurCourant);
 				}
-				//TODO score
 				break;
-                // Redirecion après une défaite contre l'ordinateur
+				// Redirecion après une défaite contre l'ordinateur
 			case redirectRecommencerDef:
 				menuCourant = menuPartie;
 				joueurCourant = changeJoueur(joueurCourant);
 				initPlateau();
 				break;
-                // Clic dans le menuPartie mais extérieur au plateau
+				// Clic dans le menuPartie mais extérieur au plateau
 			case redirectExterieur:
 				if (ancienMenu == redirectSurbrillance) {
 					menuCourant = redirectSurbrillance;

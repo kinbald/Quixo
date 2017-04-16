@@ -75,3 +75,61 @@ int initPlateau(void)
 	}
 	return 0;
 }
+
+/*!
+ * \brief Fonction qui permet d'initialiser un tableau de SCORE.
+ * @param scoreJoueur Tableau des scores
+ * @param nombreJoueurs Nombre de joueurs sur la partie
+ * @param joueurs Listes des symboles des joueurs
+ */
+void initScore(SCORE * scoreJoueur, int nombreJoueurs, int *joueurs)
+{
+	int i;
+	if (scoreJoueur != NULL) {
+		for (i = 0; i < nombreJoueurs; i++) {
+			scoreJoueur[i].joueur = joueurs[i];
+			scoreJoueur[i].score = 0;
+		}
+	}
+}
+
+/*!
+ * \brief Fonction permettant de modifier le score d'un joueur dans le tableau des scores.
+ * @param scoresJoueurs Tableau de structures SCORE
+ * @param nombreJoueurs Nombre de joueurs listés dans le tableau
+ * @param joueur Joueur courant à modifier
+ * @param nouveauScore Score à modifier
+ */
+void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur,
+	      int nouveauScore)
+{
+	int i;
+	if (scoresJoueurs != NULL) {
+		// Parcours des scores pour trouver celui du joueur correspondant
+		for (i = 0; i < nombreJoueurs; i++) {
+			if (scoresJoueurs[i].joueur == joueur) {
+				scoresJoueurs[i].score = nouveauScore;
+			}
+		}
+	}
+}
+
+/*!
+ * \brief Fonction qui permet de récupérer un score à partir du tableau des scores et d'un joueur.
+ * @param scoresJoueurs Tableau de structures SCORE
+ * @param nombreJoueurs Nombre de joueurs listés dans le tableau
+ * @param joueur Joueur courant à récupérer
+ * @return Score du joueur
+ */
+int getScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur)
+{
+	int i;
+	if (scoresJoueurs != NULL) {
+		for (i = 0; i < nombreJoueurs; i++) {
+			if (scoresJoueurs[i].joueur == joueur) {
+				return scoresJoueurs[i].score;
+			}
+		}
+	}
+	return -1;
+}

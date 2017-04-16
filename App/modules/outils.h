@@ -41,7 +41,7 @@
 /*!
  * \brief Profondeur maximale de recherche IA
  */
-#define PROFONDEUR_LIMITE 6
+#define PROFONDEUR_LIMITE 7
 
 /*!
  * \brief Largeur de la fenêtre graphique
@@ -174,5 +174,32 @@ int setCase(PLATEAU * plateau, CASE * case_jeu, int symbole);
  * @return 0
  */
 int initPlateau(void);
+
+/*!
+ * \brief Fonction qui permet d'initialiser un tableau de SCORE.
+ * @param scoreJoueur Tableau des scores
+ * @param nombreJoueurs Nombre de joueurs sur la partie
+ * @param joueurs Listes des symboles des joueurs
+ */
+void initScore(SCORE * scoreJoueur, int nombreJoueurs, int *joueurs);
+
+/*!
+ * \brief Fonction permettant de modifier le score d'un joueur dans le tableau des scores.
+ * @param scoresJoueurs Tableau de structures SCORE
+ * @param nombreJoueurs Nombre de joueurs listés dans le tableau
+ * @param joueur Joueur courant à modifier
+ * @param nouveauScore Score à modifier
+ */
+void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur,
+	      int nouveauScore);
+
+/*!
+ * \brief Fonction qui permet de récupérer un score à partir du tableau des scores et d'un joueur.
+ * @param scoresJoueurs Tableau de structures SCORE
+ * @param nombreJoueurs Nombre de joueurs listés dans le tableau
+ * @param joueur Joueur courant à récupérer
+ * @return Score du joueur
+ */
+int getScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur);
 
 #endif

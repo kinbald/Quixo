@@ -154,7 +154,7 @@ void nettoieSurbrillance(PLATEAU * plateau);
  * @return
  */
 int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
-		CASE * casePiochee);
+		CASE * casePiochee, int modeJeu);
 
 /*!
  * \brief Fontion qui permet d'appliquer un coup sur un plateau

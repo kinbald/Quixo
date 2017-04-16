@@ -1070,7 +1070,7 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	caseADessinerRond.colonne = LARGEURFenetre - 25;
 	caseADessinerRond.ligne = HAUTEURFenetre - 60 - 25;
 
-	if (joueurCourant == 3) {
+	if (joueurCourant == croix_gauche) {
 		couleurCourante(65, 95, 157);
 	} else {
 		couleurCourante(150, 150, 150);
@@ -1078,8 +1078,14 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	rectangle(0, HAUTEURFenetre - 60, 50, HAUTEURFenetre - 60 - 50);
 	couleurCourante(239, 240, 255);
 	afficheCroixPoint(&caseADessinerCroix, 45, 2);
+	char memoireScore[100];
+	sprintf(memoireScore, "Score : %d", getScore(scores, 2, croix_gauche));
+	couleurCourante(65, 95, 157);
+	epaisseurDeTrait(1.0);
+	afficheChaine(memoireScore, 0.03 * LARGEURFenetre, 55,
+		      HAUTEURFenetre - 60 - 40);
 
-	if (joueurCourant == 4) {
+	if (joueurCourant == rond_gauche) {
 		couleurCourante(65, 95, 157);
 	} else {
 		couleurCourante(150, 150, 150);
@@ -1089,6 +1095,13 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 		  HAUTEURFenetre - 60 - 50);
 	couleurCourante(239, 240, 255);
 	afficheRondPoint(&caseADessinerRond, 15, 2);
+	sprintf(memoireScore, "Score : %d", getScore(scores, 2, rond_gauche));
+	couleurCourante(65, 95, 157);
+	epaisseurDeTrait(1.0);
+	afficheChaine(memoireScore, 0.03 * LARGEURFenetre,
+		      LARGEURFenetre - 60 - tailleChaine(memoireScore,
+							 0.03 * LARGEURFenetre),
+		      HAUTEURFenetre - 60 - 40);
 	return 0;
 }
 
@@ -1139,6 +1152,23 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 		      0.5 * LARGEURFenetre -
 		      (tailleChaine("Tu as gagne !", largeurTexte) / 2),
 		      0.45 * HAUTEURFenetre);
+
+  int coordonnees[4];
+  coordonnees[0] = abscisseSouris() - 0.2 * LARGEURFenetre;
+  coordonnees[1] = ordonneeSouris() + 0.2 * LARGEURFenetre;
+  coordonnees[2] = abscisseSouris() + 0.2 * LARGEURFenetre;
+  coordonnees[3] = ordonneeSouris() - 0.2 * LARGEURFenetre;
+
+  if ((abscisseSouris() >= 0.5 * LARGEURFenetre -
+      (tailleChaine("Tu as gagne !", largeurTexte) / 2))
+      && (ordonneeSouris() <= 0.65 * HAUTEURFenetre)
+      && (abscisseSouris() <= 0.5 * LARGEURFenetre +
+          (tailleChaine("Tu as gagne !", largeurTexte) / 2))
+      && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+    affichePlateau(coordonnees, 0.2* LARGEURFenetre, 0.2*LARGEURFenetre);
+    couleurCourante(239, 240, 255);
+    rectangle(0, 0, LARGEURFenetre, 0.2*HAUTEURFenetre);
+  }
 
 	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
 	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)

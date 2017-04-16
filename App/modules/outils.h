@@ -46,12 +46,12 @@
 /*!
  * \brief Largeur de la fenêtre graphique
  */
-#define LargeurFenetre 800
+#define LargeurFenetre 750
 
 /*!
  * \brief Hauteur de la fenêtre graphique
  */
-#define HauteurFenetre 800
+#define HauteurFenetre 750
 
 /*!
  * \brief Plateau de jeu : tableau de TAILLE_PLATEAU*TAILLE_PLATEAU entiers
@@ -97,9 +97,11 @@ typedef enum {
 	redirectMenuChoixSymboleS = 2,
 	redirectMenuPartie = 31,
 	redirectMenuVictoire = 4,
+	redirectMenuDefaite = 41,
 	redirectMenuChoixSymboleM = 5,
 	redirectContinue = 6,
 	redirectRecommencer = 7,
+	redirectRecommencerDef = 71,
 	redirectSurbrillance = 8,
 	redirectCentral = 9,
 	redirectPioche = 10,

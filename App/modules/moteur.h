@@ -197,8 +197,9 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 	   int isMax, int alpha, int beta);
 
 /*!
- * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
- * @param plateau
+ * \brief Fonction qui effectue un mouvement de l'IA sur le plateau en utilisant l'algorithme de recherche min-max
+ * @param plateau Plateau de jeu en cours
+ * @param symbole Symbole correspondant à l'ordinateur sur le plateau
  */
 void mouvementIA(PLATEAU * plateau, int symbole);
 

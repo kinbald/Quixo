@@ -35,7 +35,7 @@ void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
 float calculePas(int *coordonneesPlateau);
 
 /*!
- * \brief Fonction qui permet d'afficher la grile de jeu.
+ * \brief Fonction qui permet d'afficher la grille de jeu.
  *
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  */
@@ -76,7 +76,7 @@ void afficheCroixPoint(CASE * case_jeu, int pas, int direction);
 void afficheDisque(CASE * case_jouee, float rayon);
 
 /*!
- * \brief Fonction qui permet d'afficher un cercle de rayon donné
+ * \brief Fonction qui permet d'afficher un cercle de rayon donné.
  *
  * @param case_jouee Coordonnées de la case pour placer le cercle
  * @param rayon Rayon du cercle
@@ -125,7 +125,7 @@ int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau);
 int gereEtatsClic(CASE * clic, int etatMenu);
 
 /*!
- * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer
+ * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer après une pioche.
  * @param case_jouee Case en pixels où la flèche doit être placée
  * @param pas Pas de la case
  * @param lectureCase Case (plateau) où la flèche doit être placée
@@ -135,7 +135,7 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase);
 /*!
  * \brief Fonction qui redimensionne automatiquement pour garder un ratio minimal
  */
-void redimensionnementForce(void);
+void redimensionnementForce(int menu);
 
 /*!
  * \brief Fonction qui affiche le menu où le joueur choisit son mode de jeu
@@ -174,17 +174,19 @@ int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
 int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
- * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage en fonction du menu envoyé.
  *
- * @param menu Menu vers lequel on souhaite être redirigé
- * @param LARGEURFenetre largeur de la fenêtre
- * @param HAUTEURFenetre hauteur de la fenêtre
- * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
- * @return 0 (OK), -1 (KO)
+ * @param menu Menu qui doit être affiché
+ * @param LargeurFenetreCourante Largeur de la fenêtre
+ * @param HauteurFenetreCourante Hauteur de la fenêtre
+ * @param coordonneesGrille Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @param imageRegles Pointeur vers l'image qui s'affiche dans le menu des règles de jeu
+ * @param joueurCourant Joueur courant de la partie
+ * @return 0
  */
 int gestionAffichage(int menu, int *coordonneesPlateau, int LARGEURFenetre,
 		     int HAUTEURFenetre, DonneesImageRGB * imageRegles,
-		     int nombreCoups, char nombre[20], int joueurCourant);
+		     int joueurCourant);
 
 /*!
  * \brief Fonction qui affiche les boutons dans le menu partie
@@ -196,9 +198,9 @@ int afficheBouton(int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui affiche le joueur courant dans le menu partie
- * @param LARGEURFenetre largeur de la fenêtre
- * @param HAUTEURFenetre hauteur de la fenêtre
- * @param joueurcourant joueur qui doit jouer
+ * @param LARGEURFenetre Largeur de la fenêtre
+ * @param HAUTEURFenetre Hauteur de la fenêtre
+ * @param joueurCourant Joueur qui doit jouer
  * @return 0
  */
 int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
@@ -208,6 +210,7 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
  * \brief Fonction qui affiche le score
  * @param LARGEURFenetre largeur de la fenêtre
  * @param HAUTEURFenetre hauteur de la fenêtre
+ * @param joueurCourant Joueur ayant gagné la partie
  * @return 0
  */
 int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant);
@@ -218,5 +221,13 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant);
  * @return
  */
 void assigneTaillePlateau(int *coordonneesPlateau);
+
+/*!
+ * \brief Fonction qui permet d'afficher le menu de défaite lorsque le joueur perd contre l'ordinateur
+ *
+ * @param LARGEURFenetre Largeur de la fenêtre en pixels
+ * @param HAUTEURFenetre Hauteur de la fenêtre en pixels
+ */
+void afficheDefaite(int LARGEURFenetre, int HAUTEURFenetre);
 
 #endif

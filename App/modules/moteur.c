@@ -11,9 +11,9 @@
 extern PLATEAU plateau_jeu;
 
 /*!
- * Nombre de coups évalués
+ * Scores du jeu
  */
-extern int nombreCoups;
+extern SCORE scores[2];
 
 /*!
  * \brief décalage des pions
@@ -651,12 +651,11 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 	case redirectCentral:
 		return menuPartie;
 	case jeuIA:
-		nombreCoups = 0;
 		mouvementIA(&plateau_jeu, *joueurCourant);
 		victoire =
 		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
 		if (victoire == 1) {
-			return redirectMenuVictoire;
+			return redirectMenuDefaite;
 		}
 		*joueurCourant = changeJoueur(*joueurCourant);
 		return menuPartie;
@@ -738,20 +737,17 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 	// Evaluation du coup
 	int evaluation = 0;
 
-	// Incrément du nombre de coups calculés
-	nombreCoups++;
-
-	// Si on dépasse la profondeure maximale ou s'il y a un gagnant
+	// Si on dépasse la profondeur maximale ou s'il y a un gagnant
 	if (depth >= PROFONDEUR_LIMITE
 	    || testeVictoire(plateau, joueur, 0) != -1) {
 		// On évalue le plateau
 		evaluation = evaluePlateau(plateau, joueur);
-		// Si le coup est pour l'adversaire, on maximise l'importance
-		if (joueur != joueurLancement) {
-			evaluation *= -1;
-		} else if (evaluation == joueur) {
-			evaluation *= -1;
-		}
+		/*// Si le coup est pour l'adversaire, on maximise l'importance
+		   if (joueur != joueurLancement) {
+		   evaluation *= -1;
+		   } else if (evaluation == joueur) {
+		   evaluation *= -1;
+		   } */
 	} else {
 		int prochaineEvaluation = 0;
 		for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1;
@@ -856,12 +852,12 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 						     index_move <
 						     nombre_mouvements;
 						     index_move++) {
-							caseCouranteJouee.
-							    colonne =
+							caseCouranteJouee.colonne
+							    =
 							    mouvementsPossibles
 							    [index_move][0];
-							caseCouranteJouee.
-							    ligne =
+							caseCouranteJouee.ligne
+							    =
 							    mouvementsPossibles
 							    [index_move][1];
 							joueCoup(plateau,
@@ -930,8 +926,9 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 }
 
 /*!
- * \brief Fonction qui effectue un mouvement de l'IA sur le plateau
- * @param plateau
+ * \brief Fonction qui effectue un mouvement de l'IA sur le plateau en utilisant l'algorithme de recherche min-max
+ * @param plateau Plateau de jeu en cours
+ * @param symbole Symbole correspondant à l'ordinateur sur le plateau
  */
 void mouvementIA(PLATEAU * plateau, int symbole)
 {
@@ -1057,8 +1054,9 @@ void mouvementIA(PLATEAU * plateau, int symbole)
 							   valCase);
 						// Si l'évaluation est meilleure que le score minimal, on choisira ce coup
 						if (tempScore > score
-						    || ((tempScore == score)
-							&& (rand() % 2 == 0))) {
+						    /*|| ((tempScore == score)
+						       && (rand() % 2 == 0)) */
+						    ) {
 							score = tempScore;
 							move.caseJouee =
 							    caseCouranteJouee;

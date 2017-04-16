@@ -12,12 +12,16 @@
 extern PLATEAU plateau_jeu;
 
 /*!
+ * Scores du jeu
+ */
+extern SCORE scores[2];
+
+/*!
  * \brief Fonction qui permet d'afficher le plateau suivant les coordonnées envoyées
  *
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coordonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  * @param LARGEURFenetre largeur de la fênetre
- * @param HAUTEUR Fenetre Hauteur de la fenêtre
- *
+ * @param HAUTEURFenetre Hauteur de la fenêtre
  */
 void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
 		    int HAUTEURFenetre)
@@ -121,7 +125,7 @@ float calculePas(int *coordonneesPlateau)
 }
 
 /*!
- * \brief Fonction qui permet d'afficher la grilLe de jeu.
+ * \brief Fonction qui permet d'afficher la grille de jeu.
  *
  * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
  */
@@ -294,7 +298,7 @@ void afficheDisque(CASE * case_jouee, float rayon)
 }
 
 /*!
- * \brief Fonction qui permet d'afficher un cercle de rayon donné
+ * \brief Fonction qui permet d'afficher un cercle de rayon donné.
  *
  * @param case_jouee Coordonnées de la case pour placer le cercle
  * @param rayon Rayon du cercle
@@ -417,12 +421,13 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 			return redirectExterieur;
 		}
 	case menuPrincipal:
+	case menuRegles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
 	case menuChoixSymboles:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
 	case menuVictoire:
+	case redirectMenuDefaite:
 		return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
-		//return redirectRecommencer;
 	default:
 		return redirectMenuPrincipal;
 	}
@@ -483,7 +488,7 @@ int gereEtatsClic(CASE * clic, int etatMenu)
 }
 
 /*!
- * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer
+ * \brief Fonction qui permet d'afficher une flèche sur les cases où le joueur peut jouer après une pioche.
  * @param case_jouee Case en pixels où la flèche doit être placée
  * @param pas Pas de la case
  * @param lectureCase Case (plateau) où la flèche doit être placée
@@ -551,31 +556,35 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 /*!
  * \brief Fonction qui redimensionne automatiquement pour garder un ratio minimal
  */
-void redimensionnementForce()
+void redimensionnementForce(int menu)
 {
 	int largeur;
 	int hauteur;
-	largeur = 20 + TAILLE_PLATEAU * 100 + 20;
-	hauteur = 20 + TAILLE_PLATEAU * 100 + 20;
+	largeur = 500;
+	hauteur = 580;
+	if (menu == menuRegles) {
+		largeur = 725;
+		hauteur = 650;
+	}
 	if ((largeurFenetre() < largeur) || (hauteurFenetre() < hauteur)) {
 		redimensionneFenetre(largeur, hauteur);
 	}
 }
 
 /*!
- * \brief Fonction qui redirige vers la bonne fonction d'affichage
+ * \brief Fonction qui redirige vers la bonne fonction d'affichage en fonction du menu envoyé.
  *
- * @param menu Menu vers lequel on souhaite être rediriger
- * @param LARGEURFenetre largeur de la fenêtre
- * @param HAUTEURFenetre hauteur de la fenêtre
- * @param coordonneesPlateau Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
- * @return Action a effectuer
+ * @param menu Menu qui doit être affiché
+ * @param LargeurFenetreCourante Largeur de la fenêtre
+ * @param HauteurFenetreCourante Hauteur de la fenêtre
+ * @param coordonneesGrille Pointeur vers un tableau contenant les coorodonnées en X et en Y des points Haut-Gauche et Bas-Droit du plateau
+ * @param imageRegles Pointeur vers l'image qui s'affiche dans le menu des règles de jeu
+ * @param joueurCourant Joueur courant de la partie
+ * @return 0
  */
-
 int gestionAffichage(int menu, int *coordonneesGrille,
 		     int LargeurFenetreCourante, int HauteurFenetreCourante,
-		     DonneesImageRGB * imageRegles, int nombreCoups,
-		     char nombre[20], int joueurCourant)
+		     DonneesImageRGB * imageRegles, int joueurCourant)
 {
 	switch (menu) {
 	case menuPrincipal:
@@ -600,27 +609,13 @@ int gestionAffichage(int menu, int *coordonneesGrille,
 		//Affichage du joueur courant
 		afficheJoueurCourant(joueurCourant, LargeurFenetreCourante,
 				     HauteurFenetreCourante);
-		// <-> Affichage du nombre d'appels à l'IA
-		sprintf(nombre, "%d", nombreCoups);
-		couleurCourante(255, 0, 0);
-		epaisseurDeTrait(1.5);
-		afficheChaine(nombre, 10, 40, 600);
-		// <->
-
 		break;
-
-		/*case menuVictoire:
-		   afficheChaine("Victoire de ", 40, 100, 100);
-		   sprintf(nombre, "%d", joueurCourant);
-		   couleurCourante(255, 0, 0);
-		   epaisseurDeTrait(1.5);
-		   afficheChaine(nombre, 40, 380, 100);
-		   break;
-		 */
 	case redirectMenuVictoire:
 		afficheVictoire(LargeurFenetreCourante, HauteurFenetreCourante,
 				joueurCourant);
-
+		break;
+	case redirectMenuDefaite:
+		afficheDefaite(LargeurFenetreCourante, HauteurFenetreCourante);
 		break;
 	case redirectQuitter:
 		libereDonneesImageRGB(&imageRegles);
@@ -652,43 +647,90 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	} else {
 		couleurCourante(65, 95, 157);
 	}
+	float largeurTexteTitre = 0.1 * LARGEURFenetre;
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsMode = tailleChaine("1 VS 1", largeurBoutons);
+	float largeurTexteBoutonsQ = tailleChaine("Quitter", largeurBoutons);
+	float largeurTexteBoutonsR = tailleChaine("Regles", largeurBoutons);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", 0.00013 * HAUTEURFenetre * LARGEURFenetre,
-		      0.4 * LARGEURFenetre, 0.85 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre,
+		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
+		      0.8 * HAUTEURFenetre);
 
 	epaisseurDeTrait(3);
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.7 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.55 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	//1VS1
 	rectangle(0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
 		  0.45 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("1 VS 1", 0.00007 * HAUTEURFenetre * LARGEURFenetre,
-		      0.18 * LARGEURFenetre, 0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS 1", largeurBoutons,
+		      (0.30 * LARGEURFenetre) - (largeurTexteBoutonsMode / 2),
+		      0.60 * HAUTEURFenetre);
 
 	//1 VS IA
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.7 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.55 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	rectangle(0.55 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
 		  0.85 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("1 VS IA", 0.000065 * HAUTEURFenetre * LARGEURFenetre,
-		      0.58 * LARGEURFenetre, 0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS IA", largeurBoutons,
+		      0.7 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
+		      0.60 * HAUTEURFenetre);
 
 	//Règles
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.45 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.3 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	rectangle(0.15 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
 		  0.45 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Regles", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.20 * LARGEURFenetre, 0.35 * HAUTEURFenetre);
+	afficheChaine("Regles", largeurBoutons,
+		      0.3 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
+		      0.35 * HAUTEURFenetre);
 
 	//Quitter
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.45 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.3 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	rectangle(0.55 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
 		  0.85 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quitter", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.60 * LARGEURFenetre, 0.35 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons,
+		      0.7 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
+		      0.35 * HAUTEURFenetre);
+
+	couleurCourante(65, 95, 157);
+	afficheChaine
+	    ("Cree par G. Desrumaux, M. Bouteille, P. Parrat, C. Bostyn",
+	     0.03 * LARGEURFenetre,
+	     LARGEURFenetre / 2 -
+	     (tailleChaine
+	      ("Cree par G. Desrumaux, M. Bouteille, P. Parrat, C. Bostyn",
+	       0.03 * LARGEURFenetre) / 2), 10);
 
 	return 0;
 }
@@ -701,36 +743,72 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
  */
 int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 {
-	//bleu
+	float largeurTexteTitre = 0.1 * LARGEURFenetre;
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsMode = tailleChaine("Retour", largeurBoutons);
+	float largeurTexteBoutonsC = tailleChaine("Croix", largeurBoutons);
+	float largeurTexteBoutonsR = tailleChaine("Cercle", largeurBoutons);
+	float largeurTexteSymbole =
+	    tailleChaine("Choisissez un symbole :", largeurBoutons);
+
+	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", 0.00013 * HAUTEURFenetre * LARGEURFenetre,
-		      0.4 * LARGEURFenetre, 0.85 * HAUTEURFenetre);
-	afficheChaine("Choisissez un symbole",
-		      0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.1 * LARGEURFenetre, 0.70 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre,
+		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
+		      0.8 * HAUTEURFenetre);
+	afficheChaine("Choisissez un symbole :", largeurBoutons,
+		      (LARGEURFenetre / 2) - (largeurTexteSymbole / 2),
+		      0.70 * HAUTEURFenetre);
 
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.6 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	//gauche
 	rectangle(0.15 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
 		  0.45 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
 	//gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("Croix", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.2 * LARGEURFenetre, 0.5 * HAUTEURFenetre);
+	afficheChaine("Croix", largeurBoutons,
+		      0.3 * LARGEURFenetre - (largeurTexteBoutonsC / 2),
+		      0.5 * HAUTEURFenetre);
 	//droite
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.6 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	rectangle(0.55 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
 		  0.85 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Cercle", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.6 * LARGEURFenetre, 0.5 * HAUTEURFenetre);
+	afficheChaine("Cercle", largeurBoutons,
+		      0.7 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
+		      0.5 * HAUTEURFenetre);
 
-	couleurCourante(65, 95, 157);
-	rectangle(0.35 * LARGEURFenetre, 0.3 * HAUTEURFenetre,
-		  0.65 * LARGEURFenetre, 0.15 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.35 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.3 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.65 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.15 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
+	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9),
+		  0.3 * HAUTEURFenetre,
+		  0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9),
+		  0.15 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Retour", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.40 * LARGEURFenetre, 0.20 * HAUTEURFenetre);
+	afficheChaine("Retour", largeurBoutons,
+		      0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
+		      0.20 * HAUTEURFenetre);
 
 	return 0;
 
@@ -746,26 +824,39 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
 		  int HAUTEURFenetre)
 {
+	float largeurTexteTitre = 0.1 * LARGEURFenetre;
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsMode = tailleChaine("Retour", largeurBoutons);
+
 	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", 0.00013 * HAUTEURFenetre * LARGEURFenetre,
-		      0.4 * LARGEURFenetre, 0.85 * HAUTEURFenetre);
-
-	rectangle(0.35 * LARGEURFenetre, 0.3 * HAUTEURFenetre,
-		  0.65 * LARGEURFenetre, 0.15 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre,
+		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
+		      0.8 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.35 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.3 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.65 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.15 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
+	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9),
+		  0.3 * HAUTEURFenetre,
+		  0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9),
+		  0.15 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("Retour", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.40 * LARGEURFenetre, 0.20 * HAUTEURFenetre);
+	afficheChaine("Retour", largeurBoutons,
+		      0.50 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
+		      0.20 * HAUTEURFenetre);
 	if (image != NULL) {
 		ecrisImage((largeurFenetre() - image->largeurImage) / 2,
 			   (hauteurFenetre() - image->hauteurImage) / 1.5,
 			   image->largeurImage, image->hauteurImage,
 			   image->donneesRGB);
 	}
-	afficheChaine("Retour", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.40 * LARGEURFenetre, 0.20 * HAUTEURFenetre);
 	return 0;
 }
 
@@ -818,7 +909,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.15 * HAUTEURFenetre)) {
-			clicSouris->menu = redirectMenuPrincipal;
+			return redirectMenuPrincipal;
 		}
 
 		return (clicSouris->menu);
@@ -853,14 +944,14 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		   || clicSouris->menu == redirectSurbrillance) {
 		//Règles
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
+		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.05 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuRegles;
 		}
 		//Menu Principal
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
+		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
 		    && (clicSouris->coordY >= 0.05 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectMenuPrincipal;
@@ -873,14 +964,30 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
 		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.13 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectRecommencer;
 		}
 		//Quitter
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
 		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
 		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.13 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectQuitter;
+		}
+		return (clicSouris->menu);
+	} else if (clicSouris->menu == redirectMenuDefaite) {
+		//Menu Principal
+		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+			clicSouris->menu = redirectRecommencerDef;
+		}
+		//Quitter
+		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
+		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
+		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
 			clicSouris->menu = redirectQuitter;
 		}
 		return (clicSouris->menu);
@@ -897,51 +1004,91 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
  */
 int afficheBouton(int LARGEURFenetre, int HAUTEURFenetre)
 {
-
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsQ = tailleChaine("Menu", largeurBoutons);
+	float largeurTexteBoutonsR = tailleChaine("Regles", largeurBoutons);
 //Bleu
-	couleurCourante(65, 95, 157);
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.2 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.05 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	//Rectangle gauche
-	rectangle(0.10 * LARGEURFenetre, 0.15 * HAUTEURFenetre,
+	rectangle(0.10 * LARGEURFenetre, 0.2 * HAUTEURFenetre,
 		  0.40 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
 	//Rectangle droite
-	rectangle(0.60 * LARGEURFenetre, 0.15 * HAUTEURFenetre,
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.2 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.05 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
+	rectangle(0.60 * LARGEURFenetre, 0.2 * HAUTEURFenetre,
 		  0.90 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
 	epaisseurDeTrait(2);
-	afficheChaine("Regles", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.15 * LARGEURFenetre, 0.08 * HAUTEURFenetre);
-	afficheChaine("Menu", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.675 * LARGEURFenetre, 0.08 * HAUTEURFenetre);
+	afficheChaine("Regles", largeurBoutons,
+		      0.25 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
+		      0.1 * HAUTEURFenetre);
+	afficheChaine("Menu", largeurBoutons,
+		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
+		      0.1 * HAUTEURFenetre);
 
 	return 0;
 }
 
 /*!
  * \brief Fonction qui affiche le joueur courant dans le menu partie
- * @param LARGEURFenetre largeur de la fenêtre
- * @param HAUTEURFenetre hauteur de la fenêtre
- * @param joueurcourant joueur qui doit jouer
+ * @param LARGEURFenetre Largeur de la fenêtre
+ * @param HAUTEURFenetre Hauteur de la fenêtre
+ * @param joueurCourant Joueur qui doit jouer
  * @return 0
  */
 int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 			 int HAUTEURFenetre)
-{				//bleu
+{
+	int largeurTitre = tailleChaine("Quixo", 0.025 * LARGEURFenetre);
+	//bleu
 	couleurCourante(65, 95, 157);
-	epaisseurDeTrait(3.5);
+	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 50);
+	epaisseurDeTrait(1.5);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Quixo", 0.025 * LARGEURFenetre,
+		      0.5 * LARGEURFenetre - (largeurTitre / 2),
+		      HAUTEURFenetre - 45);
+
+	CASE caseADessinerCroix, caseADessinerRond;
+	caseADessinerCroix.colonne = 25;
+	caseADessinerCroix.ligne = HAUTEURFenetre - 60 - 25;
+
+	caseADessinerRond.colonne = LARGEURFenetre - 25;
+	caseADessinerRond.ligne = HAUTEURFenetre - 60 - 25;
+
 	if (joueurCourant == 3) {
-		//Coin haut gauche
-		afficheChaine("Joueur X ",
-			      0.00005 * HAUTEURFenetre * LARGEURFenetre,
-			      0.05 * LARGEURFenetre, 0.9 * HAUTEURFenetre);
+		couleurCourante(65, 95, 157);
+	} else {
+		couleurCourante(150, 150, 150);
 	}
+	rectangle(0, HAUTEURFenetre - 60, 50, HAUTEURFenetre - 60 - 50);
+	couleurCourante(239, 240, 255);
+	afficheCroixPoint(&caseADessinerCroix, 45, 2);
+
 	if (joueurCourant == 4) {
-
-		afficheChaine("Joueur O ",
-			      0.00005 * HAUTEURFenetre * LARGEURFenetre,
-			      0.05 * LARGEURFenetre, 0.9 * HAUTEURFenetre);
+		couleurCourante(65, 95, 157);
+	} else {
+		couleurCourante(150, 150, 150);
 	}
-
+	//Coin haut gauche
+	rectangle(LARGEURFenetre - 50, HAUTEURFenetre - 60, LARGEURFenetre,
+		  HAUTEURFenetre - 60 - 50);
+	couleurCourante(239, 240, 255);
+	afficheRondPoint(&caseADessinerRond, 15, 2);
 	return 0;
 }
 
@@ -949,38 +1096,81 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
  * \brief Fonction qui affiche le score
  * @param LARGEURFenetre largeur de la fenêtre
  * @param HAUTEURFenetre hauteur de la fenêtre
+ * @param joueurCourant Joueur ayant gagné la partie
  * @return 0
  */
 int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 {
-	//bleu
+	float largeurTexteTitre = 0.1 * LARGEURFenetre;
+	float largeurTexte = 0.08 * LARGEURFenetre;
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsMode = tailleChaine("Rejouer", largeurBoutons);
+	float largeurTexteBoutonsQ = tailleChaine("Quitter", largeurBoutons);
+
+	//Bleu
 	couleurCourante(65, 95, 157);
-	afficheChaine("Quixo", 0.00013 * HAUTEURFenetre * LARGEURFenetre,
-		      0.4 * LARGEURFenetre, 0.85 * HAUTEURFenetre);
+	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 180);
+	epaisseurDeTrait(3.5);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Quixo", largeurTexteTitre,
+		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
+		      0.8 * HAUTEURFenetre);
+	couleurCourante(65, 95, 157);
+	afficheChaine("Bravo",
+		      largeurTexte,
+		      0.5 * LARGEURFenetre -
+		      (tailleChaine("Bravo", largeurTexte) / 2) -
+		      (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
+	CASE dessin;
+	dessin.colonne =
+	    (int)(0.5 * LARGEURFenetre +
+		  (tailleChaine("Bravo", largeurTexte) / 2));
+	dessin.ligne = (int)(0.6 * HAUTEURFenetre + largeurTexte / 2.5);
 	if (joueurCourant == 3) {
-		afficheChaine("Le gagnant est le joueur avec les X ",
-			      0.00006 * HAUTEURFenetre * LARGEURFenetre,
-			      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
+		afficheCroixPoint(&dessin, largeurTexteTitre, 2);
+	} else if (joueurCourant == 4) {
+		afficheRondPoint(&dessin, largeurTexteTitre / 3, 2);
 	}
-	if (joueurCourant == 4) {
-		afficheChaine("Le gagnant est le joueur avec les O ",
-			      0.00006 * HAUTEURFenetre * LARGEURFenetre,
-			      0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre);
+	afficheChaine("!", largeurTexte,
+		      0.5 * LARGEURFenetre +
+		      (tailleChaine("Bravo", largeurTexte) / 2) +
+		      (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
+	afficheChaine("Tu as gagne !", largeurTexte,
+		      0.5 * LARGEURFenetre -
+		      (tailleChaine("Tu as gagne !", largeurTexte) / 2),
+		      0.45 * HAUTEURFenetre);
+
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
 	}
 	//Rectangle gauche
 	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.40 * LARGEURFenetre, 0.13 * HAUTEURFenetre);
+		  0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
 	//Rectangle droite
 	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.90 * LARGEURFenetre, 0.13 * HAUTEURFenetre);
+		  0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
 	epaisseurDeTrait(2);
-	afficheChaine("Rejouer", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.13 * LARGEURFenetre, 0.17 * HAUTEURFenetre);
-	afficheChaine("Quitter", 0.00008 * HAUTEURFenetre * LARGEURFenetre,
-		      0.64 * LARGEURFenetre, 0.17 * HAUTEURFenetre);
-
+	afficheChaine("Rejouer", largeurBoutons,
+		      0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
+		      0.15 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons,
+		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
+		      0.15 * HAUTEURFenetre);
 	return 0;
 }
 
@@ -1006,4 +1196,71 @@ void assigneTaillePlateau(int *coordonneesPlateau)
 		coordonneesPlateau[2] = largeurMilieu + tailleY;
 		coordonneesPlateau[3] = hauteurMilieu - tailleY + 40;
 	}
+}
+
+/*!
+ * \brief Fonction qui permet d'afficher le menu de défaite lorsque le joueur perd contre l'ordinateur
+ *
+ * @param LARGEURFenetre Largeur de la fenêtre en pixels
+ * @param HAUTEURFenetre Hauteur de la fenêtre en pixels
+ */
+void afficheDefaite(int LARGEURFenetre, int HAUTEURFenetre)
+{
+	float largeurTexte = 0.05 * LARGEURFenetre;
+	couleurCourante(65, 95, 157);
+	afficheChaine("Desole tu as",
+		      largeurTexte,
+		      0.5 * LARGEURFenetre -
+		      (tailleChaine("Desole tu as", largeurTexte) / 2),
+		      0.6 * HAUTEURFenetre);
+	afficheChaine("perdu contre l'ordinateur", largeurTexte,
+		      0.5 * LARGEURFenetre -
+		      (tailleChaine("perdu contre l'ordinateur", largeurTexte) /
+		       2), 0.5 * HAUTEURFenetre);
+
+	float largeurTexteTitre = 0.1 * LARGEURFenetre;
+	float largeurBoutons = 0.05 * LARGEURFenetre;
+	float largeurTexteBoutonsMode = tailleChaine("Rejouer", largeurBoutons);
+	float largeurTexteBoutonsQ = tailleChaine("Quitter", largeurBoutons);
+
+	//Bleu
+	couleurCourante(65, 95, 157);
+	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 180);
+	epaisseurDeTrait(3.5);
+	couleurCourante(239, 240, 255);
+	afficheChaine("Quixo", largeurTexteTitre,
+		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
+		      0.8 * HAUTEURFenetre);
+
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
+	//Rectangle gauche
+	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
+		  0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
+	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
+	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+		couleurCourante(90, 105, 180);
+	} else {
+		couleurCourante(65, 95, 157);
+	}
+	//Rectangle droite
+	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
+		  0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	//Gris
+	couleurCourante(239, 240, 255);
+	epaisseurDeTrait(2);
+	afficheChaine("Rejouer", largeurBoutons,
+		      0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
+		      0.15 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons,
+		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
+		      0.15 * HAUTEURFenetre);
 }

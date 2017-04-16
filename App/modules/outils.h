@@ -41,7 +41,7 @@
 /*!
  * \brief Profondeur maximale de recherche IA
  */
-#define PROFONDEUR_LIMITE 7
+#define PROFONDEUR_LIMITE 8
 
 /*!
  * \brief Largeur de la fenêtre graphique

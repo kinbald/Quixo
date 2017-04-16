@@ -190,8 +190,7 @@ void initScore(SCORE * scoreJoueur, int nombreJoueurs, int *joueurs);
  * @param joueur Joueur courant à modifier
  * @param nouveauScore Score à modifier
  */
-void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur,
-	      int nouveauScore);
+void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur, int nouveauScore);
 
 /*!
  * \brief Fonction qui permet de récupérer un score à partir du tableau des scores et d'un joueur.

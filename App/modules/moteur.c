@@ -24,8 +24,7 @@ extern SCORE scores[2];
  * @param ligneJouee Ligne de la case de surbrillance choisie
  * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
 */
-int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
-	     int colonneJouee, int ligneJouee)
+int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJouee)
 {
 	int differenceColonne = 0;
 	int differenceLigne = 0;
@@ -42,7 +41,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 	differenceColonne = colonnePiochee - colonneJouee;
 	differenceLigne = lignePiochee - ligneJouee;
 
-	if (differenceLigne == 0) {
+	if (differenceLigne == 0)
+	{
 		decalage = abs(differenceColonne);	// valeur absolue de la difference pour savoir combien de déclage on doit faire
 
 		GET.ligne = ligneJouee;
@@ -54,12 +54,15 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 		setCase(plateau, &SET, getCase(plateau, &GET));	// valeur de la case jouee
 
 		//si cette condition est vérifier on effectura un déplacement bas vers le haut
-		if (differenceColonne > 0) {
+		if (differenceColonne > 0)
+		{
 			i = colonneJouee;
 
-			while (verif_increment <= decalage) {
+			while (verif_increment <= decalage)
+			{
 
-				if (i % 2 == 0) {
+				if (i % 2 == 0)
+				{
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
 					memmoire2 = getCase(plateau, &GET);
@@ -67,7 +70,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
 					setCase(plateau, &SET, memmoire3);
-				} else {
+				} else
+				{
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
 					memmoire3 = getCase(plateau, &GET);
@@ -82,10 +86,13 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 			}
 			ok = 0;
 			//si cette condition est vérifier on effectura un déplacement Haut vers le bas
-		} else if (differenceColonne < 0) {
+		} else if (differenceColonne < 0)
+		{
 			i = colonneJouee;
-			while (verif_increment <= decalage) {
-				if (i % 2 == 0) {
+			while (verif_increment <= decalage)
+			{
+				if (i % 2 == 0)
+				{
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
 					memmoire2 = getCase(plateau, &GET);
@@ -93,7 +100,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 					SET.ligne = ligneJouee;
 					SET.colonne = i;
 					setCase(plateau, &SET, memmoire3);
-				} else {
+				} else
+				{
 					GET.ligne = ligneJouee;
 					GET.colonne = i;
 					memmoire3 = getCase(plateau, &GET);
@@ -107,7 +115,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 			}
 			ok = 0;
 		}
-	} else if (differenceColonne == 0) {
+	} else if (differenceColonne == 0)
+	{
 		decalage = abs(differenceLigne);
 
 		GET.ligne = ligneJouee;
@@ -119,12 +128,15 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 		setCase(plateau, &SET, getCase(plateau, &GET));	// valeur de la case jouee
 
 		//si cette condition est vérifier on effectura un déplacement droite  vers la gauche
-		if (differenceLigne > 0) {
+		if (differenceLigne > 0)
+		{
 			i = ligneJouee;
 
-			while (verif_increment <= decalage) {
+			while (verif_increment <= decalage)
+			{
 
-				if (i % 2 == 0) {
+				if (i % 2 == 0)
+				{
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
 					memmoire2 = getCase(plateau, &GET);
@@ -132,7 +144,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
 					setCase(plateau, &SET, memmoire3);
-				} else {
+				} else
+				{
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
 					memmoire3 = getCase(plateau, &GET);
@@ -146,12 +159,15 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 			}
 			ok = 0;
 			//si cette condition est vérifier on effectura un déplacement gauche vers la droite
-		} else if (differenceLigne < 0) {
+		} else if (differenceLigne < 0)
+		{
 			i = ligneJouee;
 
-			while (verif_increment <= decalage) {
+			while (verif_increment <= decalage)
+			{
 
-				if (i % 2 == 0) {
+				if (i % 2 == 0)
+				{
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
 					memmoire2 = getCase(plateau, &GET);
@@ -159,7 +175,8 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
 					SET.ligne = i;
 					SET.colonne = colonneJouee;
 					setCase(plateau, &SET, memmoire3);
-				} else {
+				} else
+				{
 					GET.ligne = i;
 					GET.colonne = colonneJouee;
 					memmoire3 = getCase(plateau, &GET);
@@ -185,20 +202,23 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
  */
 int testeVictoireLigne1V1(PLATEAU * plateau, int joueurCourant)
 {
-	int colonne = 0, ligne = 0, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int colonne = 0, ligne = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 
 	CASE GET;
 
-	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++)
+	{
+		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++)
+		{
 			GET.ligne = ligne;
 			GET.colonne = colonne;
-			if (getCase(plateau, &GET) == joueurCourant) {
+			if (getCase(plateau, &GET) == joueurCourant)
+			{
 				increment++;
 			}
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 		increment = 0;
@@ -214,19 +234,22 @@ int testeVictoireLigne1V1(PLATEAU * plateau, int joueurCourant)
  */
 int testeVictoireColonne1V1(PLATEAU * plateau, int joueurCourant)
 {
-	int colonne = 0, ligne = 0, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int colonne = 0, ligne = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++)
+	{
+		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++)
+		{
 			GET.ligne = ligne;
 			GET.colonne = colonne;
-			if (getCase(plateau, &GET) == joueurCourant) {
+			if (getCase(plateau, &GET) == joueurCourant)
+			{
 				increment++;
 			}
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 		increment = 0;
@@ -244,13 +267,16 @@ int testeVictoireDiagonaleG1V1(PLATEAU * plateau, int joueurCourant)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++)
+	{
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
-		if (getCase(plateau, &GET) == joueurCourant) {
+		if (getCase(plateau, &GET) == joueurCourant)
+		{
 			increment++;
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 	}
@@ -265,17 +291,19 @@ int testeVictoireDiagonaleG1V1(PLATEAU * plateau, int joueurCourant)
  */
 int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant)
 {
-	int ligne = 0, colonne = 1, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int ligne = 0, colonne = 1, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1)
+	{
 		GET.ligne = ligne;
 		GET.colonne = colonne;
-		if (getCase(plateau, &GET) == joueurCourant) {
+		if (getCase(plateau, &GET) == joueurCourant)
+		{
 			increment++;
 		}
 		colonne = colonne + 1;
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 	}
@@ -289,24 +317,25 @@ int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant)
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
-			  int joueurAllier)
+int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 {
-	int colonne = 0, ligne = 0, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int colonne = 0, ligne = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
-		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
+	for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++)
+	{
+		for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++)
+		{
 			GET.ligne = ligne;
 			GET.colonne = colonne;
 			//printf("valeur case = %d\n" , TEST[ligne][colonne]) ;
-			if ((getCase(plateau, &GET) == joueurCourant)
-			    || (getCase(plateau, &GET) == joueurAllier)) {
+			if ((getCase(plateau, &GET) == joueurCourant) || (getCase(plateau, &GET) == joueurAllier))
+			{
 				increment++;
 				//printf("increment  = %d\n" , increment);
 			}
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 		increment = 0;
@@ -321,22 +350,23 @@ int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
-			    int joueurAllier)
+int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 {
-	int colonne = 0, ligne = 0, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int colonne = 0, ligne = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++) {
-		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++) {
+	for (colonne = 1; colonne < TAILLE_PLATEAU - 1; colonne++)
+	{
+		for (ligne = 1; ligne < TAILLE_PLATEAU - 1; ligne++)
+		{
 			GET.ligne = ligne;
 			GET.colonne = colonne;
-			if ((getCase(plateau, &GET) == joueurCourant)
-			    || (getCase(plateau, &GET) == joueurAllier)) {
+			if ((getCase(plateau, &GET) == joueurCourant) || (getCase(plateau, &GET) == joueurAllier))
+			{
 				increment++;
 			}
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 		increment = 0;
@@ -351,20 +381,21 @@ int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
-			       int joueurAllier)
+int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 {
 	int diagonale = 0, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
 
-	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++) {
+	for (diagonale = 1; diagonale < TAILLE_PLATEAU - 1; diagonale++)
+	{
 		GET.ligne = diagonale;
 		GET.colonne = diagonale;
-		if ((getCase(plateau, &GET) == joueurCourant)
-		    || (getCase(plateau, &GET) == joueurAllier)) {
+		if ((getCase(plateau, &GET) == joueurCourant) || (getCase(plateau, &GET) == joueurAllier))
+		{
 			increment++;
 		}
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 	}
@@ -378,21 +409,21 @@ int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
-			       int joueurAllier)
+int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 {
-	int ligne = 0, colonne = 1, gagnant = -1, increment =
-	    0, nbrcasetableau = 5;
+	int ligne = 0, colonne = 1, gagnant = -1, increment = 0, nbrcasetableau = 5;
 	CASE GET;
-	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1) {
+	for (ligne = TAILLE_PLATEAU - 2; ligne > 0; ligne = ligne - 1)
+	{
 		GET.ligne = ligne;
 		GET.colonne = colonne;
-		if ((getCase(plateau, &GET) == joueurCourant)
-		    || (getCase(plateau, &GET) == joueurAllier)) {
+		if ((getCase(plateau, &GET) == joueurCourant) || (getCase(plateau, &GET) == joueurAllier))
+		{
 			increment++;
 		}
 		colonne = colonne + 1;
-		if ((increment == nbrcasetableau)) {
+		if ((increment == nbrcasetableau))
+		{
 			return (gagnant = joueurCourant);
 		}
 	}
@@ -411,58 +442,61 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier)
 {
 	int ligne = 0, colonne = 0, diagonaleG = 0, diagonaleD = 0, aucun = -1;
 
-	if (joueurAllier == 0) {
+	if (joueurAllier == 0)
+	{
 		ligne = testeVictoireLigne1V1(plateau, joueurCourant);
-		if (ligne == joueurCourant) {
+		if (ligne == joueurCourant)
+		{
 			//printf("victoire en ligne !! \n");
 			return (ligne);
 		}
 
 		colonne = testeVictoireColonne1V1(plateau, joueurCourant);
-		if (colonne == joueurCourant) {
+		if (colonne == joueurCourant)
+		{
 			//printf("victoire en colonne !! \n");
 			return (colonne);
 		}
 
 		diagonaleG = testeVictoireDiagonaleG1V1(plateau, joueurCourant);
-		if (diagonaleG == joueurCourant) {
+		if (diagonaleG == joueurCourant)
+		{
 			//printf("victoire en diagonale gauche !! \n");
 			return (diagonaleG);
 		}
 
 		diagonaleD = testeVictoireDiagonaleD1V1(plateau, joueurCourant);
-		if (diagonaleD == joueurCourant) {
+		if (diagonaleD == joueurCourant)
+		{
 			//printf("victoire en diagonale droite !! \n");
 			return (diagonaleD);
 		}
-	} else {
-		ligne =
-		    testeVictoireLigne2V2(plateau, joueurCourant, joueurAllier);
-		if (ligne == joueurCourant) {
+	} else
+	{
+		ligne = testeVictoireLigne2V2(plateau, joueurCourant, joueurAllier);
+		if (ligne == joueurCourant)
+		{
 			//printf("victoire en ligne !! \n");
 			return (ligne);
 		}
 
-		colonne =
-		    testeVictoireColonne2V2(plateau, joueurCourant,
-					    joueurAllier);
-		if (colonne == joueurCourant) {
+		colonne = testeVictoireColonne2V2(plateau, joueurCourant, joueurAllier);
+		if (colonne == joueurCourant)
+		{
 			//printf("victoire en colonne !! \n");
 			return (colonne);
 		}
 
-		diagonaleG =
-		    testeVictoireDiagonaleG2V2(plateau, joueurCourant,
-					       joueurAllier);
-		if (diagonaleG == joueurCourant) {
+		diagonaleG = testeVictoireDiagonaleG2V2(plateau, joueurCourant, joueurAllier);
+		if (diagonaleG == joueurCourant)
+		{
 			//printf("victoire en diagonale gauche !! \n");
 			return (diagonaleG);
 		}
 
-		diagonaleD =
-		    testeVictoireDiagonaleD2V2(plateau, joueurCourant,
-					       joueurAllier);
-		if (diagonaleD == joueurCourant) {
+		diagonaleD = testeVictoireDiagonaleD2V2(plateau, joueurCourant, joueurAllier);
+		if (diagonaleD == joueurCourant)
+		{
 			//printf("victoire en diagonale droite !! \n");
 			return (diagonaleD);
 		}
@@ -478,18 +512,18 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier)
  * @param joueurAllier Joueur allier (facultatif : 0)
  * @return
  */
-int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
-				int joueurAllier)
+int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant, int joueurAllier)
 {
 	int victoire;
-	victoire = testeVictoire(plateau, changeJoueur(*joueurCourant),
-				 joueurAllier);
-	if (victoire != -1) {
+	victoire = testeVictoire(plateau, changeJoueur(*joueurCourant), joueurAllier);
+	if (victoire != -1)
+	{
 		*joueurCourant = changeJoueur(*joueurCourant);
 		return 2;
 	}
 	victoire = testeVictoire(plateau, *joueurCourant, joueurAllier);
-	if (victoire != -1) {
+	if (victoire != -1)
+	{
 		return 1;
 	}
 	return 0;
@@ -507,9 +541,11 @@ int verifieSymbole(PLATEAU * plateau, CASE * clicJoueur, int joueurCourant)
 {
 	int joueur = getCase(plateau, clicJoueur);
 
-	if (joueur == joueurCourant || joueur == vide) {
+	if (joueur == joueurCourant || joueur == vide)
+	{
 		return 0;
-	} else {
+	} else
+	{
 		return -1;
 	}
 }
@@ -532,7 +568,8 @@ int calculeSurbrillance(CASE * casePiochee)
 	int y = casePiochee->ligne;
 
 	// Vérification du cas des quatre coins
-	if ((x == 1 || x == 5) && (y == 1 || y == 5)) {
+	if ((x == 1 || x == 5) && (y == 1 || y == 5))
+	{
 		// Seulement deux mouvements possibles
 		nb_mouvements = 2;
 
@@ -543,11 +580,13 @@ int calculeSurbrillance(CASE * casePiochee)
 		// Deuxieme mouvement possible
 		move[1][0] = x;
 		move[1][1] = ((y + 5) % 10);
-	} else {
+	} else
+	{
 		// Trois mouvements possibles
 		nb_mouvements = 3;
 
-		if (x == 1 || x == 5) {
+		if (x == 1 || x == 5)
+		{
 			// Premier mouvement possible
 			move[0][0] = ((x + 5) % 10);
 			move[0][1] = y;
@@ -559,7 +598,8 @@ int calculeSurbrillance(CASE * casePiochee)
 			// Troisième mouvement possible
 			move[2][0] = x;
 			move[2][1] = 6;
-		} else {
+		} else
+		{
 			// Premier mouvement possible
 			move[0][0] = x;
 			move[0][1] = ((y + 5) % 10);
@@ -574,7 +614,8 @@ int calculeSurbrillance(CASE * casePiochee)
 		}
 	}
 	// Modification des cases du plateau à partir du tableau des surbrillances
-	for (index_move = 0; index_move < nb_mouvements; index_move++) {
+	for (index_move = 0; index_move < nb_mouvements; index_move++)
+	{
 		surbrillanceCase.colonne = move[index_move][0];
 		surbrillanceCase.ligne = move[index_move][1];
 		setCase(&plateau_jeu, &surbrillanceCase, surbrillance);
@@ -591,11 +632,14 @@ void nettoieSurbrillance(PLATEAU * plateau)
 {
 	int index_li, index_col;
 	CASE emplacement;
-	for (index_li = 0; index_li < TAILLE_PLATEAU; index_li++) {
-		for (index_col = 0; index_col < TAILLE_PLATEAU; index_col++) {
+	for (index_li = 0; index_li < TAILLE_PLATEAU; index_li++)
+	{
+		for (index_col = 0; index_col < TAILLE_PLATEAU; index_col++)
+		{
 			emplacement.colonne = index_col;
 			emplacement.ligne = index_li;
-			if (getCase(plateau, &emplacement) == surbrillance) {
+			if (getCase(plateau, &emplacement) == surbrillance)
+			{
 				setCase(plateau, &emplacement, tampon);
 			}
 		}
@@ -612,42 +656,43 @@ void nettoieSurbrillance(PLATEAU * plateau)
  * @param modeJeu Mode de jeu courant
  * @return
  */
-int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
-		CASE * casePiochee, int modeJeu)
+int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee, CASE * casePiochee, int modeJeu)
 {
 	int victoire;
-	switch (etatClic) {
+	switch (etatClic)
+	{
 	case menuPartie:
 		return menuPartie;
 	case redirectPioche:
-		if (verifieSymbole(&plateau_jeu, caseJouee, *joueurCourant) == 0
-		    || verifieSymbole(&plateau_jeu, caseJouee, vide) == 0) {
+		if (verifieSymbole(&plateau_jeu, caseJouee, *joueurCourant) == 0 || verifieSymbole(&plateau_jeu, caseJouee, vide) == 0)
+		{
 			casePiochee->ligne = caseJouee->ligne;
 			casePiochee->colonne = caseJouee->colonne;
 			calculeSurbrillance(caseJouee);
 			return redirectSurbrillance;
-		} else {
+		} else
+		{
 			return menuPartie;
 		}
 	case redirectContinue:
-		if (verifieSymbole(&plateau_jeu, caseJouee, surbrillance) == 0) {
+		if (verifieSymbole(&plateau_jeu, caseJouee, surbrillance) == 0)
+		{
 			setCase(&plateau_jeu, caseJouee, *joueurCourant);
-			decalage(&plateau_jeu, casePiochee->colonne,
-				 casePiochee->ligne, caseJouee->colonne,
-				 caseJouee->ligne);
+			decalage(&plateau_jeu, casePiochee->colonne, casePiochee->ligne, caseJouee->colonne, caseJouee->ligne);
 			nettoieSurbrillance(&plateau_jeu);
 
-			victoire =
-			    testeVictoireCasParticulier(&plateau_jeu,
-							joueurCourant, 0);
-			if (modeJeu == VIA && victoire == 2) {
+			victoire = testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
+			if (modeJeu == VIA && victoire == 2)
+			{
 				return redirectMenuDefaite;
 			}
-			if (victoire == 1) {
+			if (victoire == 1)
+			{
 				return redirectMenuVictoire;
 			}
 			return redirectAdversaire;
-		} else {
+		} else
+		{
 			return redirectSurbrillance;
 		}
 	case redirectRePioche:
@@ -656,11 +701,12 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 		return menuPartie;
 	case jeuIA:
 		mouvementIA(&plateau_jeu, *joueurCourant);
-		victoire =
-		    testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
-		if (victoire == 1) {
+		victoire = testeVictoireCasParticulier(&plateau_jeu, joueurCourant, 0);
+		if (victoire == 1)
+		{
 			return redirectMenuDefaite;
-		} else if (victoire == 2) {
+		} else if (victoire == 2)
+		{
 			return redirectMenuVictoire;
 		}
 		*joueurCourant = changeJoueur(*joueurCourant);
@@ -681,8 +727,7 @@ int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
 void joueCoup(PLATEAU * plateau, CASE casePioche, CASE jouee, int joueur)
 {
 	setCase(plateau, &jouee, joueur);
-	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne,
-		 jouee.ligne);
+	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne, jouee.ligne);
 	setCase(plateau, &jouee, tampon);
 }
 
@@ -695,8 +740,7 @@ void joueCoup(PLATEAU * plateau, CASE casePioche, CASE jouee, int joueur)
  */
 void dejoueCoup(PLATEAU * plateau, CASE casePioche, CASE jouee, int ancienEtat)
 {
-	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne,
-		 jouee.ligne);
+	decalage(plateau, casePioche.colonne, casePioche.ligne, jouee.colonne, jouee.ligne);
 	setCase(plateau, &jouee, ancienEtat);
 	setCase(plateau, &casePioche, tampon);
 }
@@ -722,8 +766,7 @@ int changeJoueur(int joueur)
  * @param beta Elagage beta
  * @return
  */
-int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
-	   int isMax, int alpha, int beta)
+int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth, int isMax, int alpha, int beta)
 {
 	// Index des boucles
 	int index_ligne, index_colonne, index_move;
@@ -744,8 +787,8 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 	int evaluation = 0;
 
 	// Si on dépasse la profondeur maximale ou s'il y a un gagnant
-	if (depth >= PROFONDEUR_LIMITE
-	    || testeVictoire(plateau, joueur, 0) != -1) {
+	if (depth >= PROFONDEUR_LIMITE || testeVictoire(plateau, joueur, 0) != -1)
+	{
 		// On évalue le plateau
 		evaluation = evaluePlateau(plateau, joueur);
 		/*// Si le coup est pour l'adversaire, on maximise l'importance
@@ -754,177 +797,116 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 		   } else if (evaluation == joueur) {
 		   evaluation *= -1;
 		   } */
-	} else {
+	} else
+	{
 		int prochaineEvaluation = 0;
-		for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1;
-		     index_ligne++) {
-			for (index_colonne = 1;
-			     index_colonne < TAILLE_PLATEAU - 1;
-			     index_colonne++) {
+		for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++)
+		{
+			for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1; index_colonne++)
+			{
 				// On parcourt la plateau de façon aléatoire
-				index_colonneRandA =
-				    ((index_colonne +
-				      valeurAleaCol) % (TAILLE_PLATEAU - 2)) +
-				    1;
-				index_ligneRandA =
-				    ((index_ligne +
-				      valeurAleaLi) % (TAILLE_PLATEAU - 2)) + 1;
+				index_colonneRandA = ((index_colonne + valeurAleaCol) % (TAILLE_PLATEAU - 2)) + 1;
+				index_ligneRandA = ((index_ligne + valeurAleaLi) % (TAILLE_PLATEAU - 2)) + 1;
 				caseCourante.colonne = index_colonneRandA;
 				caseCourante.ligne = index_ligneRandA;
 				// Si la case est sur l'extrémité du plateau
-				if (index_colonneRandA == 5
-				    || index_colonneRandA == 1
-				    || index_ligneRandA == 5
-				    || index_ligneRandA == 1) {
-					int valCase =
-					    getCase(plateau, &caseCourante);
+				if (index_colonneRandA == 5 || index_colonneRandA == 1 || index_ligneRandA == 5 || index_ligneRandA == 1)
+				{
+					int valCase = getCase(plateau, &caseCourante);
 					// La case est jouable (vide ou le joueur peut repiocher son pion)
-					if (valCase == vide
-					    || valCase == joueur) {
-						if ((index_colonneRandA == 1
-						     || index_colonneRandA == 5)
-						    && (index_ligneRandA == 1
-							|| index_ligneRandA ==
-							5)) {
+					if (valCase == vide || valCase == joueur)
+					{
+						if ((index_colonneRandA == 1 || index_colonneRandA == 5) && (index_ligneRandA == 1 || index_ligneRandA == 5))
+						{
 							// Seulement deux mouvements possibles
 							nombre_mouvements = 2;
 							// Premier mouvement possible
-							mouvementsPossibles[0]
-							    [0] =
-							    ((index_colonneRandA
-							      + 5) % 10);
-							mouvementsPossibles[0]
-							    [1] =
-							    index_ligneRandA;
+							mouvementsPossibles[0][0] = ((index_colonneRandA + 5) % 10);
+							mouvementsPossibles[0][1] = index_ligneRandA;
 							// Deuxieme mouvement possible
-							mouvementsPossibles[1]
-							    [0] =
-							    index_colonneRandA;
-							mouvementsPossibles[1]
-							    [1] =
-							    ((index_ligneRandA +
-							      5) % 10);
-						} else {
+							mouvementsPossibles[1][0] = index_colonneRandA;
+							mouvementsPossibles[1][1] = ((index_ligneRandA + 5) % 10);
+						} else
+						{
 							// Trois mouvements possibles
 							nombre_mouvements = 3;
-							if (index_colonneRandA
-							    == 1
-							    ||
-							    index_colonneRandA
-							    == 5) {
+							if (index_colonneRandA == 1 || index_colonneRandA == 5)
+							{
 								// Premier mouvement possible
-								mouvementsPossibles
-								    [0][0] =
-								    ((index_colonneRandA + 5) % 10);
-								mouvementsPossibles
-								    [0][1] =
-								    index_ligneRandA;
+								mouvementsPossibles[0][0] = ((index_colonneRandA + 5) % 10);
+								mouvementsPossibles[0][1] = index_ligneRandA;
 								// Deuxième mouvement possible
-								mouvementsPossibles
-								    [1][0] =
-								    index_colonneRandA;
-								mouvementsPossibles
-								    [1][1] = 0;
+								mouvementsPossibles[1][0] = index_colonneRandA;
+								mouvementsPossibles[1][1] = 0;
 								// Troisième mouvement possible
-								mouvementsPossibles
-								    [2][0] =
-								    index_colonneRandA;
-								mouvementsPossibles
-								    [2][1] = 6;
-							} else {
+								mouvementsPossibles[2][0] = index_colonneRandA;
+								mouvementsPossibles[2][1] = 6;
+							} else
+							{
 								// Premier mouvement possible
-								mouvementsPossibles
-								    [0][0] =
-								    index_colonneRandA;
-								mouvementsPossibles
-								    [0][1] =
-								    ((index_ligneRandA + 5) % 10);
+								mouvementsPossibles[0][0] = index_colonneRandA;
+								mouvementsPossibles[0][1] = ((index_ligneRandA + 5) % 10);
 								// Deuxième mouvement possible
-								mouvementsPossibles
-								    [1][0] = 0;
-								mouvementsPossibles
-								    [1][1] =
-								    index_ligneRandA;
+								mouvementsPossibles[1][0] = 0;
+								mouvementsPossibles[1][1] = index_ligneRandA;
 								// Troisième mouvement possible
-								mouvementsPossibles
-								    [2][0] = 6;
-								mouvementsPossibles
-								    [2][1] =
-								    index_ligneRandA;
+								mouvementsPossibles[2][0] = 6;
+								mouvementsPossibles[2][1] = index_ligneRandA;
 							}
 						}
 						// Pour toutes les cases jouables, on calcule la profondeur suivante
-						for (index_move = 0;
-						     index_move <
-						     nombre_mouvements;
-						     index_move++) {
-							caseCouranteJouee.
-							    colonne =
-							    mouvementsPossibles
-							    [index_move][0];
-							caseCouranteJouee.
-							    ligne =
-							    mouvementsPossibles
-							    [index_move][1];
-							joueCoup(plateau,
-								 caseCourante,
-								 caseCouranteJouee,
-								 joueur);
+						for (index_move = 0; index_move < nombre_mouvements; index_move++)
+						{
+							caseCouranteJouee.colonne = mouvementsPossibles[index_move][0];
+							caseCouranteJouee.ligne = mouvementsPossibles[index_move][1];
+							joueCoup(plateau, caseCourante, caseCouranteJouee, joueur);
 							// Afin d'éviter un overflow possible
-							if (depth < INT_MAX - 3) {
-								nouvelleProfondeur
-								    = depth;
+							if (depth < INT_MAX - 3)
+							{
+								nouvelleProfondeur = depth;
 							}
 							// On change le type de recherche
-							if (isMax == 0) {
+							if (isMax == 0)
+							{
 								isMax = 1;
-							} else {
+							} else
+							{
 								isMax = 0;
 							}
 							// On effectue l'évaluation du prochain coup adverse
-							prochaineEvaluation =
-							    MinMax(plateau,
-								   changeJoueur
-								   (joueur),
-								   joueurLancement,
-								   nouvelleProfondeur
-								   + 1, isMax,
-								   alpha, beta);
-							dejoueCoup(plateau,
-								   caseCouranteJouee,
-								   caseCourante,
-								   valCase);
+							prochaineEvaluation = MinMax(plateau, changeJoueur(joueur), joueurLancement, nouvelleProfondeur + 1, isMax, alpha, beta);
+							dejoueCoup(plateau, caseCouranteJouee, caseCourante, valCase);
 							// Le minimum de recherche est supérieur au maximum
-							if (alpha > beta) {
+							if (alpha > beta)
+							{
 								break;
-							} else if (isMax == 0
-								   &&
-								   ((prochaineEvaluation < beta)
-								    /*|| ((prochaineEvaluation == beta) && (rand() % 2 == 0)) */
-								   )) {
+							} else if (isMax == 0 && ((prochaineEvaluation < beta)
+										  /*|| ((prochaineEvaluation == beta) && (rand() % 2 == 0)) */
+								   ))
+							{
 								// Réduction écart recherche coup minimal
-								beta =
-								    prochaineEvaluation;
-							} else if (isMax == 1
-								   &&
-								   ((prochaineEvaluation > alpha)
-								    /*|| ((prochaineEvaluation == alpha) && (rand() % 2 == 0)) */
-								   )) {
+								beta = prochaineEvaluation;
+							} else if (isMax == 1 && ((prochaineEvaluation > alpha)
+										  /*|| ((prochaineEvaluation == alpha) && (rand() % 2 == 0)) */
+								   ))
+							{
 								// Réduction écart recherche coup maximal
-								alpha =
-								    prochaineEvaluation;
+								alpha = prochaineEvaluation;
 							}
 						}
-						if (alpha > beta) {
+						if (alpha > beta)
+						{
 							break;
 						}
 					}
 				}
 			}
 		}
-		if (isMax == 1) {
+		if (isMax == 1)
+		{
 			evaluation = alpha;
-		} else {
+		} else
+		{
 			evaluation = beta;
 		}
 	}
@@ -958,116 +940,86 @@ void mouvementIA(PLATEAU * plateau, int symbole)
 	move.casePiochee = caseCourante;
 
 	// Pour toutes les cases du plateau
-	for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++) {
-		for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1;
-		     index_colonne++) {
+	for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++)
+	{
+		for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1; index_colonne++)
+		{
 			caseCourante.colonne = index_colonne;
 			caseCourante.ligne = index_ligne;
 			// Si la case est sur l'extrémité du plateau
-			if (index_colonne == 1 || index_colonne == 5
-			    || index_ligne == 1 || index_ligne == 5) {
+			if (index_colonne == 1 || index_colonne == 5 || index_ligne == 1 || index_ligne == 5)
+			{
 				// On récupère la case
 				int valCase = getCase(plateau, &caseCourante);
 				// La case est jouable (vide ou pion qui appartient au joueur)
-				if (valCase == vide || valCase == symbole) {
+				if (valCase == vide || valCase == symbole)
+				{
 					caseCourante.colonne = index_colonne;
 					caseCourante.ligne = index_ligne;
 					// Calcul des mouvements possibles
-					if ((index_colonne == 1
-					     || index_colonne == 5)
-					    && (index_ligne == 1
-						|| index_ligne == 5)) {
+					if ((index_colonne == 1 || index_colonne == 5) && (index_ligne == 1 || index_ligne == 5))
+					{
 						// Seulement deux mouvements possibles
 						nombre_mouvements = 2;
 						// Premier mouvement possible
-						mouvementsPossibles[0][0] =
-						    ((index_colonne + 5) % 10);
-						mouvementsPossibles[0][1] =
-						    index_ligne;
+						mouvementsPossibles[0][0] = ((index_colonne + 5) % 10);
+						mouvementsPossibles[0][1] = index_ligne;
 						// Deuxieme mouvement possible
-						mouvementsPossibles[1][0] =
-						    index_colonne;
-						mouvementsPossibles[1][1] =
-						    ((index_ligne + 5) % 10);
-					} else {
+						mouvementsPossibles[1][0] = index_colonne;
+						mouvementsPossibles[1][1] = ((index_ligne + 5) % 10);
+					} else
+					{
 						// Trois mouvements possibles
 						nombre_mouvements = 3;
-						if (index_colonne == 1
-						    || index_colonne == 5) {
+						if (index_colonne == 1 || index_colonne == 5)
+						{
 							// Premier mouvement possible
-							mouvementsPossibles[0]
-							    [0] =
-							    ((index_colonne +
-							      5) % 10);
-							mouvementsPossibles[0]
-							    [1] = index_ligne;
+							mouvementsPossibles[0][0] = ((index_colonne + 5) % 10);
+							mouvementsPossibles[0][1] = index_ligne;
 							// Deuxième mouvement possible
-							mouvementsPossibles[1]
-							    [0] = index_colonne;
-							mouvementsPossibles[1]
-							    [1] = 0;
+							mouvementsPossibles[1][0] = index_colonne;
+							mouvementsPossibles[1][1] = 0;
 							// Troisième mouvement possible
-							mouvementsPossibles[2]
-							    [0] = index_colonne;
-							mouvementsPossibles[2]
-							    [1] = 6;
-						} else {
+							mouvementsPossibles[2][0] = index_colonne;
+							mouvementsPossibles[2][1] = 6;
+						} else
+						{
 							// Premier mouvement possible
-							mouvementsPossibles[0]
-							    [0] = index_colonne;
-							mouvementsPossibles[0]
-							    [1] =
-							    ((index_ligne +
-							      5) % 10);
+							mouvementsPossibles[0][0] = index_colonne;
+							mouvementsPossibles[0][1] = ((index_ligne + 5) % 10);
 							// Deuxième mouvement possible
-							mouvementsPossibles[1]
-							    [0] = 0;
-							mouvementsPossibles[1]
-							    [1] = index_ligne;
+							mouvementsPossibles[1][0] = 0;
+							mouvementsPossibles[1][1] = index_ligne;
 							// Troisième mouvement possible
-							mouvementsPossibles[2]
-							    [0] = 6;
-							mouvementsPossibles[2]
-							    [1] = index_ligne;
+							mouvementsPossibles[2][0] = 6;
+							mouvementsPossibles[2][1] = index_ligne;
 						}
 					}
 					// Modification des cases du plateau à partir du tableau des surbrillances possibles
-					for (index_move = 0;
-					     index_move < nombre_mouvements;
-					     index_move++) {
-						caseCouranteJouee.colonne =
-						    mouvementsPossibles
-						    [index_move][0];
-						caseCouranteJouee.ligne =
-						    mouvementsPossibles
-						    [index_move][1];
+					for (index_move = 0; index_move < nombre_mouvements; index_move++)
+					{
+						caseCouranteJouee.colonne = mouvementsPossibles[index_move][0];
+						caseCouranteJouee.ligne = mouvementsPossibles[index_move][1];
 						// On joue le premier coup
-						joueCoup(plateau, caseCourante,
-							 caseCouranteJouee,
-							 symbole);
+						joueCoup(plateau, caseCourante, caseCouranteJouee, symbole);
 						// On demande les évaluations des cas possibles à partir de ce coup en envoyant l'adversaire, la profondeur de 1 et le coup minimal
 						int tempScore = MinMax(plateau,
-								       changeJoueur
-								       (symbole),
+								       changeJoueur(symbole),
 								       symbole,
 								       1, 0,
 								       INT_MIN,
 								       INT_MAX);
 						// On déjoue le coup
-						dejoueCoup(plateau,
-							   caseCouranteJouee,
-							   caseCourante,
-							   valCase);
+						dejoueCoup(plateau, caseCouranteJouee, caseCourante, valCase);
 						// Si l'évaluation est meilleure que le score minimal, on choisira ce coup
 						if (tempScore > score
 						    /*|| ((tempScore == score)
 						       && (rand() % 2 == 0)) */
-						    ) {
+						    )
+						{
 							score = tempScore;
-							move.caseJouee =
-							    caseCouranteJouee;
-							move.casePiochee =
-							    caseCourante;
+							move.caseJouee = caseCouranteJouee;
+							move.casePiochee = caseCourante;
 						}
 					}
 				}
@@ -1094,27 +1046,30 @@ int evaluePlateau(PLATEAU * plateau, int joueurCourant)
 	int coupGagnant = INT_MAX;
 
 	// S'il y a déjà un gagnant
-	if (gagnant != -1) {
+	if (gagnant != -1)
+	{
 		// Si c'est le joueur alors évaluation maximale sinon évaluation minimale
-		if (gagnant == joueurCourant) {
+		if (gagnant == joueurCourant)
+		{
 			evaluation = INT_MAX;
-		} else {
+		} else
+		{
 			evaluation = INT_MIN;
 		}
-	} else {		// S'il n'y a pas de gagnant
+	} else
+	{			// S'il n'y a pas de gagnant
 		// Évaluation des lignes
 		evaluation = evalueLignes(plateau, evaluation, joueurCourant);
 
 		// Si le joueur n'est ni gagnant ni perdant alors on évalue les colonnes
-		if (evaluation != coupPerdant && evaluation != coupGagnant) {
-			evaluation =
-			    evalueColonnes(plateau, evaluation, joueurCourant);
+		if (evaluation != coupPerdant && evaluation != coupGagnant)
+		{
+			evaluation = evalueColonnes(plateau, evaluation, joueurCourant);
 		}
 		// Si le joueur n'est ni gagnant ni perdant alors on évalue les diagonales
-		if (evaluation != coupPerdant && evaluation != coupGagnant) {
-			evaluation =
-			    evalueDiagonales(plateau, evaluation,
-					     joueurCourant);
+		if (evaluation != coupPerdant && evaluation != coupGagnant)
+		{
+			evaluation = evalueDiagonales(plateau, evaluation, joueurCourant);
 		}
 	}
 	return evaluation;
@@ -1137,62 +1092,71 @@ int evalueLignes(PLATEAU * plateau, int evaluation, int joueurCourant)
 	CASE caseCourante;
 	int index_ligne, index_colonne;
 
-	for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++) {
+	for (index_ligne = 1; index_ligne < TAILLE_PLATEAU - 1; index_ligne++)
+	{
 		caseCourante.colonne = 1;
 		caseCourante.ligne = index_ligne;
 		int etatLigne = getCase(plateau, &caseCourante);
 
-		if (etatLigne == joueurCourant) {
+		if (etatLigne == joueurCourant)
+		{
 			evaluationLignes++;
-		} else if (etatLigne != vide) {
+		} else if (etatLigne != vide)
+		{
 			evaluationLignes--;
 		}
 
 		int facteurPreponderance = 1;
 
-		for (index_colonne = 2; index_colonne < TAILLE_PLATEAU - 1;
-		     index_colonne++) {
+		for (index_colonne = 2; index_colonne < TAILLE_PLATEAU - 1; index_colonne++)
+		{
 			caseCourante.colonne = index_colonne;
 			caseCourante.ligne = index_ligne;
 			int pionCourant = getCase(plateau, &caseCourante);
 
-			if (pionCourant == joueurCourant) {
+			if (pionCourant == joueurCourant)
+			{
 				evaluationLignes++;
-			} else if (pionCourant != vide) {
+			} else if (pionCourant != vide)
+			{
 				evaluationLignes--;
 			}
 			caseCourante.colonne = index_colonne - 1;
 			caseCourante.ligne = index_ligne;
-			if (pionCourant == getCase(plateau, &caseCourante)) {
-				facteurPreponderance =
-				    (facteurPreponderance *
-				     facteurPreponderance) * 100;
+			if (pionCourant == getCase(plateau, &caseCourante))
+			{
+				facteurPreponderance = (facteurPreponderance * facteurPreponderance) * 100;
 
-				if (pionCourant == joueurCourant) {
-					evaluationLignes +=
-					    facteurPreponderance;
-				} else if (pionCourant != vide) {
-					evaluationLignes -=
-					    facteurPreponderance;
+				if (pionCourant == joueurCourant)
+				{
+					evaluationLignes += facteurPreponderance;
+				} else if (pionCourant != vide)
+				{
+					evaluationLignes -= facteurPreponderance;
 				}
-			} else {
+			} else
+			{
 				etatLigne = vide;
 				facteurPreponderance = 1;
 			}
 		}
 
-		if (etatLigne == joueurCourant) {
+		if (etatLigne == joueurCourant)
+		{
 			ligneGagnante = 1;
 			break;
-		} else if (etatLigne != vide) {
+		} else if (etatLigne != vide)
+		{
 			lignePerdante = 1;
 			break;
 		}
 	}
 
-	if (ligneGagnante == 1 && lignePerdante == 0) {
+	if (ligneGagnante == 1 && lignePerdante == 0)
+	{
 		evaluationLignes = INT_MAX;
-	} else if (lignePerdante == 1) {
+	} else if (lignePerdante == 1)
+	{
 		evaluationLignes = INT_MIN;
 	}
 	return evaluationLignes;
@@ -1216,67 +1180,75 @@ int evalueColonnes(PLATEAU * plateau, int evaluation, int joueurCourant)
 	CASE caseCourante;
 
 	// Parcours du plateau en partant de (1,1)
-	for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1;
-	     index_colonne++) {
+	for (index_colonne = 1; index_colonne < TAILLE_PLATEAU - 1; index_colonne++)
+	{
 		caseCourante.ligne = 1;
 		caseCourante.colonne = index_colonne;
 		int etatColonne = getCase(plateau, &caseCourante);
 
-		if (etatColonne == joueurCourant) {
+		if (etatColonne == joueurCourant)
+		{
 			evaluationColonnes++;
-		} else if (etatColonne != vide) {
+		} else if (etatColonne != vide)
+		{
 			evaluationColonnes--;
 		}
 
 		int facteurPreponderance = 1;
 
 		// Parcours des lignes
-		for (index_ligne = 2; index_ligne < TAILLE_PLATEAU - 1;
-		     index_ligne++) {
+		for (index_ligne = 2; index_ligne < TAILLE_PLATEAU - 1; index_ligne++)
+		{
 			caseCourante.colonne = index_colonne;
 			caseCourante.ligne = index_ligne;
 			int pionCourant = getCase(plateau, &caseCourante);
 
-			if (pionCourant == joueurCourant) {
+			if (pionCourant == joueurCourant)
+			{
 				evaluationColonnes++;
-			} else if (pionCourant != vide) {
+			} else if (pionCourant != vide)
+			{
 				evaluationColonnes--;
 			}
 			// Pion précédent pour vérifier si on possède une suite
 			caseCourante.colonne = index_colonne;
 			caseCourante.ligne = index_ligne - 1;
-			if (pionCourant == getCase(plateau, &caseCourante)) {
-				facteurPreponderance =
-				    (facteurPreponderance *
-				     facteurPreponderance) * 100;
+			if (pionCourant == getCase(plateau, &caseCourante))
+			{
+				facteurPreponderance = (facteurPreponderance * facteurPreponderance) * 100;
 
-				if (pionCourant == joueurCourant) {
-					evaluationColonnes +=
-					    facteurPreponderance;
-				} else if (pionCourant != vide) {
-					evaluationColonnes -=
-					    facteurPreponderance;
+				if (pionCourant == joueurCourant)
+				{
+					evaluationColonnes += facteurPreponderance;
+				} else if (pionCourant != vide)
+				{
+					evaluationColonnes -= facteurPreponderance;
 				}
-			} else {
+			} else
+			{
 				etatColonne = vide;
 				facteurPreponderance = 1;
 			}
 		}		// Fin du parcours des lignes
 
 		// Cas des colonnes gagnantes, on arrête la boucle pour retourner l'évaluation
-		if (etatColonne == joueurCourant) {
+		if (etatColonne == joueurCourant)
+		{
 			colonneGagnante = 1;
 			break;
-		} else if (etatColonne != vide) {
+		} else if (etatColonne != vide)
+		{
 			colonnePerdante = 1;
 			break;
 		}
 	}
 
 	// S'il a une colonne gagnante c'est la maximum de pionts pour le joueur sinon c'est le minimum
-	if (colonneGagnante == 1 && colonnePerdante == 0) {
+	if (colonneGagnante == 1 && colonnePerdante == 0)
+	{
 		evaluationColonnes = INT_MAX;
-	} else if (colonnePerdante == 1) {
+	} else if (colonnePerdante == 1)
+	{
 		evaluationColonnes = INT_MIN;
 	}
 	return evaluationColonnes;
@@ -1305,105 +1277,118 @@ int evalueDiagonales(PLATEAU * plateau, int evaluation, int joueurCourant)
 	int etatLigne = getCase(plateau, &caseCourante);
 
 	// Si la case est détenue par le joueurCourant alors on augmente l'evaluation sinon on la décremente
-	if (etatLigne == joueurCourant) {
+	if (etatLigne == joueurCourant)
+	{
 		evaluationDiagonale++;
-	} else if (etatLigne != vide) {
+	} else if (etatLigne != vide)
+	{
 		evaluationDiagonale--;
 	}
 	// Facteur d'importance du joueur sur le plateau
 	int facteurPreponderance = 1;
 
 	// On parcourt toute la diagonale
-	for (index_colonne = 2; index_colonne < TAILLE_PLATEAU - 1;
-	     index_colonne++) {
+	for (index_colonne = 2; index_colonne < TAILLE_PLATEAU - 1; index_colonne++)
+	{
 		caseCourante.colonne = index_colonne;
 		caseCourante.ligne = index_colonne;
 		int pionCourant = getCase(plateau, &caseCourante);
 
-		if (pionCourant == joueurCourant) {
+		if (pionCourant == joueurCourant)
+		{
 			evaluationDiagonale++;
-		} else if (pionCourant != vide) {
+		} else if (pionCourant != vide)
+		{
 			evaluationDiagonale--;
 		}
 		// Case précédente
 		caseCourante.colonne = index_colonne - 1;
 		caseCourante.ligne = index_colonne - 1;
 		// Si la case précédente est la même que celle étudiée avec caseCourante
-		if (pionCourant == getCase(plateau, &caseCourante)) {
+		if (pionCourant == getCase(plateau, &caseCourante))
+		{
 			// On incrémente le facteur de prépondérance
-			facteurPreponderance =
-			    (facteurPreponderance * facteurPreponderance) * 100;
+			facteurPreponderance = (facteurPreponderance * facteurPreponderance) * 100;
 			// Si la case précédente nous appartenait on augmente l'évaluation
-			if (pionCourant == joueurCourant) {
+			if (pionCourant == joueurCourant)
+			{
 				evaluationDiagonale += facteurPreponderance;
-			} else if (pionCourant != vide) {	// Si elle appartenait à un autre joueur, on décrémente l'évaluation
+			} else if (pionCourant != vide)
+			{	// Si elle appartenait à un autre joueur, on décrémente l'évaluation
 				evaluationDiagonale -= facteurPreponderance;
 			}
-		} else {	// Si la la case précédente est différente, on considère un emplacement vide
+		} else
+		{		// Si la la case précédente est différente, on considère un emplacement vide
 			etatLigne = vide;
 			facteurPreponderance = 1;
 		}
 	}			// Fin du calcul de la diagonale
 
 	// Si la premiere diagonale n'est pas vide mais qu'elle n'appartient pas au joueur courant, on évalue en minimal
-	if (etatLigne != vide && etatLigne != joueurCourant) {
+	if (etatLigne != vide && etatLigne != joueurCourant)
+	{
 		evaluationDiagonale = INT_MIN;
-	} else {
+	} else
+	{
 		// Si elle nous appartenait, on évalue au maximum
-		if (etatLigne == joueurCourant) {
+		if (etatLigne == joueurCourant)
+		{
 			evaluationDiagonale = INT_MAX;
-		} else {
+		} else
+		{
 			//S'il y avait des cases vides on s'occupe de la deuxième diagonale
 			caseCourante.colonne = 1;
 			caseCourante.ligne = TAILLE_PLATEAU - 2;
 			// On évalue en partant du coin inférieur droit
 			etatLigne = getCase(plateau, &caseCourante);
 
-			if (etatLigne == joueurCourant) {
+			if (etatLigne == joueurCourant)
+			{
 				evaluationDiagonale++;
-			} else if (etatLigne != vide) {
+			} else if (etatLigne != vide)
+			{
 				evaluationDiagonale--;
 			}
 			// Boucle d'évaluation de la deuxième diagonale
-			for (index_ligne = 2; index_ligne < TAILLE_PLATEAU - 1;
-			     index_ligne++) {
-				caseCourante.ligne =
-				    TAILLE_PLATEAU - 1 - index_ligne;
+			for (index_ligne = 2; index_ligne < TAILLE_PLATEAU - 1; index_ligne++)
+			{
+				caseCourante.ligne = TAILLE_PLATEAU - 1 - index_ligne;
 				caseCourante.colonne = index_ligne;
-				int pionCourant =
-				    getCase(plateau, &caseCourante);
+				int pionCourant = getCase(plateau, &caseCourante);
 
-				if (pionCourant == joueurCourant) {
+				if (pionCourant == joueurCourant)
+				{
 					evaluationDiagonale++;
-				} else if (pionCourant != vide) {
+				} else if (pionCourant != vide)
+				{
 					evaluationDiagonale--;
 				}
 
-				caseCourante.ligne =
-				    TAILLE_PLATEAU - index_ligne;
+				caseCourante.ligne = TAILLE_PLATEAU - index_ligne;
 				caseCourante.colonne = index_ligne - 1;
-				if (pionCourant ==
-				    getCase(plateau, &caseCourante)) {
-					facteurPreponderance =
-					    (facteurPreponderance *
-					     facteurPreponderance) * 100;
+				if (pionCourant == getCase(plateau, &caseCourante))
+				{
+					facteurPreponderance = (facteurPreponderance * facteurPreponderance) * 100;
 
-					if (pionCourant == joueurCourant) {
-						evaluationDiagonale +=
-						    facteurPreponderance;
-					} else if (pionCourant != vide) {
-						evaluationDiagonale -=
-						    facteurPreponderance;
+					if (pionCourant == joueurCourant)
+					{
+						evaluationDiagonale += facteurPreponderance;
+					} else if (pionCourant != vide)
+					{
+						evaluationDiagonale -= facteurPreponderance;
 					}
-				} else {
+				} else
+				{
 					etatLigne = vide;
 					facteurPreponderance = 1;
 				}
 			}
 
-			if (etatLigne == joueurCourant) {
+			if (etatLigne == joueurCourant)
+			{
 				evaluationDiagonale = INT_MAX;
-			} else if (etatLigne != vide) {
+			} else if (etatLigne != vide)
+			{
 				evaluationDiagonale = INT_MIN;
 			}
 		}
@@ -1417,8 +1402,10 @@ int evalueDiagonales(PLATEAU * plateau, int evaluation, int joueurCourant)
 void affichePlateauConsole(void)
 {
 	int i, j;
-	for (i = 0; i < TAILLE_PLATEAU; i++) {
-		for (j = 0; j < TAILLE_PLATEAU; j++) {
+	for (i = 0; i < TAILLE_PLATEAU; i++)
+	{
+		for (j = 0; j < TAILLE_PLATEAU; j++)
+		{
 			printf("%d \t", plateau_jeu[i][j]);
 		}
 		sautDeLigne();

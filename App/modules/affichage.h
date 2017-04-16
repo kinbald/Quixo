@@ -20,8 +20,7 @@
  * @param HAUTEURFenetre Hauteur de la fenêtre
  *
  */
-void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
-		    int HAUTEURFenetre);
+void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui permet de calculer le pas dans la grille d'un plateau
@@ -102,9 +101,7 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction);
  * @param HAUTEURFenetre
  * @return Action à effectuer
  */
-int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
-			  int *coordonneesPlateau, int LARGEURFenetre,
-			  int HAUTEURFenetre);
+int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau, int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui permet de gérer un clic sur le menuPartie
@@ -161,8 +158,7 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre);
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0 pour ok, -1 pour ko
  */
-int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
-		  int HAUTEURFenetre);
+int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre, int HAUTEURFenetre);
 
  /*!
   * \brief Fonction qui gère le clic dans les menus à l'aide des boutons
@@ -184,9 +180,7 @@ int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre);
  * @param joueurCourant Joueur courant de la partie
  * @return 0
  */
-int gestionAffichage(int menu, int *coordonneesPlateau, int LARGEURFenetre,
-		     int HAUTEURFenetre, DonneesImageRGB * imageRegles,
-		     int joueurCourant);
+int gestionAffichage(int menu, int *coordonneesPlateau, int LARGEURFenetre, int HAUTEURFenetre, DonneesImageRGB * imageRegles, int joueurCourant);
 
 /*!
  * \brief Fonction qui affiche les boutons dans le menu partie
@@ -203,8 +197,7 @@ int afficheBouton(int LARGEURFenetre, int HAUTEURFenetre);
  * @param joueurCourant Joueur qui doit jouer
  * @return 0
  */
-int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
-			 int HAUTEURFenetre);
+int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre, int HAUTEURFenetre);
 
 /*!
  * \brief Fonction qui affiche le score

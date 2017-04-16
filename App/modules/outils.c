@@ -18,12 +18,12 @@ int getCase(PLATEAU * plateau, CASE * case_jeu)
 {
 	int valeurRetour;	// Valeur de retour de la case du plateau demandée
 
-	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU)
-	    && (case_jeu->colonne >= 0)
-	    && (case_jeu->colonne < TAILLE_PLATEAU)) {
+	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU) && (case_jeu->colonne >= 0) && (case_jeu->colonne < TAILLE_PLATEAU))
+	{
 		valeurRetour = (*plateau)[case_jeu->ligne][case_jeu->colonne];
 		return (valeurRetour);
-	} else {
+	} else
+	{
 		return (-1);
 	}
 }
@@ -37,12 +37,12 @@ int getCase(PLATEAU * plateau, CASE * case_jeu)
  */
 int setCase(PLATEAU * plateau, CASE * case_jeu, int symbole)
 {
-	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU)
-	    && (case_jeu->colonne >= 0)
-	    && (case_jeu->colonne < TAILLE_PLATEAU)) {
+	if ((case_jeu->ligne >= 0) && (case_jeu->ligne < TAILLE_PLATEAU) && (case_jeu->colonne >= 0) && (case_jeu->colonne < TAILLE_PLATEAU))
+	{
 		(*plateau)[case_jeu->ligne][case_jeu->colonne] = symbole;	// Lecture dans le plateau envoyé
 		return (0);
-	} else {
+	} else
+	{
 		return (-1);
 	}
 }
@@ -57,18 +57,17 @@ int initPlateau(void)
 	int index_colonne;
 
 	CASE initVide;
-	for (index_ligne = 0; index_ligne < TAILLE_PLATEAU;
-	     index_ligne = index_ligne + 1) {
+	for (index_ligne = 0; index_ligne < TAILLE_PLATEAU; index_ligne = index_ligne + 1)
+	{
 		initVide.ligne = index_ligne;
-		for (index_colonne = 0; index_colonne < TAILLE_PLATEAU;
-		     index_colonne = index_colonne + 1) {
+		for (index_colonne = 0; index_colonne < TAILLE_PLATEAU; index_colonne = index_colonne + 1)
+		{
 			initVide.colonne = index_colonne;
-			if (index_colonne == 0
-			    || index_colonne == (TAILLE_PLATEAU - 1)
-			    || index_ligne == 0
-			    || index_ligne == (TAILLE_PLATEAU - 1)) {
+			if (index_colonne == 0 || index_colonne == (TAILLE_PLATEAU - 1) || index_ligne == 0 || index_ligne == (TAILLE_PLATEAU - 1))
+			{
 				setCase(&plateau_jeu, &initVide, tampon);	// Si on est sur le bord du plateau on place le ::SYMBOLE tampon
-			} else {
+			} else
+			{
 				setCase(&plateau_jeu, &initVide, vide);	// Sinon on place le ::SYMBOLE vide
 			}
 		}
@@ -85,8 +84,10 @@ int initPlateau(void)
 void initScore(SCORE * scoreJoueur, int nombreJoueurs, int *joueurs)
 {
 	int i;
-	if (scoreJoueur != NULL) {
-		for (i = 0; i < nombreJoueurs; i++) {
+	if (scoreJoueur != NULL)
+	{
+		for (i = 0; i < nombreJoueurs; i++)
+		{
 			scoreJoueur[i].joueur = joueurs[i];
 			scoreJoueur[i].score = 0;
 		}
@@ -100,14 +101,16 @@ void initScore(SCORE * scoreJoueur, int nombreJoueurs, int *joueurs)
  * @param joueur Joueur courant à modifier
  * @param nouveauScore Score à modifier
  */
-void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur,
-	      int nouveauScore)
+void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur, int nouveauScore)
 {
 	int i;
-	if (scoresJoueurs != NULL) {
+	if (scoresJoueurs != NULL)
+	{
 		// Parcours des scores pour trouver celui du joueur correspondant
-		for (i = 0; i < nombreJoueurs; i++) {
-			if (scoresJoueurs[i].joueur == joueur) {
+		for (i = 0; i < nombreJoueurs; i++)
+		{
+			if (scoresJoueurs[i].joueur == joueur)
+			{
 				scoresJoueurs[i].score = nouveauScore;
 			}
 		}
@@ -124,9 +127,12 @@ void setScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur,
 int getScore(SCORE * scoresJoueurs, int nombreJoueurs, int joueur)
 {
 	int i;
-	if (scoresJoueurs != NULL) {
-		for (i = 0; i < nombreJoueurs; i++) {
-			if (scoresJoueurs[i].joueur == joueur) {
+	if (scoresJoueurs != NULL)
+	{
+		for (i = 0; i < nombreJoueurs; i++)
+		{
+			if (scoresJoueurs[i].joueur == joueur)
+			{
 				return scoresJoueurs[i].score;
 			}
 		}

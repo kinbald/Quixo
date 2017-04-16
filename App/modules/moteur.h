@@ -19,8 +19,7 @@
  * @param ligneJouee Ligne de la case de surbrillance choisie
  * @return ::0 si le décalage a bien été effectuer et -1 si y a eu un problème
 */
-int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee,
-	     int colonneJouee, int ligneJouee);
+int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJouee);
 
 /*!
  * \brief verification de la victoire d'un joueur par les lignes'
@@ -61,8 +60,7 @@ int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant);
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
-			  int joueurAllier);
+int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
  * \brief verification de la victoire en 2V2 d'un joueur par les colonnes
@@ -71,8 +69,7 @@ int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
-			    int joueurAllier);
+int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
  * \brief verification de la victoire en 2V2 d'un joueur par la  diagonale de gauche haut vers droite bas
@@ -81,8 +78,7 @@ int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
-			       int joueurAllier);
+int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
  * \brief verification de la victoire d'un joueur en 2V2 par la diagonale de gauche bas vers droite haut
@@ -91,8 +87,7 @@ int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant,
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
-int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant,
-			       int joueurAllier);
+int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 /*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
  * \brief /!\ si on est en mode 1V1 alors  joueurAllier = 0
@@ -110,8 +105,7 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier);
  * @param joueurAllier Joueur allier (facultatif : 0)
  * @return
  */
-int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant,
-				int joueurAllier);
+int testeVictoireCasParticulier(PLATEAU * plateau, int *joueurCourant, int joueurAllier);
 
 /*!
  * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
@@ -153,8 +147,7 @@ void nettoieSurbrillance(PLATEAU * plateau);
  * @param casePiochee
  * @return
  */
-int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee,
-		CASE * casePiochee, int modeJeu);
+int calculeTour(int *joueurCourant, int etatClic, CASE * caseJouee, CASE * casePiochee, int modeJeu);
 
 /*!
  * \brief Fontion qui permet d'appliquer un coup sur un plateau
@@ -193,8 +186,7 @@ int changeJoueur(int joueur);
  * @param beta Elagage beta
  * @return
  */
-int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
-	   int isMax, int alpha, int beta);
+int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth, int isMax, int alpha, int beta);
 
 /*!
  * \brief Fonction qui effectue un mouvement de l'IA sur le plateau en utilisant l'algorithme de recherche min-max

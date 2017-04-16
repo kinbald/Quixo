@@ -13,19 +13,19 @@ all: main.o  moteur.o  affichage.o outils.o
 
 
 main.o:	main.c modules/moteur.h modules/affichage.h
-	indent -linux main.c
+	indent --line-length200 -linux -bl -bli0  main.c
 	gcc $(CFLAGS) -c main.c
 
 moteur.o : modules/moteur.c modules/moteur.h
-	indent -linux modules/moteur.c modules/moteur.h
+	indent --line-length200 -linux -bl -bli0  modules/moteur.c modules/moteur.h
 	gcc $(CFLAGS) -c modules/moteur.c
 
 affichage.o: modules/affichage.c modules/affichage.h
-	indent -linux modules/affichage.c modules/affichage.h
+	indent --line-length200 -linux -bl -bli0  modules/affichage.c modules/affichage.h
 	gcc $(CFLAGS) -c modules/affichage.c
 
 outils.o: modules/outils.c modules/outils.h
-	indent -linux modules/outils.c modules/outils.h
+	indent --line-length200 -linux -bl -bli0  modules/outils.c modules/outils.h
 	gcc $(CFLAGS) -c modules/outils.c
 
 unitTester: unitTester.o  moteur.o  affichage.o outils.o
@@ -33,7 +33,7 @@ unitTester: unitTester.o  moteur.o  affichage.o outils.o
 	rm *~
 
 unitTester.o:	unitTester.c modules/moteur.h modules/affichage.h
-	indent -linux unitTester.c
+	indent --line-length200 -linux -bl -bli0  unitTester.c
 	gcc $(CFLAGS) -c unitTester.c
 
 clean:

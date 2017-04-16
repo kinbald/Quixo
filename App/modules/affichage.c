@@ -23,8 +23,7 @@ extern SCORE scores[2];
  * @param LARGEURFenetre largeur de la fênetre
  * @param HAUTEURFenetre Hauteur de la fenêtre
  */
-void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
-		    int HAUTEURFenetre)
+void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre, int HAUTEURFenetre)
 {
 	// Affichage de la grille de jeu
 	afficheGrille(coordonneesPlateau);
@@ -48,13 +47,13 @@ void affichePlateau(int *coordonneesPlateau, int LARGEURFenetre,
 	// Coordonnée en pixels (colonne) du assigneTaillePlateau de la première case
 	casePion.colonne = (int)(coordonneesPlateau[0] + (pas / 2));
 
-	while (index_ligne < TAILLE_PLATEAU) {
-		while (index_colonne < TAILLE_PLATEAU) {
+	while (index_ligne < TAILLE_PLATEAU)
+	{
+		while (index_colonne < TAILLE_PLATEAU)
+		{
 			caseLecture.colonne = index_colonne;
 			// Traitement de l'affichage de la case (coordonées du assigneTaillePlateau : (coordX, coordY)
-			afficheSymbole(pas, &casePion,
-				       getCase(&plateau_jeu, &caseLecture),
-				       &caseLecture);
+			afficheSymbole(pas, &casePion, getCase(&plateau_jeu, &caseLecture), &caseLecture);
 			// On incrémente la position en pixels ( colonne + 1)
 			casePion.colonne = (int)(casePion.colonne + pas);
 			index_colonne += 1;
@@ -86,14 +85,15 @@ float calculePas(int *coordonneesPlateau)
 	// Largeur donnée par les coordonnées en entrée
 	float largeur = (float)(coordonneesPlateau[2] - coordonneesPlateau[0]);
 	// Si la largeur calculée n'est divisble par la taille du plateau (donc perte de pixels à l'affichage)
-	if (fmodf(largeur, TAILLE_PLATEAU) != 0.0) {
+	if (fmodf(largeur, TAILLE_PLATEAU) != 0.0)
+	{
 		int indexZero = 0;
 		int indexTwo = 0;
 		float coordonnee;
 
 		// Calcul du nombre divisble par la taille du plateau par excès
-		while (fmodf(largeur, TAILLE_PLATEAU) != 0.0
-		       && indexTwo < TAILLE_PLATEAU) {
+		while (fmodf(largeur, TAILLE_PLATEAU) != 0.0 && indexTwo < TAILLE_PLATEAU)
+		{
 			indexTwo = indexTwo + 1;
 			coordonnee = coordonneesPlateau[2] + indexTwo;
 			largeur = coordonnee - coordonneesPlateau[0];
@@ -101,23 +101,21 @@ float calculePas(int *coordonneesPlateau)
 		// Réinitialisation
 		largeur = (coordonneesPlateau[2] - coordonneesPlateau[0]);
 		// Calcul du nombre divisble par la taille du plateau par défaut
-		while (fmodf(largeur, TAILLE_PLATEAU) != 0
-		       && indexZero < TAILLE_PLATEAU) {
+		while (fmodf(largeur, TAILLE_PLATEAU) != 0 && indexZero < TAILLE_PLATEAU)
+		{
 			indexZero = indexZero + 1;
 			coordonnee = coordonneesPlateau[2] - indexZero;
 			largeur = coordonnee - coordonneesPlateau[0];
 		}
 		// Redéfinition des coordonnées du plateau
-		if (indexTwo <= indexZero) {
-			coordonneesPlateau[2] =
-			    coordonneesPlateau[2] + indexTwo;
-			coordonneesPlateau[1] =
-			    coordonneesPlateau[1] + indexTwo;
-		} else {
-			coordonneesPlateau[2] =
-			    coordonneesPlateau[2] - indexZero;
-			coordonneesPlateau[1] =
-			    coordonneesPlateau[1] - indexZero;
+		if (indexTwo <= indexZero)
+		{
+			coordonneesPlateau[2] = coordonneesPlateau[2] + indexTwo;
+			coordonneesPlateau[1] = coordonneesPlateau[1] + indexTwo;
+		} else
+		{
+			coordonneesPlateau[2] = coordonneesPlateau[2] - indexZero;
+			coordonneesPlateau[1] = coordonneesPlateau[1] - indexZero;
 		}
 	}
 	largeur = (coordonneesPlateau[2] - coordonneesPlateau[0]);
@@ -136,14 +134,10 @@ void afficheGrille(int *coordonneesPlateau)
 
 	// Fond
 	couleurCourante(35, 59, 110);
-	rectangle(coordonneesPlateau[0] + pas, coordonneesPlateau[1] - pas,
-		  coordonneesPlateau[2] - pas, coordonneesPlateau[3] + pas);
+	rectangle(coordonneesPlateau[0] + pas, coordonneesPlateau[1] - pas, coordonneesPlateau[2] - pas, coordonneesPlateau[3] + pas);
 	// Cases centrales
 	couleurCourante(80, 80, 80);
-	rectangle(coordonneesPlateau[0] + (2 * pas),
-		  coordonneesPlateau[1] - (2 * pas),
-		  coordonneesPlateau[2] - (2 * pas),
-		  coordonneesPlateau[3] + (2 * pas));
+	rectangle(coordonneesPlateau[0] + (2 * pas), coordonneesPlateau[1] - (2 * pas), coordonneesPlateau[2] - (2 * pas), coordonneesPlateau[3] + (2 * pas));
 	// Couleur et trait colonnes et lignes
 	couleurCourante(239, 240, 244);
 	epaisseurDeTrait(4.5);
@@ -154,16 +148,16 @@ void afficheGrille(int *coordonneesPlateau)
 	int valeurX = coordonneesPlateau[0] + pas;
 	int valeurY = coordonneesPlateau[3] + pas;
 
-	while (index_colonne < TAILLE_PLATEAU - 2) {
+	while (index_colonne < TAILLE_PLATEAU - 2)
+	{
 		valeurX += pas;
-		ligne(valeurX, coordonneesPlateau[1] - pas, valeurX,
-		      coordonneesPlateau[3] + pas);
+		ligne(valeurX, coordonneesPlateau[1] - pas, valeurX, coordonneesPlateau[3] + pas);
 		index_colonne += 1;
 	}
-	while (index_ligne < TAILLE_PLATEAU - 2) {
+	while (index_ligne < TAILLE_PLATEAU - 2)
+	{
 		valeurY += pas;
-		ligne(coordonneesPlateau[0] + pas, valeurY,
-		      coordonneesPlateau[2] - pas, valeurY);
+		ligne(coordonneesPlateau[0] + pas, valeurY, coordonneesPlateau[2] - pas, valeurY);
 		index_ligne += 1;
 	}
 }
@@ -179,7 +173,8 @@ void afficheGrille(int *coordonneesPlateau)
 void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
 {
 	couleurCourante(239, 240, 244);
-	switch (joueur) {
+	switch (joueur)
+	{
 	case croix_droit:
 		afficheCroixPoint(case_jeu, pas, 0);
 		break;
@@ -209,8 +204,7 @@ void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
 		break;
 	case pioche:
 		couleurCourante(210, 210, 210);
-		rectangle(case_jeu->colonne - 10, case_jeu->ligne + 10,
-			  case_jeu->colonne + 10, case_jeu->ligne - 10);
+		rectangle(case_jeu->colonne - 10, case_jeu->ligne + 10, case_jeu->colonne + 10, case_jeu->ligne - 10);
 		break;
 	case vide:
 		break;
@@ -226,14 +220,8 @@ void afficheSymbole(float pas, CASE * case_jeu, int joueur, CASE * lectureCase)
 void afficheCroix(CASE * case_jeu, int pas)
 {
 	epaisseurDeTrait(4.0);
-	ligne((float)(case_jeu->colonne - (pas / 3)),
-	      (float)(case_jeu->ligne - (pas / 3)),
-	      (float)(case_jeu->colonne + (pas / 3)),
-	      (float)(case_jeu->ligne + pas / 3));
-	ligne((float)(case_jeu->colonne - (pas / 3)),
-	      (float)(case_jeu->ligne + (pas / 3)),
-	      (float)(case_jeu->colonne + (pas / 3)),
-	      (float)(case_jeu->ligne - pas / 3));
+	ligne((float)(case_jeu->colonne - (pas / 3)), (float)(case_jeu->ligne - (pas / 3)), (float)(case_jeu->colonne + (pas / 3)), (float)(case_jeu->ligne + pas / 3));
+	ligne((float)(case_jeu->colonne - (pas / 3)), (float)(case_jeu->ligne + (pas / 3)), (float)(case_jeu->colonne + (pas / 3)), (float)(case_jeu->ligne - pas / 3));
 }
 
 /*!
@@ -246,23 +234,21 @@ void afficheCroix(CASE * case_jeu, int pas)
 void afficheCroixPoint(CASE * case_jeu, int pas, int direction)
 {
 	epaisseurDeTrait(4.0);
-	ligne((float)(case_jeu->colonne - (pas / 3)),
-	      (float)(case_jeu->ligne - (pas / 3)),
-	      (float)(case_jeu->colonne + (pas / 3)),
-	      (float)(case_jeu->ligne + pas / 3));
-	ligne((float)(case_jeu->colonne - (pas / 3)),
-	      (float)(case_jeu->ligne + (pas / 3)),
-	      (float)(case_jeu->colonne + (pas / 3)),
-	      (float)(case_jeu->ligne - pas / 3));
+	ligne((float)(case_jeu->colonne - (pas / 3)), (float)(case_jeu->ligne - (pas / 3)), (float)(case_jeu->colonne + (pas / 3)), (float)(case_jeu->ligne + pas / 3));
+	ligne((float)(case_jeu->colonne - (pas / 3)), (float)(case_jeu->ligne + (pas / 3)), (float)(case_jeu->colonne + (pas / 3)), (float)(case_jeu->ligne - pas / 3));
 
 	epaisseurDeTrait(5.0);
-	if (direction == 0) {
+	if (direction == 0)
+	{
 		point(case_jeu->colonne + (pas / 4), case_jeu->ligne);
-	} else if (direction == 1) {
+	} else if (direction == 1)
+	{
 		point(case_jeu->colonne, case_jeu->ligne - (pas / 4));
-	} else if (direction == 2) {
+	} else if (direction == 2)
+	{
 		point(case_jeu->colonne - (pas / 4), case_jeu->ligne);
-	} else if (direction == 3) {
+	} else if (direction == 3)
+	{
 		point(case_jeu->colonne, case_jeu->ligne + (pas / 4));
 	}
 }
@@ -288,7 +274,8 @@ void afficheDisque(CASE * case_jouee, float rayon)
 	xCoin3 = case_jouee->colonne + (float)(rayon * cos(teta));
 	yCoin3 = case_jouee->ligne + (float)(rayon * sin(teta));
 	triangle(xCoin1, yCoin1, xCoin2, yCoin2, xCoin3, yCoin3);
-	for (teta = pas; teta <= 2 * M_PI; teta = teta + pas) {
+	for (teta = pas; teta <= 2 * M_PI; teta = teta + pas)
+	{
 		xCoin2 = xCoin3;
 		yCoin2 = yCoin3;
 		xCoin3 = case_jouee->colonne + (float)(rayon * cos(teta));
@@ -311,7 +298,8 @@ void afficheRond(CASE * case_jouee, float rayon)
 	d = 3 - (2 * rayon);
 	x = 0;
 	float y = rayon;
-	while (y >= x) {
+	while (y >= x)
+	{
 		epaisseurDeTrait(3.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
@@ -321,9 +309,11 @@ void afficheRond(CASE * case_jouee, float rayon)
 		point(centreX + y, centreY - x);
 		point(centreX - x, centreY - y);
 		point(centreX - y, centreY - x);
-		if (d < 0) {
+		if (d < 0)
+		{
 			d = d + (4 * x) + 6;
-		} else {
+		} else
+		{
 			d = d + 4 * (x - y) + 10;
 			y += (-1);
 		}
@@ -346,7 +336,8 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 	d = 3 - (2 * rayon);
 	x = 0;
 	float y = rayon;
-	while (y >= x) {
+	while (y >= x)
+	{
 		epaisseurDeTrait(3.0);
 		point(centreX + x, centreY + y);
 		point(centreX + y, centreY + x);
@@ -356,22 +347,28 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
 		point(centreX + y, centreY - x);
 		point(centreX - x, centreY - y);
 		point(centreX - y, centreY - x);
-		if (d < 0) {
+		if (d < 0)
+		{
 			d = d + (4 * x) + 6;
-		} else {
+		} else
+		{
 			d = d + 4 * (x - y) + 10;
 			y += (-1);
 		}
 		x += 1;
 	}
 	epaisseurDeTrait(5.0);
-	if (direction == 0) {
+	if (direction == 0)
+	{
 		point(case_jouee->colonne + (rayon / 2), case_jouee->ligne);
-	} else if (direction == 1) {
+	} else if (direction == 1)
+	{
 		point(case_jouee->colonne, case_jouee->ligne - (rayon / 2));
-	} else if (direction == 2) {
+	} else if (direction == 2)
+	{
 		point(case_jouee->colonne - (rayon / 2), case_jouee->ligne);
-	} else if (direction == 3) {
+	} else if (direction == 3)
+	{
 		point(case_jouee->colonne, case_jouee->ligne + (rayon / 2));
 	}
 }
@@ -386,20 +383,18 @@ void afficheRondPoint(CASE * case_jouee, float rayon, int direction)
  * @param HAUTEURFenetre
  * @return Action à effectuer
  */
-int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
-			  int *coordonneesPlateau, int LARGEURFenetre,
-			  int HAUTEURFenetre)
+int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau, int LARGEURFenetre, int HAUTEURFenetre)
 {
 
-	switch (clicSouris->menu) {
+	switch (clicSouris->menu)
+	{
 	case menuPartie:
 	case redirectPioche:
 	case redirectRePioche:
 	case redirectSurbrillance:
 		if (clicSouris->coordX >= coordonneesPlateau[0]
-		    && clicSouris->coordY <= coordonneesPlateau[1]
-		    && clicSouris->coordX <= coordonneesPlateau[2]
-		    && clicSouris->coordY >= coordonneesPlateau[3]) {
+		    && clicSouris->coordY <= coordonneesPlateau[1] && clicSouris->coordX <= coordonneesPlateau[2] && clicSouris->coordY >= coordonneesPlateau[3])
+		{
 			clicPlateau(retourClic, clicSouris, coordonneesPlateau);
 
 			return gereEtatsClic(retourClic, clicSouris->menu);
@@ -409,13 +404,13 @@ int recupereClicAffichage(CASE * retourClic, CLIC * clicSouris,
 			  && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
 			  && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))
 			 || ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-			     && (clicSouris->coordY <= 0.15 * HAUTEURFenetre)
-			     && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-			     && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))) {
-			return clicMenu(clicSouris, LARGEURFenetre,
-					HAUTEURFenetre);
-		} else {
-			if (clicSouris->menu == redirectPioche) {
+			     && (clicSouris->coordY <= 0.15 * HAUTEURFenetre) && (clicSouris->coordX <= 0.9 * LARGEURFenetre) && (clicSouris->coordY >= 0.05 * HAUTEURFenetre)))
+		{
+			return clicMenu(clicSouris, LARGEURFenetre, HAUTEURFenetre);
+		} else
+		{
+			if (clicSouris->menu == redirectPioche)
+			{
 				return redirectCentral;
 			}
 			return redirectExterieur;
@@ -444,13 +439,8 @@ int clicPlateau(CASE * retourClic, CLIC * clicSouris, int *coordonneesPlateau)
 {
 	int taille = coordonneesPlateau[2] - coordonneesPlateau[0];
 
-	retourClic->ligne =
-	    (TAILLE_PLATEAU - 1) -
-	    ((clicSouris->coordY -
-	      coordonneesPlateau[3]) * TAILLE_PLATEAU) / (taille);
-	retourClic->colonne =
-	    ((clicSouris->coordX -
-	      coordonneesPlateau[0]) * TAILLE_PLATEAU) / (taille);
+	retourClic->ligne = (TAILLE_PLATEAU - 1) - ((clicSouris->coordY - coordonneesPlateau[3]) * TAILLE_PLATEAU) / (taille);
+	retourClic->colonne = ((clicSouris->coordX - coordonneesPlateau[0]) * TAILLE_PLATEAU) / (taille);
 	return 0;
 }
 
@@ -465,19 +455,21 @@ int gereEtatsClic(CASE * clic, int etatMenu)
 {
 	int cLigne = clic->ligne;
 	int cCol = clic->colonne;
-	switch (etatMenu) {
+	switch (etatMenu)
+	{
 	case menuPartie:
-		if ((cCol == 1) || (cCol == TAILLE_PLATEAU - 2)
-		    || (cLigne == TAILLE_PLATEAU - 2) || (cLigne == 1)) {
+		if ((cCol == 1) || (cCol == TAILLE_PLATEAU - 2) || (cLigne == TAILLE_PLATEAU - 2) || (cLigne == 1))
+		{
 			return redirectPioche;
 
 		}
 		break;
 	case redirectSurbrillance:
-		if (cLigne == 0 || cLigne == TAILLE_PLATEAU - 1 || cCol == 0
-		    || cCol == TAILLE_PLATEAU - 1) {
+		if (cLigne == 0 || cLigne == TAILLE_PLATEAU - 1 || cCol == 0 || cCol == TAILLE_PLATEAU - 1)
+		{
 			return redirectContinue;
-		} else {
+		} else
+		{
 			return redirectRePioche;
 		}
 	default:
@@ -498,10 +490,10 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 	couleurCourante(240, 0, 0);
 	float xRectangle, yRectangle;
 	float xRectangle2, yRectangle2;
-	float xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3,
-	    yTriangle3;
+	float xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3, yTriangle3;
 
-	if (lectureCase->ligne == 0) {
+	if (lectureCase->ligne == 0)
+	{
 		xRectangle = case_jouee->colonne - 10;
 		yRectangle = case_jouee->ligne + (pas / 2 - 5);
 		xRectangle2 = case_jouee->colonne + 10;
@@ -512,7 +504,8 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 		yTriangle2 = yRectangle2;
 		xTriangle3 = case_jouee->colonne;
 		yTriangle3 = case_jouee->ligne - (pas / 4);
-	} else if (lectureCase->ligne == 6) {
+	} else if (lectureCase->ligne == 6)
+	{
 		xRectangle = case_jouee->colonne - 10;
 		yRectangle = case_jouee->ligne - (pas / 2 - 5);
 		xRectangle2 = case_jouee->colonne + 10;
@@ -523,7 +516,8 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 		yTriangle2 = yRectangle2;
 		xTriangle3 = case_jouee->colonne;
 		yTriangle3 = case_jouee->ligne + (pas / 4);
-	} else if (lectureCase->colonne == 0) {
+	} else if (lectureCase->colonne == 0)
+	{
 		xRectangle = case_jouee->colonne - (pas / 2 - 5);
 		yRectangle = case_jouee->ligne + 10;
 		xRectangle2 = case_jouee->colonne;
@@ -534,7 +528,8 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 		yTriangle2 = case_jouee->ligne + 30;
 		xTriangle3 = case_jouee->colonne + (pas / 4);
 		yTriangle3 = case_jouee->ligne;
-	} else if (lectureCase->colonne == 6) {
+	} else if (lectureCase->colonne == 6)
+	{
 		xRectangle = case_jouee->colonne + (pas / 2 - 5);
 		yRectangle = case_jouee->ligne + 10;
 		xRectangle2 = case_jouee->colonne;
@@ -545,12 +540,12 @@ void afficheSurbrillance(CASE * case_jouee, float pas, CASE * lectureCase)
 		yTriangle2 = case_jouee->ligne + 30;
 		xTriangle3 = case_jouee->colonne - (pas / 4);
 		yTriangle3 = case_jouee->ligne;
-	} else {
+	} else
+	{
 		return;
 	}
 	rectangle(xRectangle, yRectangle, xRectangle2, yRectangle2);
-	triangle(xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3,
-		 yTriangle3);
+	triangle(xTriangle1, yTriangle1, xTriangle2, yTriangle2, xTriangle3, yTriangle3);
 }
 
 /*!
@@ -562,11 +557,13 @@ void redimensionnementForce(int menu)
 	int hauteur;
 	largeur = 500;
 	hauteur = 580;
-	if (menu == menuRegles) {
+	if (menu == menuRegles)
+	{
 		largeur = 725;
 		hauteur = 650;
 	}
-	if ((largeurFenetre() < largeur) || (hauteurFenetre() < hauteur)) {
+	if ((largeurFenetre() < largeur) || (hauteurFenetre() < hauteur))
+	{
 		redimensionneFenetre(largeur, hauteur);
 	}
 }
@@ -582,37 +579,30 @@ void redimensionnementForce(int menu)
  * @param joueurCourant Joueur courant de la partie
  * @return 0
  */
-int gestionAffichage(int menu, int *coordonneesGrille,
-		     int LargeurFenetreCourante, int HauteurFenetreCourante,
-		     DonneesImageRGB * imageRegles, int joueurCourant)
+int gestionAffichage(int menu, int *coordonneesGrille, int LargeurFenetreCourante, int HauteurFenetreCourante, DonneesImageRGB * imageRegles, int joueurCourant)
 {
-	switch (menu) {
+	switch (menu)
+	{
 	case menuPrincipal:
-		afficheMenuPrincipal(LargeurFenetreCourante,
-				     HauteurFenetreCourante);
+		afficheMenuPrincipal(LargeurFenetreCourante, HauteurFenetreCourante);
 		break;
 	case redirectMenuChoixSymboleS:
-		afficheMenuSelection(LargeurFenetreCourante,
-				     HauteurFenetreCourante);
+		afficheMenuSelection(LargeurFenetreCourante, HauteurFenetreCourante);
 		break;
 	case redirectMenuRegles:
-		afficheRegles(imageRegles, LargeurFenetreCourante,
-			      HauteurFenetreCourante);
+		afficheRegles(imageRegles, LargeurFenetreCourante, HauteurFenetreCourante);
 		break;
 	case menuPartie:
 	case redirectSurbrillance:
 	case redirectRePioche:
 	case redirectPioche:
 	case redirectExterieur:
-		affichePlateau(coordonneesGrille,
-			       LargeurFenetreCourante, HauteurFenetreCourante);
+		affichePlateau(coordonneesGrille, LargeurFenetreCourante, HauteurFenetreCourante);
 		//Affichage du joueur courant
-		afficheJoueurCourant(joueurCourant, LargeurFenetreCourante,
-				     HauteurFenetreCourante);
+		afficheJoueurCourant(joueurCourant, LargeurFenetreCourante, HauteurFenetreCourante);
 		break;
 	case redirectMenuVictoire:
-		afficheVictoire(LargeurFenetreCourante, HauteurFenetreCourante,
-				joueurCourant);
+		afficheVictoire(LargeurFenetreCourante, HauteurFenetreCourante, joueurCourant);
 		break;
 	case redirectMenuDefaite:
 		afficheDefaite(LargeurFenetreCourante, HauteurFenetreCourante);
@@ -638,13 +628,15 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	static float vert = 240;
 	static float bleu = 244;
 	int anim = 125;
-	if (time <= anim) {
+	if (time <= anim)
+	{
 		rouge = rouge - (239 - 65) / (float)anim;
 		vert = vert - (240 - 95) / (float)anim;
 		bleu = bleu - (244 - 157) / (float)anim;
 		couleurCourante((int)rouge, (int)vert, (int)bleu);
 		time += 1;
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	float largeurTexteTitre = 0.1 * LARGEURFenetre;
@@ -653,84 +645,62 @@ int afficheMenuPrincipal(int LARGEURFenetre, int HAUTEURFenetre)
 	float largeurTexteBoutonsQ = tailleChaine("Quitter", largeurBoutons);
 	float largeurTexteBoutonsR = tailleChaine("Regles", largeurBoutons);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre,
-		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
-		      0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
 
 	epaisseurDeTrait(3);
-	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.7 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.55 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.7 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.55 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//1VS1
-	rectangle(0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
-		  0.45 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
+	rectangle(0.15 * LARGEURFenetre, 0.7 * HAUTEURFenetre, 0.45 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("1 VS 1", largeurBoutons,
-		      (0.30 * LARGEURFenetre) - (largeurTexteBoutonsMode / 2),
-		      0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS 1", largeurBoutons, (0.30 * LARGEURFenetre) - (largeurTexteBoutonsMode / 2), 0.60 * HAUTEURFenetre);
 
 	//1 VS IA
-	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.7 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.55 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre) && (ordonneeSouris() <= 0.7 * HAUTEURFenetre) && (abscisseSouris() <= 0.85 * LARGEURFenetre) && (ordonneeSouris() >= 0.55 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.55 * LARGEURFenetre, 0.7 * HAUTEURFenetre,
-		  0.85 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
+	rectangle(0.55 * LARGEURFenetre, 0.7 * HAUTEURFenetre, 0.85 * LARGEURFenetre, 0.55 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("1 VS IA", largeurBoutons,
-		      0.7 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
-		      0.60 * HAUTEURFenetre);
+	afficheChaine("1 VS IA", largeurBoutons, 0.7 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.60 * HAUTEURFenetre);
 
 	//Règles
-	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.45 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.3 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.45 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.3 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.15 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
-		  0.45 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
+	rectangle(0.15 * LARGEURFenetre, 0.45 * HAUTEURFenetre, 0.45 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Regles", largeurBoutons,
-		      0.3 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
-		      0.35 * HAUTEURFenetre);
+	afficheChaine("Regles", largeurBoutons, 0.3 * LARGEURFenetre - (largeurTexteBoutonsR / 2), 0.35 * HAUTEURFenetre);
 
 	//Quitter
-	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.45 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.3 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre) && (ordonneeSouris() <= 0.45 * HAUTEURFenetre) && (abscisseSouris() <= 0.85 * LARGEURFenetre) && (ordonneeSouris() >= 0.3 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.55 * LARGEURFenetre, 0.45 * HAUTEURFenetre,
-		  0.85 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
+	rectangle(0.55 * LARGEURFenetre, 0.45 * HAUTEURFenetre, 0.85 * LARGEURFenetre, 0.3 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quitter", largeurBoutons,
-		      0.7 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
-		      0.35 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons, 0.7 * LARGEURFenetre - (largeurTexteBoutonsQ / 2), 0.35 * HAUTEURFenetre);
 
 	couleurCourante(65, 95, 157);
 	afficheChaine
 	    ("Cree par G. Desrumaux, M. Bouteille, P. Parrat, C. Bostyn",
-	     0.03 * LARGEURFenetre,
-	     LARGEURFenetre / 2 -
-	     (tailleChaine
-	      ("Cree par G. Desrumaux, M. Bouteille, P. Parrat, C. Bostyn",
-	       0.03 * LARGEURFenetre) / 2), 10);
+	     0.03 * LARGEURFenetre, LARGEURFenetre / 2 - (tailleChaine("Cree par G. Desrumaux, M. Bouteille, P. Parrat, C. Bostyn", 0.03 * LARGEURFenetre) / 2), 10);
 
 	return 0;
 }
@@ -748,67 +718,48 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
 	float largeurTexteBoutonsMode = tailleChaine("Retour", largeurBoutons);
 	float largeurTexteBoutonsC = tailleChaine("Croix", largeurBoutons);
 	float largeurTexteBoutonsR = tailleChaine("Cercle", largeurBoutons);
-	float largeurTexteSymbole =
-	    tailleChaine("Choisissez un symbole :", largeurBoutons);
+	float largeurTexteSymbole = tailleChaine("Choisissez un symbole :", largeurBoutons);
 
 	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre,
-		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
-		      0.8 * HAUTEURFenetre);
-	afficheChaine("Choisissez un symbole :", largeurBoutons,
-		      (LARGEURFenetre / 2) - (largeurTexteSymbole / 2),
-		      0.70 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	afficheChaine("Choisissez un symbole :", largeurBoutons, (LARGEURFenetre / 2) - (largeurTexteSymbole / 2), 0.70 * HAUTEURFenetre);
 
-	if ((abscisseSouris() >= 0.15 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.6 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.45 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.15 * LARGEURFenetre) && (ordonneeSouris() <= 0.6 * HAUTEURFenetre) && (abscisseSouris() <= 0.45 * LARGEURFenetre) && (ordonneeSouris() >= 0.45 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//gauche
-	rectangle(0.15 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
-		  0.45 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
+	rectangle(0.15 * LARGEURFenetre, 0.60 * HAUTEURFenetre, 0.45 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
 	//gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("Croix", largeurBoutons,
-		      0.3 * LARGEURFenetre - (largeurTexteBoutonsC / 2),
-		      0.5 * HAUTEURFenetre);
+	afficheChaine("Croix", largeurBoutons, 0.3 * LARGEURFenetre - (largeurTexteBoutonsC / 2), 0.5 * HAUTEURFenetre);
 	//droite
-	if ((abscisseSouris() >= 0.55 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.6 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.85 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.55 * LARGEURFenetre) && (ordonneeSouris() <= 0.6 * HAUTEURFenetre) && (abscisseSouris() <= 0.85 * LARGEURFenetre) && (ordonneeSouris() >= 0.45 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.55 * LARGEURFenetre, 0.60 * HAUTEURFenetre,
-		  0.85 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
+	rectangle(0.55 * LARGEURFenetre, 0.60 * HAUTEURFenetre, 0.85 * LARGEURFenetre, 0.45 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Cercle", largeurBoutons,
-		      0.7 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
-		      0.5 * HAUTEURFenetre);
+	afficheChaine("Cercle", largeurBoutons, 0.7 * LARGEURFenetre - (largeurTexteBoutonsR / 2), 0.5 * HAUTEURFenetre);
 
-	if ((abscisseSouris() >= 0.35 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.3 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.65 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.15 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.35 * LARGEURFenetre) && (ordonneeSouris() <= 0.3 * HAUTEURFenetre) && (abscisseSouris() <= 0.65 * LARGEURFenetre) && (ordonneeSouris() >= 0.15 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9),
-		  0.3 * HAUTEURFenetre,
-		  0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9),
-		  0.15 * HAUTEURFenetre);
+	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9), 0.3 * HAUTEURFenetre, 0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9), 0.15 * HAUTEURFenetre);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Retour", largeurBoutons,
-		      0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
-		      0.20 * HAUTEURFenetre);
+	afficheChaine("Retour", largeurBoutons, 0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.20 * HAUTEURFenetre);
 
 	return 0;
 
@@ -821,8 +772,7 @@ int afficheMenuSelection(int LARGEURFenetre, int HAUTEURFenetre)
  * @param HAUTEURFenetre hauteur de la fenêtre
  * @return 0
  */
-int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
-		  int HAUTEURFenetre)
+int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre, int HAUTEURFenetre)
 {
 	float largeurTexteTitre = 0.1 * LARGEURFenetre;
 	float largeurBoutons = 0.05 * LARGEURFenetre;
@@ -831,31 +781,21 @@ int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
 	//Bleu
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(3.5);
-	afficheChaine("Quixo", largeurTexteTitre,
-		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
-		      0.8 * HAUTEURFenetre);
-	if ((abscisseSouris() >= 0.35 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.3 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.65 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.15 * HAUTEURFenetre)) {
+	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.35 * LARGEURFenetre) && (ordonneeSouris() <= 0.3 * HAUTEURFenetre) && (abscisseSouris() <= 0.65 * LARGEURFenetre) && (ordonneeSouris() >= 0.15 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9),
-		  0.3 * HAUTEURFenetre,
-		  0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9),
-		  0.15 * HAUTEURFenetre);
+	rectangle(0.5 * LARGEURFenetre - (largeurTexteBoutonsMode / 0.9), 0.3 * HAUTEURFenetre, 0.5 * LARGEURFenetre + (largeurTexteBoutonsMode / 0.9), 0.15 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
-	afficheChaine("Retour", largeurBoutons,
-		      0.50 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
-		      0.20 * HAUTEURFenetre);
-	if (image != NULL) {
-		ecrisImage((largeurFenetre() - image->largeurImage) / 2,
-			   (hauteurFenetre() - image->hauteurImage) / 1.5,
-			   image->largeurImage, image->hauteurImage,
-			   image->donneesRGB);
+	afficheChaine("Retour", largeurBoutons, 0.50 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.20 * HAUTEURFenetre);
+	if (image != NULL)
+	{
+		ecrisImage((largeurFenetre() - image->largeurImage) / 2, (hauteurFenetre() - image->hauteurImage) / 1.5, image->largeurImage, image->hauteurImage, image->donneesRGB);
 	}
 	return 0;
 }
@@ -870,128 +810,120 @@ int afficheRegles(DonneesImageRGB * image, int LARGEURFenetre,
 int clicMenu(CLIC * clicSouris, int LARGEURFenetre, int HAUTEURFenetre)
 {
 	// Le menu courant est le menu Principal
-	if (clicSouris->menu == menuPrincipal) {
+	if (clicSouris->menu == menuPrincipal)
+	{
 		//1 VS 1
 		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre) && (clicSouris->coordX <= 0.45 * LARGEURFenetre) && (clicSouris->coordY >= 0.55 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuChoixSymboleS;
 			clicSouris->mode = V1;
 		}
 		//1 VS IA
 		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.55 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.7 * HAUTEURFenetre) && (clicSouris->coordX <= 0.85 * LARGEURFenetre) && (clicSouris->coordY >= 0.55 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuChoixSymboleS;
 			clicSouris->mode = VIA;
 		}
 		//Règles
 		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.3 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre) && (clicSouris->coordX <= 0.45 * LARGEURFenetre) && (clicSouris->coordY >= 0.3 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuRegles;
 		}
 		//Quitter
 		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.3 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.45 * HAUTEURFenetre) && (clicSouris->coordX <= 0.85 * LARGEURFenetre) && (clicSouris->coordY >= 0.3 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectQuitter;
 		}
 		// on renvoie le menuCourant
 		return (clicSouris->menu);
 		// Le menu courant est le menu des règles
-	} else if (clicSouris->menu == menuRegles) {
+	} else if (clicSouris->menu == menuRegles)
+	{
 		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.15 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre) && (clicSouris->coordX <= 0.65 * LARGEURFenetre) && (clicSouris->coordY >= 0.15 * HAUTEURFenetre))
+		{
 			return redirectMenuPrincipal;
 		}
 
 		return (clicSouris->menu);
 		// Le menu courant est le menu choix symbole
-	} else if (clicSouris->menu == menuChoixSymboles) {
+	} else if (clicSouris->menu == menuChoixSymboles)
+	{
 		//Retour
 		if ((clicSouris->coordX >= 0.35 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.65 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.15 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.3 * HAUTEURFenetre) && (clicSouris->coordX <= 0.65 * LARGEURFenetre) && (clicSouris->coordY >= 0.15 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuPrincipal;
 		}
 		// Croix vers menuPartie
 		if ((clicSouris->coordX >= 0.15 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.45 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre) && (clicSouris->coordX <= 0.45 * LARGEURFenetre) && (clicSouris->coordY >= 0.45 * HAUTEURFenetre))
+		{
 			clicSouris->joueurCourant = croix_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 		// Rond vers menu Partie
 		if ((clicSouris->coordX >= 0.55 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.85 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.45 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.60 * HAUTEURFenetre) && (clicSouris->coordX <= 0.85 * LARGEURFenetre) && (clicSouris->coordY >= 0.45 * HAUTEURFenetre))
+		{
 			clicSouris->joueurCourant = rond_gauche;
 			clicSouris->menu = redirectMenuPartie;
 		}
 		return (clicSouris->menu);
 		// Le menu courant est le menu partie
-	} else if (clicSouris->menu == menuPartie
-		   || clicSouris->menu == redirectSurbrillance) {
+	} else if (clicSouris->menu == menuPartie || clicSouris->menu == redirectSurbrillance)
+	{
 		//Règles
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.05 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre) && (clicSouris->coordX <= 0.4 * LARGEURFenetre) && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuRegles;
 		}
 		//Menu Principal
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.05 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.2 * HAUTEURFenetre) && (clicSouris->coordX <= 0.9 * LARGEURFenetre) && (clicSouris->coordY >= 0.05 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectMenuPrincipal;
 		}
 		return (clicSouris->menu);
 
 		// Le menu courant est le menu victoire
-	} else if (clicSouris->menu == menuVictoire) {
+	} else if (clicSouris->menu == menuVictoire)
+	{
 		//Menu Principal
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre) && (clicSouris->coordX <= 0.4 * LARGEURFenetre) && (clicSouris->coordY >= 0.1 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectRecommencer;
 		}
 		//Quitter
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre) && (clicSouris->coordX <= 0.9 * LARGEURFenetre) && (clicSouris->coordY >= 0.1 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectQuitter;
 		}
 		return (clicSouris->menu);
-	} else if (clicSouris->menu == redirectMenuDefaite) {
+	} else if (clicSouris->menu == redirectMenuDefaite)
+	{
 		//Menu Principal
 		if ((clicSouris->coordX >= 0.1 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.4 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre) && (clicSouris->coordX <= 0.4 * LARGEURFenetre) && (clicSouris->coordY >= 0.1 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectRecommencerDef;
 		}
 		//Quitter
 		if ((clicSouris->coordX >= 0.6 * LARGEURFenetre)
-		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre)
-		    && (clicSouris->coordX <= 0.9 * LARGEURFenetre)
-		    && (clicSouris->coordY >= 0.1 * HAUTEURFenetre)) {
+		    && (clicSouris->coordY <= 0.25 * HAUTEURFenetre) && (clicSouris->coordX <= 0.9 * LARGEURFenetre) && (clicSouris->coordY >= 0.1 * HAUTEURFenetre))
+		{
 			clicSouris->menu = redirectQuitter;
 		}
 		return (clicSouris->menu);
-	} else {
+	} else
+	{
 		return redirectMenuPrincipal;
 	}
 }
@@ -1008,37 +940,29 @@ int afficheBouton(int LARGEURFenetre, int HAUTEURFenetre)
 	float largeurTexteBoutonsQ = tailleChaine("Menu", largeurBoutons);
 	float largeurTexteBoutonsR = tailleChaine("Regles", largeurBoutons);
 //Bleu
-	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.2 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.05 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre) && (ordonneeSouris() <= 0.2 * HAUTEURFenetre) && (abscisseSouris() <= 0.4 * LARGEURFenetre) && (ordonneeSouris() >= 0.05 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//Rectangle gauche
-	rectangle(0.10 * LARGEURFenetre, 0.2 * HAUTEURFenetre,
-		  0.40 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
+	rectangle(0.10 * LARGEURFenetre, 0.2 * HAUTEURFenetre, 0.40 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
 	//Rectangle droite
-	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.2 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.05 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre) && (ordonneeSouris() <= 0.2 * HAUTEURFenetre) && (abscisseSouris() <= 0.9 * LARGEURFenetre) && (ordonneeSouris() >= 0.05 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
-	rectangle(0.60 * LARGEURFenetre, 0.2 * HAUTEURFenetre,
-		  0.90 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
+	rectangle(0.60 * LARGEURFenetre, 0.2 * HAUTEURFenetre, 0.90 * LARGEURFenetre, 0.05 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
 	epaisseurDeTrait(2);
-	afficheChaine("Regles", largeurBoutons,
-		      0.25 * LARGEURFenetre - (largeurTexteBoutonsR / 2),
-		      0.1 * HAUTEURFenetre);
-	afficheChaine("Menu", largeurBoutons,
-		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
-		      0.1 * HAUTEURFenetre);
+	afficheChaine("Regles", largeurBoutons, 0.25 * LARGEURFenetre - (largeurTexteBoutonsR / 2), 0.1 * HAUTEURFenetre);
+	afficheChaine("Menu", largeurBoutons, 0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2), 0.1 * HAUTEURFenetre);
 
 	return 0;
 }
@@ -1050,8 +974,7 @@ int afficheBouton(int LARGEURFenetre, int HAUTEURFenetre)
  * @param joueurCourant Joueur qui doit jouer
  * @return 0
  */
-int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
-			 int HAUTEURFenetre)
+int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre, int HAUTEURFenetre)
 {
 	int largeurTitre = tailleChaine("Quixo", 0.025 * LARGEURFenetre);
 	//bleu
@@ -1059,9 +982,7 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 50);
 	epaisseurDeTrait(1.5);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quixo", 0.025 * LARGEURFenetre,
-		      0.5 * LARGEURFenetre - (largeurTitre / 2),
-		      HAUTEURFenetre - 45);
+	afficheChaine("Quixo", 0.025 * LARGEURFenetre, 0.5 * LARGEURFenetre - (largeurTitre / 2), HAUTEURFenetre - 45);
 
 	CASE caseADessinerCroix, caseADessinerRond;
 	caseADessinerCroix.colonne = 25;
@@ -1070,9 +991,11 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	caseADessinerRond.colonne = LARGEURFenetre - 25;
 	caseADessinerRond.ligne = HAUTEURFenetre - 60 - 25;
 
-	if (joueurCourant == croix_gauche) {
+	if (joueurCourant == croix_gauche)
+	{
 		couleurCourante(65, 95, 157);
-	} else {
+	} else
+	{
 		couleurCourante(150, 150, 150);
 	}
 	rectangle(0, HAUTEURFenetre - 60, 50, HAUTEURFenetre - 60 - 50);
@@ -1082,26 +1005,23 @@ int afficheJoueurCourant(int joueurCourant, int LARGEURFenetre,
 	sprintf(memoireScore, "Score : %d", getScore(scores, 2, croix_gauche));
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(1.0);
-	afficheChaine(memoireScore, 0.03 * LARGEURFenetre, 55,
-		      HAUTEURFenetre - 60 - 40);
+	afficheChaine(memoireScore, 0.03 * LARGEURFenetre, 55, HAUTEURFenetre - 60 - 40);
 
-	if (joueurCourant == rond_gauche) {
+	if (joueurCourant == rond_gauche)
+	{
 		couleurCourante(65, 95, 157);
-	} else {
+	} else
+	{
 		couleurCourante(150, 150, 150);
 	}
 	//Coin haut gauche
-	rectangle(LARGEURFenetre - 50, HAUTEURFenetre - 60, LARGEURFenetre,
-		  HAUTEURFenetre - 60 - 50);
+	rectangle(LARGEURFenetre - 50, HAUTEURFenetre - 60, LARGEURFenetre, HAUTEURFenetre - 60 - 50);
 	couleurCourante(239, 240, 255);
 	afficheRondPoint(&caseADessinerRond, 15, 2);
 	sprintf(memoireScore, "Score : %d", getScore(scores, 2, rond_gauche));
 	couleurCourante(65, 95, 157);
 	epaisseurDeTrait(1.0);
-	afficheChaine(memoireScore, 0.03 * LARGEURFenetre,
-		      LARGEURFenetre - 60 - tailleChaine(memoireScore,
-							 0.03 * LARGEURFenetre),
-		      HAUTEURFenetre - 60 - 40);
+	afficheChaine(memoireScore, 0.03 * LARGEURFenetre, LARGEURFenetre - 60 - tailleChaine(memoireScore, 0.03 * LARGEURFenetre), HAUTEURFenetre - 60 - 40);
 	return 0;
 }
 
@@ -1125,33 +1045,21 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 180);
 	epaisseurDeTrait(3.5);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quixo", largeurTexteTitre,
-		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
-		      0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
 	couleurCourante(65, 95, 157);
-	afficheChaine("Bravo",
-		      largeurTexte,
-		      0.5 * LARGEURFenetre -
-		      (tailleChaine("Bravo", largeurTexte) / 2) -
-		      (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
+	afficheChaine("Bravo", largeurTexte, 0.5 * LARGEURFenetre - (tailleChaine("Bravo", largeurTexte) / 2) - (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
 	CASE dessin;
-	dessin.colonne =
-	    (int)(0.5 * LARGEURFenetre +
-		  (tailleChaine("Bravo", largeurTexte) / 2));
+	dessin.colonne = (int)(0.5 * LARGEURFenetre + (tailleChaine("Bravo", largeurTexte) / 2));
 	dessin.ligne = (int)(0.6 * HAUTEURFenetre + largeurTexte / 2.5);
-	if (joueurCourant == 3) {
+	if (joueurCourant == 3)
+	{
 		afficheCroixPoint(&dessin, largeurTexteTitre, 2);
-	} else if (joueurCourant == 4) {
+	} else if (joueurCourant == 4)
+	{
 		afficheRondPoint(&dessin, largeurTexteTitre / 3, 2);
 	}
-	afficheChaine("!", largeurTexte,
-		      0.5 * LARGEURFenetre +
-		      (tailleChaine("Bravo", largeurTexte) / 2) +
-		      (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
-	afficheChaine("Tu as gagne !", largeurTexte,
-		      0.5 * LARGEURFenetre -
-		      (tailleChaine("Tu as gagne !", largeurTexte) / 2),
-		      0.45 * HAUTEURFenetre);
+	afficheChaine("!", largeurTexte, 0.5 * LARGEURFenetre + (tailleChaine("Bravo", largeurTexte) / 2) + (LARGEURFenetre / 10), 0.6 * HAUTEURFenetre);
+	afficheChaine("Tu as gagne !", largeurTexte, 0.5 * LARGEURFenetre - (tailleChaine("Tu as gagne !", largeurTexte) / 2), 0.45 * HAUTEURFenetre);
 
 	int coordonnees[4];
 	coordonnees[0] = abscisseSouris() - 0.2 * LARGEURFenetre;
@@ -1162,46 +1070,36 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 	if ((abscisseSouris() >= 0.5 * LARGEURFenetre -
 	     (tailleChaine("Tu as gagne !", largeurTexte) / 2))
 	    && (ordonneeSouris() <= 0.65 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.5 * LARGEURFenetre +
-		(tailleChaine("Tu as gagne !", largeurTexte) / 2))
-	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
-		affichePlateau(coordonnees, 0.2 * LARGEURFenetre,
-			       0.2 * LARGEURFenetre);
+	    && (abscisseSouris() <= 0.5 * LARGEURFenetre + (tailleChaine("Tu as gagne !", largeurTexte) / 2)) && (ordonneeSouris() >= 0.45 * HAUTEURFenetre))
+	{
+		affichePlateau(coordonnees, 0.2 * LARGEURFenetre, 0.2 * LARGEURFenetre);
 		couleurCourante(239, 240, 255);
 		rectangle(0, 0, LARGEURFenetre, 0.2 * HAUTEURFenetre);
 	}
 
-	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre) && (ordonneeSouris() <= 0.25 * HAUTEURFenetre) && (abscisseSouris() <= 0.4 * LARGEURFenetre) && (ordonneeSouris() >= 0.1 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//Rectangle gauche
-	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
-	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre, 0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre) && (ordonneeSouris() <= 0.25 * HAUTEURFenetre) && (abscisseSouris() <= 0.9 * LARGEURFenetre) && (ordonneeSouris() >= 0.1 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//Rectangle droite
-	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre, 0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
 	epaisseurDeTrait(2);
-	afficheChaine("Rejouer", largeurBoutons,
-		      0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
-		      0.15 * HAUTEURFenetre);
-	afficheChaine("Quitter", largeurBoutons,
-		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
-		      0.15 * HAUTEURFenetre);
+	afficheChaine("Rejouer", largeurBoutons, 0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.15 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons, 0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2), 0.15 * HAUTEURFenetre);
 	return 0;
 }
 
@@ -1216,12 +1114,14 @@ void assigneTaillePlateau(int *coordonneesPlateau)
 	int largeurMilieu = largeurFenetre() / 2;
 	int tailleX = TAILLE_PLATEAU * (0.1 * largeurMilieu);
 	int tailleY = TAILLE_PLATEAU * (0.1 * hauteurMilieu);
-	if (hauteurMilieu >= largeurMilieu) {
+	if (hauteurMilieu >= largeurMilieu)
+	{
 		coordonneesPlateau[0] = largeurMilieu - tailleX;
 		coordonneesPlateau[1] = hauteurMilieu + tailleX + 40;
 		coordonneesPlateau[2] = largeurMilieu + tailleX;
 		coordonneesPlateau[3] = hauteurMilieu - tailleX + 40;
-	} else {
+	} else
+	{
 		coordonneesPlateau[0] = largeurMilieu - tailleY;
 		coordonneesPlateau[1] = hauteurMilieu + tailleY + 40;
 		coordonneesPlateau[2] = largeurMilieu + tailleY;
@@ -1239,15 +1139,8 @@ void afficheDefaite(int LARGEURFenetre, int HAUTEURFenetre)
 {
 	float largeurTexte = 0.05 * LARGEURFenetre;
 	couleurCourante(65, 95, 157);
-	afficheChaine("Desole tu as",
-		      largeurTexte,
-		      0.5 * LARGEURFenetre -
-		      (tailleChaine("Desole tu as", largeurTexte) / 2),
-		      0.6 * HAUTEURFenetre);
-	afficheChaine("perdu contre l'ordinateur", largeurTexte,
-		      0.5 * LARGEURFenetre -
-		      (tailleChaine("perdu contre l'ordinateur", largeurTexte) /
-		       2), 0.5 * HAUTEURFenetre);
+	afficheChaine("Desole tu as", largeurTexte, 0.5 * LARGEURFenetre - (tailleChaine("Desole tu as", largeurTexte) / 2), 0.6 * HAUTEURFenetre);
+	afficheChaine("perdu contre l'ordinateur", largeurTexte, 0.5 * LARGEURFenetre - (tailleChaine("perdu contre l'ordinateur", largeurTexte) / 2), 0.5 * HAUTEURFenetre);
 
 	float largeurTexteTitre = 0.1 * LARGEURFenetre;
 	float largeurBoutons = 0.05 * LARGEURFenetre;
@@ -1259,39 +1152,29 @@ void afficheDefaite(int LARGEURFenetre, int HAUTEURFenetre)
 	rectangle(0, HAUTEURFenetre, LARGEURFenetre, HAUTEURFenetre - 180);
 	epaisseurDeTrait(3.5);
 	couleurCourante(239, 240, 255);
-	afficheChaine("Quixo", largeurTexteTitre,
-		      0.4 * LARGEURFenetre - (largeurTexteTitre / 2),
-		      0.8 * HAUTEURFenetre);
+	afficheChaine("Quixo", largeurTexteTitre, 0.4 * LARGEURFenetre - (largeurTexteTitre / 2), 0.8 * HAUTEURFenetre);
 
-	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.4 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+	if ((abscisseSouris() >= 0.1 * LARGEURFenetre) && (ordonneeSouris() <= 0.25 * HAUTEURFenetre) && (abscisseSouris() <= 0.4 * LARGEURFenetre) && (ordonneeSouris() >= 0.1 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//Rectangle gauche
-	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
-	if ((abscisseSouris() >= 0.6 * LARGEURFenetre)
-	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)
-	    && (abscisseSouris() <= 0.9 * LARGEURFenetre)
-	    && (ordonneeSouris() >= 0.1 * HAUTEURFenetre)) {
+	rectangle(0.10 * LARGEURFenetre, 0.25 * HAUTEURFenetre, 0.40 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	if ((abscisseSouris() >= 0.6 * LARGEURFenetre) && (ordonneeSouris() <= 0.25 * HAUTEURFenetre) && (abscisseSouris() <= 0.9 * LARGEURFenetre) && (ordonneeSouris() >= 0.1 * HAUTEURFenetre))
+	{
 		couleurCourante(90, 105, 180);
-	} else {
+	} else
+	{
 		couleurCourante(65, 95, 157);
 	}
 	//Rectangle droite
-	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre,
-		  0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
+	rectangle(0.60 * LARGEURFenetre, 0.25 * HAUTEURFenetre, 0.90 * LARGEURFenetre, 0.1 * HAUTEURFenetre);
 	//Gris
 	couleurCourante(239, 240, 255);
 	epaisseurDeTrait(2);
-	afficheChaine("Rejouer", largeurBoutons,
-		      0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2),
-		      0.15 * HAUTEURFenetre);
-	afficheChaine("Quitter", largeurBoutons,
-		      0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2),
-		      0.15 * HAUTEURFenetre);
+	afficheChaine("Rejouer", largeurBoutons, 0.25 * LARGEURFenetre - (largeurTexteBoutonsMode / 2), 0.15 * HAUTEURFenetre);
+	afficheChaine("Quitter", largeurBoutons, 0.75 * LARGEURFenetre - (largeurTexteBoutonsQ / 2), 0.15 * HAUTEURFenetre);
 }

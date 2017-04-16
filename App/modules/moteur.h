@@ -11,7 +11,7 @@
 #include "outils.h"
 
 /*!
- * \brief décalage des pions
+ * \brief Décalage des pions.
  * @param plateau Plateau du jeu à accéder
  * @param colonnePiochee Colonne de la case piochée
  * @param lignePiochee Ligne de la case piochée
@@ -22,7 +22,7 @@
 int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee, int colonneJouee, int ligneJouee);
 
 /*!
- * \brief verification de la victoire d'un joueur par les lignes'
+ * \brief Vérification de la victoire d'un joueur par les lignes.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @return :: joueurCourant si il a gagné sinon -1
@@ -30,7 +30,7 @@ int decalage(PLATEAU * plateau, int colonnePiochee, int lignePiochee, int colonn
 int testeVictoireLigne1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
- * \brief verification de la victoire d'un joueur par les colonnes
+ * \brief Vérification de la victoire d'un joueur par les colonnes.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @return :: joueurCourant si il a gagné sinon -1
@@ -38,7 +38,7 @@ int testeVictoireLigne1V1(PLATEAU * plateau, int joueurCourant);
 int testeVictoireColonne1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
- * \brief verification de la victoire d'un joueur par la diagonale de gauche haut vers droite bas
+ * \brief Vérification de la victoire d'un joueur par la diagonale de gauche haut vers droite bas.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @return :: joueurCourant si il a gagné sinon -1
@@ -46,7 +46,7 @@ int testeVictoireColonne1V1(PLATEAU * plateau, int joueurCourant);
 int testeVictoireDiagonaleG1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
- * \brief verification de la victoire d'un joueur par la diagonale de gauche bas vers droite haut
+ * \brief Vérification de la victoire d'un joueur par la diagonale de gauche bas vers droite haut.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @return :: joueurCourant si il a gagné sinon -1
@@ -54,16 +54,15 @@ int testeVictoireDiagonaleG1V1(PLATEAU * plateau, int joueurCourant);
 int testeVictoireDiagonaleD1V1(PLATEAU * plateau, int joueurCourant);
 
 /*!
- * \brief verification de la victoire en 2V2 d'un joueur par les ligne
+ * \brief Vérification de la victoire en 2V2 d'un joueur par les lignes.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
 int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
-
 /*!
- * \brief verification de la victoire en 2V2 d'un joueur par les colonnes
+ * \brief Vérification de la victoire en 2V2 d'un joueur par les colonnes.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @param joueurAllier
@@ -72,7 +71,7 @@ int testeVictoireLigne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier
 int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
- * \brief verification de la victoire en 2V2 d'un joueur par la  diagonale de gauche haut vers droite bas
+ * \brief Vérification de la victoire en 2V2 d'un joueur par la diagonale de gauche haut vers droite bas.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @param joueurAllier
@@ -81,16 +80,16 @@ int testeVictoireColonne2V2(PLATEAU * plateau, int joueurCourant, int joueurAlli
 int testeVictoireDiagonaleG2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 
 /*!
- * \brief verification de la victoire d'un joueur en 2V2 par la diagonale de gauche bas vers droite haut
+ * \brief Vérification de la victoire d'un joueur en 2V2 par la diagonale de gauche bas vers droite haut.
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @param joueurAllier
  * @return :: joueurCourant si il a gagné sinon -1
  */
 int testeVictoireDiagonaleD2V2(PLATEAU * plateau, int joueurCourant, int joueurAllier);
+
 /*!
- * \brief appel des fonctions de test de victiore pour le mode 2v2 et 1V1
- * \brief /!\ si on est en mode 1V1 alors  joueurAllier = 0
+ * \brief Appel des fonctions de test de victoire pour le mode 2v2 et 1V1. /!\ si on est en mode 1V1 alors joueurAllier = 0
  * @param plateau Plateau du jeu à accéder
  * @param joueurCourant
  * @param joueurAllier
@@ -127,7 +126,7 @@ int testeVictoire(PLATEAU * plateau, int joueurCourant, int joueurAllier);
 int verifieSymbole(PLATEAU * plateau, CASE * clicJoueur, int joueurCourant);
 
 /*!
- * \brief Fonction qui déterminer les cases où le joueur peut déposer le cube qu'il a pioché
+ * \brief Fonction qui détermine les cases où le joueur peut déposer le cube qu'il a pioché
  * @param casePiochee Coordonnées de la case que le joueur a pioché
  * @return 0
  */

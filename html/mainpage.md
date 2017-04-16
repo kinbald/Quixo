@@ -20,3 +20,4 @@ Projet réalisé par :
 - Guillaume Desrumaux
 - Marion Bouteille
 - Pierre Parrat
+- Christophe Bostyn

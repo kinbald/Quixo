@@ -1153,22 +1153,23 @@ int afficheVictoire(int LARGEURFenetre, int HAUTEURFenetre, int joueurCourant)
 		      (tailleChaine("Tu as gagne !", largeurTexte) / 2),
 		      0.45 * HAUTEURFenetre);
 
-  int coordonnees[4];
-  coordonnees[0] = abscisseSouris() - 0.2 * LARGEURFenetre;
-  coordonnees[1] = ordonneeSouris() + 0.2 * LARGEURFenetre;
-  coordonnees[2] = abscisseSouris() + 0.2 * LARGEURFenetre;
-  coordonnees[3] = ordonneeSouris() - 0.2 * LARGEURFenetre;
+	int coordonnees[4];
+	coordonnees[0] = abscisseSouris() - 0.2 * LARGEURFenetre;
+	coordonnees[1] = ordonneeSouris() + 0.2 * LARGEURFenetre;
+	coordonnees[2] = abscisseSouris() + 0.2 * LARGEURFenetre;
+	coordonnees[3] = ordonneeSouris() - 0.2 * LARGEURFenetre;
 
-  if ((abscisseSouris() >= 0.5 * LARGEURFenetre -
-      (tailleChaine("Tu as gagne !", largeurTexte) / 2))
-      && (ordonneeSouris() <= 0.65 * HAUTEURFenetre)
-      && (abscisseSouris() <= 0.5 * LARGEURFenetre +
-          (tailleChaine("Tu as gagne !", largeurTexte) / 2))
-      && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
-    affichePlateau(coordonnees, 0.2* LARGEURFenetre, 0.2*LARGEURFenetre);
-    couleurCourante(239, 240, 255);
-    rectangle(0, 0, LARGEURFenetre, 0.2*HAUTEURFenetre);
-  }
+	if ((abscisseSouris() >= 0.5 * LARGEURFenetre -
+	     (tailleChaine("Tu as gagne !", largeurTexte) / 2))
+	    && (ordonneeSouris() <= 0.65 * HAUTEURFenetre)
+	    && (abscisseSouris() <= 0.5 * LARGEURFenetre +
+		(tailleChaine("Tu as gagne !", largeurTexte) / 2))
+	    && (ordonneeSouris() >= 0.45 * HAUTEURFenetre)) {
+		affichePlateau(coordonnees, 0.2 * LARGEURFenetre,
+			       0.2 * LARGEURFenetre);
+		couleurCourante(239, 240, 255);
+		rectangle(0, 0, LARGEURFenetre, 0.2 * HAUTEURFenetre);
+	}
 
 	if ((abscisseSouris() >= 0.1 * LARGEURFenetre)
 	    && (ordonneeSouris() <= 0.25 * HAUTEURFenetre)

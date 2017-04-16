@@ -858,12 +858,12 @@ int MinMax(PLATEAU * plateau, int joueur, int joueurLancement, int depth,
 						     index_move <
 						     nombre_mouvements;
 						     index_move++) {
-							caseCouranteJouee.colonne
-							    =
+							caseCouranteJouee.
+							    colonne =
 							    mouvementsPossibles
 							    [index_move][0];
-							caseCouranteJouee.ligne
-							    =
+							caseCouranteJouee.
+							    ligne =
 							    mouvementsPossibles
 							    [index_move][1];
 							joueCoup(plateau,
@@ -1076,7 +1076,7 @@ void mouvementIA(PLATEAU * plateau, int symbole)
 	}
 	// On joue le coup généré
 	joueCoup(plateau, move.casePiochee, move.caseJouee, symbole);
-  //DEBUG : printf("Coup joue : LP: %d CP: %d ; LJ: %d CJ: %d \n", move.casePiochee.ligne, move.casePiochee.colonne,move.caseJouee.ligne,move.caseJouee.colonne);
+	//DEBUG : printf("Coup joue : LP: %d CP: %d ; LJ: %d CJ: %d \n", move.casePiochee.ligne, move.casePiochee.colonne,move.caseJouee.ligne,move.caseJouee.colonne);
 }
 
 /*!
